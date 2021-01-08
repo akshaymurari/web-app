@@ -1,0 +1,7 @@
+python version (3.9.1)
+pip install django
+django version (3.1.5)
+pip install mysqlclient
+pip install djangorestframework
+pip install pillow
+pip install django-cors-headers
