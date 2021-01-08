@@ -1,17 +1,4 @@
-#login{
-    text-decoration: none !important;
-    &:hover{
-        color:#2c72d4 !important;
-    }
-}
-#register{
-    text-decoration: none !important;
-    &:hover{
-        color:#2c72d4 !important;
-    }   
-}
-.headname{
-    font-family: 'Acme', sans-serif !important;
-    font-size:2rem;
-    margin-left:0.5rem;
+.signin{
+    color: white;
+    font-size: 1.4rem;
 }

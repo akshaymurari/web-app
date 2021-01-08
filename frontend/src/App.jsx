@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import {Switch,Route} from 'react-router-dom';
-import Welcome from './Welcome/Welcome.jsx';
+import Welcome from './Welcome/Welcome';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
 

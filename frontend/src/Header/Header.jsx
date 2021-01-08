@@ -1,21 +1,24 @@
-import React from 'react'
-import './Header.scss'
-import {Link} from 'react-router-dom'
+import React from 'react';
+import './Header.scss';
+import {Link} from 'react-scroll';
+import icon from "../assets/icon.png";
 const Header = () => {
     return (
-        <>
-          <div className="container-fluid">
-              <div className="row bg-dark py-3" id="head">
-                   <div className="mr-auto">
-                        <h2 className="text-white headname float-left">App name</h2>
-                   </div>
-                   <div className="ml-auto">
-                      <li className="d-inline mx-3"  style={{fontSize:"1.6rem"}}><Link to="/login" id="login" className="text-white">login</Link></li>
-                      <li className="d-inline mx-3"  style={{fontSize:"1.6rem"}}><Link to="/register" id="register" className="text-white">register</Link></li>
-                   </div>
-              </div>
-          </div>
-        </>
+        <React.Fragment>
+            <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+                <a className="navbar-brand" href="#">
+                    <img src={icon} width="40" height="40" alt="" style={{borderRadius: '10px'}}></img>
+                </a>
+                <a className="navbar-brand" href="#">Virtual Meet</a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                    <Link className=" signin ml-auto mr-3" to="login-center" smooth={true}>Sign in</Link>
+                    <button type="button" className="btn btn-outline-warning ml-2">Register</button>
+                </div>
+            </nav>
+        </React.Fragment>
     )
 }
 
