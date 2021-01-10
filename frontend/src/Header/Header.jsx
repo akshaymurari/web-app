@@ -9,7 +9,7 @@ const Header = () => {
                 <a className="navbar-brand" href="#">
                     <img src={icon} width="40" height="40" alt="" style={{borderRadius: '10px'}}></img>
                 </a>
-                <a className="navbar-brand" href="#">Virtual Meet</a>
+                <a className="navbar-brand" href="/mainblog">Virtual Meet</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
