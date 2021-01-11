@@ -2,6 +2,8 @@ import React from 'react';
 import './Header.scss';
 import {Link} from 'react-scroll';
 import icon from "../assets/icon.png";
+import './Header.scss';
+
 const Header = () => {
     return (
         <React.Fragment>
@@ -14,7 +16,7 @@ const Header = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <Link className=" signin ml-auto mr-3" to="login-center" smooth={true}>Sign in</Link>
+                    <Link className=" signin ml-auto mr-3 text-white" to="login-center" smooth={true}>Sign in</Link>
                     <button type="button" className="btn btn-outline-warning ml-2">Register</button>
                 </div>
             </nav>

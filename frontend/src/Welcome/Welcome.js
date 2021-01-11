@@ -5,6 +5,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ScrollLogin from "../scrollLogin/scrollLogin";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-scroll';
+import './Welcome.scss';
 
 const useStyles = makeStyles({
   goDownIcon:{
@@ -21,10 +22,10 @@ const Welcome = (props) => {
         <Header></Header>
         <div className="display">
           <img className="icon" src={icon} alt="Icon of Visual Meet"></img>
-          <div>
-            <h1 className="title">Welcome to Virtual Meet</h1>
-            <br/>
-            <p className="tag">Making ClassRooms Interactive</p>
+          <div >
+            <h1 className="title text-center">Welcome to Virtual Meet</h1>
+            {/* <br/> */}
+            <p className="tag text-center">Making ClassRooms Interactive</p>
           </div>
         </div>
         <Link className="arrow" to="login-center" smooth={true}>
