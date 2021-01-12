@@ -5,7 +5,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ScrollLogin from "../scrollLogin/scrollLogin";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-scroll';
-import './Welcome.scss';
+import '../Welcome/Welcome.scss';
 
 const useStyles = makeStyles({
   goDownIcon:{

@@ -6,6 +6,7 @@ import attendance from '../assets/attendance.jpg'
 import classlinks from '../assets/classlinks.png'
 import queries from '../assets/query-board.png'
 import event from '../assets/calendar.png'
+import './Mainblog.scss';
 const Mainblog = () => {
     let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE" }, { "image": classlinks, "title": "", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
     { "image": event, "title": "", "info": "EVENTS" }]
@@ -15,7 +16,7 @@ const Mainblog = () => {
                 <div className="row fixed-top">
                     <div className="col-12 navbar navbar-light bg-dark">
                         <div className="">
-                            <Link className="navbar-brand" to="#">
+                            <Link className="navbar-brand" to="">
                                 <img src={icon} width="30" height="30" className="d-inline-block align-top" alt="" />
                                 <label className="ml-2 text-white">Username</label>
                             </Link>
@@ -29,13 +30,13 @@ const Mainblog = () => {
                     </div>
                 </div>
                 <div className="container mt-5" >
-                    <div class="row ml-sm-5" style={{ "marginTop": "8rem" }}>
+                    <div className="row ml-sm-5" style={{ "marginTop": "8rem" }}>
                         {/* {data.map((v)=><MainCard image={v.image} title={v.info} info={v.title}/>)} */}
                         <div className="card MainCard h-100 my-5 mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={attendance} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props.title}</h5>
-                                <p clasName="card-text">{props.info}</p>
+                                <p className="card-text">{props.info}</p>
                                 <Link to={props.link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
@@ -43,7 +44,7 @@ const Mainblog = () => {
                             <img src={classlinks} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props.title}</h5>
-                                <p clasName="card-text">{props.info}</p>
+                                <p className="card-text">{props.info}</p>
                                 <Link to={props.link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
@@ -51,7 +52,7 @@ const Mainblog = () => {
                             <img src={queries} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props.title}</h5>
-                                <p clasName="card-text">{props.info}</p>
+                                <p className="card-text">{props.info}</p>
                                 <Link to={props.link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
@@ -59,7 +60,7 @@ const Mainblog = () => {
                             <img src={event} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props.title}</h5>
-                                <p clasName="card-text">{props.info}</p>
+                                <p className="card-text">{props.info}</p>
                                 <Link to={props.link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>

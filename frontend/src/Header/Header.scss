@@ -1,4 +1,20 @@
 .signin{
-    color: white;
+    color: azure;
+    font-size: 1.4rem;
+    background: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    &:hover{
+        color: gold;
+    }
+    &:focus{
+        outline:0;
+    }
+}
+
+.register{
     font-size: 1.4rem;
 }
