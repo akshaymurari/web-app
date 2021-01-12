@@ -4,9 +4,10 @@ import signUp from "../assets/signUp.svg";
 import Avatar from "./Avatar/Avatar";
 import wave from "../assets/wave.png";
 import teacher from "../assets/teacherPic.png"
-
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
 const TeacherSignUp = () =>{
-
+    const H = useHistory();
     const [gender, setgender] = useState(1);
     const [isActive, setIsActive] = useState(false);
     const [value, setValue] = useState('');
@@ -53,7 +54,27 @@ const TeacherSignUp = () =>{
             console.log(gender);
         }
     }
-
+    const submitMember = async (event) => {
+        event.preventDefault(); 
+        console.log(`${gender} ${value} ${valueEmail} ${valuePass}`);
+        const info = {"gender":gender,"username":value,"email":valueEmail,"password":valuePass}
+        try{
+            console.log("hiii");
+            let data = await axios({
+                method: 'post',
+                url:'http://127.0.0.1:8000/teacherStore/',
+                headers:{'Authorization':"Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
+                data:info,
+                responseType: 'json'
+            });
+            console.log(data);
+            const fun = () => H.push("/mainblog");
+            fun();
+        }
+        catch{
+            console.log("error");
+        }
+    }
     return(
         <div className="signUpPage wholeteachersignup">
             <img className="wave" src={wave} alt="wallpaper"></img>
@@ -104,7 +125,7 @@ const TeacherSignUp = () =>{
                         </div>
                         <br/>
                         <a href="#" className="have" m-auto>Already a Member?</a>
-                        <input type="submit" class="btn" value="Login"></input>
+                        <input type="submit" onClick={submitMember} class="btn" value="Login"></input>
                     </form>
                 </div>
             </div>

@@ -3,7 +3,7 @@ from .models import StudentUser,TeacherUser
 class StudentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentUser
-        exclude = ['password']
+        fields = '__all__'
 class TeacherUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeacherUser

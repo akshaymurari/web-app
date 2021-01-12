@@ -13,19 +13,24 @@ const Header = () => {
                     <a className="navbar-brand" href="#">
                         <img src={icon} width="40" height="40" alt="" style={{ borderRadius: '10px' }}></img>
                     </a>
-                    <a className="navbar-brand" href="#">Virtual Meet</a>
+                    <a className="navbar-brand" href="#">Visual Meet</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ml-auto mr-3">
                             <li class="nav-item">
-                                <Link className="ml-auto mr-3" to="login-center" smooth={true} style={{ color: "#fff" }}><button className="signin">Sign in</button></Link>
+                                <Link className="ml-auto mr-3" to="login-center" smooth={true} style={{ color: "#fff" }}><button className="signin">Register</button></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="ml-auto mr-3" to="login-center" smooth={true} style={{ color: "#fff" }}>
-                                    <button type="button" className="btn btn-outline-warning ml-2"><span>Register</span></button>
-                                </Link>
+                                <a className="ml-auto mr-3" href="/SignIn" style={{ color: "#fff" }}>
+                                    <button type="button" className="btn btn-outline-warning ml-2"><span>SignIn</span></button>
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="ml-auto mr-3" href="TeacherSignIn" style={{ color: "#fff" }}>
+                                    <button type="button" className="btn btn-outline-warning ml-2"><span>TeacherSignIn</span></button>
+                                </a>
                             </li>
                         </ul>
                     </div>

@@ -46,3 +46,10 @@ class forgetpassword(APIView):
             password = serializer.data['password']        
             send_mail('from visual meet','your password : '+password,'akshaymurari184@gmail.com',[data['email']],fail_silently=False)
             return Response({"msg":"success"})
+class studentexists(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self,request):
+        print(request.data)
+        if StudentUser.objects.filter(rollno=request.data["rollno"],password=request.data["password"],gender=request.data["gender"]).exists():
+            print(request.data)
+            return Response({'msg':True})

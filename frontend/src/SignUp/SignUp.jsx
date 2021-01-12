@@ -3,9 +3,9 @@ import "./SignUp.scss";
 import signUp from "../assets/signUp.svg";
 import Avatar from "./Avatar/Avatar";
 import wave from "../assets/wave.png";
-
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
 const SignUp = () =>{
-
     const [gender, setgender] = useState(1);
     const [isActive, setIsActive] = useState(false);
     const [value, setValue] = useState('');
@@ -13,10 +13,9 @@ const SignUp = () =>{
     const [valuePass, setValuePass] = useState('');
     const [isActiveEmail, setIsActiveEmail] = useState(false);
     const [valueEmail, setValueEmail] = useState('');
-
+    const H= useHistory();
     const handleTextChange = (text) => {
         setValue(text);
-
         if (text !== '') {
             setIsActive(true);
         } else {
@@ -52,7 +51,27 @@ const SignUp = () =>{
             console.log(gender);
         }
     }
-
+    const submitMember = async (event) => {
+        event.preventDefault(); 
+        console.log(`${gender} ${value} ${valueEmail} ${valuePass}`);
+        const info = {"gender":gender,"username":value,"rollno":value,"email":valueEmail,"password":valuePass}
+        try{
+            console.log("hiii");
+            let data = await axios({
+                method: 'post',
+                url:'http://127.0.0.1:8000/studentStore/',
+                headers:{'Authorization':"Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
+                data:info,
+                responseType: 'json'
+            });
+            console.log(data);
+            const fun = () => H.push("/mainblog");
+            fun();
+        }
+        catch{
+            console.log("error");
+        }
+    }
     return(
         <div className="signUpPage wholesignup">
             <img className="wave" src={wave} alt="wallpaper"></img>
@@ -62,31 +81,31 @@ const SignUp = () =>{
                     <form className="form">
                         <h2 className="title">SignUP</h2>
                         <Avatar gender={gender}></Avatar>
-                        <div class="input-div one">
-                            <div class="i">
-                                    <i class="fas fa-user"></i>
+                        <div className="input-div one">
+                            <div className="i">
+                                    <i className="fas fa-user"></i>
                             </div>
-                            <div class="div">
+                            <div className="div">
                                     <h5 className={isActive ? "Active" : ""}>RollNumber</h5>
-                                    <input type="text" class="input" value={value}
+                                    <input type="text" className="input" value={value}
                                     onChange={(e) => handleTextChange(e.target.value)} required></input>
                             </div>
                         </div>
-                        <div class="input-div one">
-                            <div class="i">
-                                    <i class="fas fa-user"></i>
+                        <div className="input-div one">
+                            <div className="i">
+                                    <i className="fas fa-user"></i>
                             </div>
-                            <div class="div">
+                            <div className="div">
                                     <h5 className={isActiveEmail ? "Active" : ""}>Email</h5>
                                     <input type="email" class="input" value={valueEmail}
                                     onChange={(e) => handleTextChangeEmail(e.target.value)} required></input>
                             </div>
                         </div>
-                        <div class="input-div pass">
-                            <div class="i"> 
-                                    <i class="fas fa-lock"></i>
+                        <div className="input-div pass">
+                            <div className="i"> 
+                                    <i className="fas fa-lock"></i>
                             </div>
-                            <div class="div">
+                            <div className="div">
                                     <h5 className={isActivePass ? "Active" : ""}>Password</h5>
                                     <input type="password" class="input" value={valuePass}
                                     onChange={(e) => handleTextChangePass(e.target.value)} required></input>
@@ -102,8 +121,8 @@ const SignUp = () =>{
                             </ul>
                         </div>
                         <br/>
-                        <a href="#" className="have" m-auto>Already a Member?</a>
-                        <input type="submit" class="btn" value="SignUp"></input>
+                        <a href="/SignIn" className="have" m-auto>Already a Member?</a>
+                        <input type="submit" className="btn" onClick={submitMember} value="SignUp"></input>
                     </form>
                 </div>
             </div>
