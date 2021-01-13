@@ -78,7 +78,7 @@ const TeacherSignIn = () => {
                         <form className="form">
                             <h2 className="title">SignIn</h2>
                             <img src={teacher} alt="Teacher profile pic"></img>
-                            <div class="input-div one">
+                            <div class="input-div one mt-4">
                                 <div class="i">
                                     <i class="fas fa-user"></i>
                                 </div>
@@ -104,8 +104,8 @@ const TeacherSignIn = () => {
                                     {gender === 1 ? "Male" : "Female"}
                                 </button>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" onClick={changeGender} href="#">Male</a></li>
-                                    <li><a className="dropdown-item" onClick={changeGender} href="#">Female</a></li>
+                                    <li><a className="dropdown-item" onClick={changeGender}>Male</a></li>
+                                    <li><a className="dropdown-item" onClick={changeGender}>Female</a></li>
                                 </ul>
                             </div>
                             <br />

@@ -20,7 +20,7 @@ const Mainblog = () => {
                 <div className="row fixed-top">
                     <div className="col-12 navbar navbar-light bg-dark">
                         <div className="">
-                            <Link className="navbar-brand" to="">
+                            <Link className="navbar-brand" >
                                 <img src={icon} width="30" height="30" className="d-inline-block align-top" alt="" />
                                 <label className="ml-2 text-white">hii {user}</label>
                             </Link>

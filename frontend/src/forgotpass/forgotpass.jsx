@@ -37,7 +37,7 @@ const ForgotPassword = (props) => {
 
         return (
             <>
-                <div className="alert alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis.visibility,"background":vis.background }} role="alert">
+                <div className="alert text-center alert-dismissible fade show m-0 px-2" style={{ "visibility": vis.visibility,"background":vis.background }} role="alert">
                     {vis.msg}
                 </div>
                 <div className="signUpPage whole">

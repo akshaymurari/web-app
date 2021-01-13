@@ -3,10 +3,10 @@ from .models import StudentUser,TeacherUser,StudentQuery,StudentQueryAnswer,Teac
 # Register your models here.
 @admin.register(StudentUser)
 class StudentUserAdmin(admin.ModelAdmin):
-    list_display = ['username','email','password','rollno','profile','datetime','gender']
+    list_display = ['username','email','password','rollno','profile','datetime','gender',"lastloginat"]
 @admin.register(TeacherUser)
 class TeacherUserAdmin(admin.ModelAdmin):
-    list_display = ['username','email','password','profile','datetime',"gender"]
+    list_display = ['username','email','password','profile','datetime',"gender","lastloginat"]
 @admin.register(StudentQuery)
 class StudentQueryAdmin(admin.ModelAdmin):
     list_display = ['created_by','query','datetime']

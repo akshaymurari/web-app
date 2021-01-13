@@ -65,7 +65,7 @@ const SignIn = () => {
     }
     return (
         <>
-            <div className="alert alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
+            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
                 invalid details provided
             </div>
             <div className="signUpPage whole">
@@ -75,8 +75,8 @@ const SignIn = () => {
                     <div className="login-content">
                         <form className="form">
                             <h2 className="title">SignIn</h2>
-                            <Avatar gender={gender}></Avatar>
-                            <div class="input-div one">
+                            <Avatar gender={gender} ></Avatar>
+                            <div class="input-div one mt-5">
                                 <div class="i">
                                     <i class="fas fa-user"></i>
                                 </div>
@@ -102,12 +102,12 @@ const SignIn = () => {
                                     {gender === 1 ? "Male" : "Female"}
                                 </button>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" onClick={changeGender} href="#">Male</a></li>
-                                    <li><a className="dropdown-item" onClick={changeGender} href="#">Female</a></li>
+                                    <li><a className="dropdown-item" onClick={changeGender}>Male</a></li>
+                                    <li><a className="dropdown-item" onClick={changeGender}>Female</a></li>
                                 </ul>
                             </div>
                             <br />
-                            <a href="/SignUp" className="have">New to Visual Meet?</a>
+                            <a href="/SignUp" className="have mr-3">New to Visual Meet?</a>
                             <a href="/forgotpass">Forgot Password?</a>
                             <input type="submit" className="btn" onClick={onsubmitlogin} value="Login"></input>
                         </form>

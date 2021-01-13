@@ -76,17 +76,17 @@ const SignUp = () => {
     }
     return (
         <div className="signUpPage wholesignup">
-            <div className="alert alert-danger alert-dismissible fade show m-0 px-2" style={{"visibility": vis}} role="alert">
+            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{"visibility": vis}} role="alert">
                 rollnumber or email already exists
             </div>
             <img className="wave" src={wave} alt="wallpaper"></img>
-            <div className="container">
+            <div className="container"  >
                 <img src={signUp} alt="sigup" className="img"></img>
                 <div className="login-content">
                     <form className="form">
                         <h2 className="title">SignUP</h2>
                         <Avatar gender={gender}></Avatar>
-                        <div className="input-div one">
+                        <div className="input-div one mt-3">
                             <div className="i">
                                 <i className="fas fa-user"></i>
                             </div>
@@ -121,8 +121,8 @@ const SignUp = () => {
                                 {gender === 1 ? "Male" : "Female"}
                             </button>
                             <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" onClick={changeGender} href="#">Male</a></li>
-                                <li><a className="dropdown-item" onClick={changeGender} href="#">Female</a></li>
+                                <li><a className="dropdown-item" onClick={changeGender}>Male</a></li>
+                                <li><a className="dropdown-item" onClick={changeGender}>Female</a></li>
                             </ul>
                         </div>
                         <br />

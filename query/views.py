@@ -58,7 +58,7 @@ class teacherexists(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self,request):
         print(request.data)
-        if TeacherUser.objects.filter(Q(rollno=request.data["rollno"])|Q(email=request.data["rollno"]),password=request.data["password"],gender=request.data["gender"]).exists():
+        if TeacherUser.objects.filter(Q(username=request.data["rollno"])|Q(email=request.data["rollno"]),password=request.data["password"],gender=request.data["gender"]).exists():
             print(request.data)
             return Response({'msg':True})
 
