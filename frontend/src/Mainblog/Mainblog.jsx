@@ -7,7 +7,11 @@ import classlinks from '../assets/classlinks.png'
 import queries from '../assets/query-board.png'
 import event from '../assets/calendar.png'
 import './Mainblog.scss';
+import {useParams} from 'react-router';
+import {useHistory} from 'react-router-dom';
 const Mainblog = () => {
+    const H = useHistory();
+    let {user} = useParams();
     let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE" }, { "image": classlinks, "title": "", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
     { "image": event, "title": "", "info": "EVENTS" }]
     return (
@@ -18,14 +22,14 @@ const Mainblog = () => {
                         <div className="">
                             <Link className="navbar-brand" to="">
                                 <img src={icon} width="30" height="30" className="d-inline-block align-top" alt="" />
-                                <label className="ml-2 text-white">Username</label>
+                                <label className="ml-2 text-white">hii {user}</label>
                             </Link>
                         </div>
                         <label className="ml-auto text-white mt-1 text-center">
                             VISUAL MEET
                                 </label>
                         <div className="ml-auto">
-                            <button className="btn btn-outline-danger mr-2">logout</button>
+                            <button className="btn btn-outline-danger mr-2" onClick={()=>H.push("/")}>logout</button>
                         </div>
                     </div>
                 </div>

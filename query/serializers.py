@@ -7,7 +7,7 @@ class StudentUserSerializer(serializers.ModelSerializer):
 class TeacherUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeacherUser
-        exclude = ['password']
+        fields = '__all__'        
 class TeacherUserSerializerP(serializers.ModelSerializer):
     class Meta:
         model = TeacherUser

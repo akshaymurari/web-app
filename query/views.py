@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets 
 from django.core.mail import send_mail
 import json
+from django.db.models import Q
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 class student(viewsets.ModelViewSet):
@@ -36,11 +37,11 @@ class forgetpassword(APIView):
         data=json.loads(request.body)
         print(data)
         if data['type'] == 'teacher':
-            obj = TeacherUser.objects.get(username=data['username'])
+            obj = TeacherUser.objects.get(email=data['email'])
             serializer = StudentUserSerializerP(obj)
             password = serializer.data['password']
         if data['type'] == 'student':
-            obj = StudentUser.objects.get(username=data['username'])
+            obj = StudentUser.objects.get(email=data['email'])
             serializer = TeacherUserSerializerP(obj)
             print(serializer.data)
             password = serializer.data['password']        
@@ -50,6 +51,14 @@ class studentexists(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self,request):
         print(request.data)
-        if StudentUser.objects.filter(rollno=request.data["rollno"],password=request.data["password"],gender=request.data["gender"]).exists():
+        if StudentUser.objects.filter(Q(rollno=request.data["rollno"])|Q(email=request.data["rollno"]),password=request.data["password"],gender=request.data["gender"]).exists():
             print(request.data)
             return Response({'msg':True})
+class teacherexists(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self,request):
+        print(request.data)
+        if TeacherUser.objects.filter(Q(rollno=request.data["rollno"])|Q(email=request.data["rollno"]),password=request.data["password"],gender=request.data["gender"]).exists():
+            print(request.data)
+            return Response({'msg':True})
+

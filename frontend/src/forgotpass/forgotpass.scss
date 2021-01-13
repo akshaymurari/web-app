@@ -10,15 +10,14 @@ body{
     font-family: 'Poppins', sans-serif;
     // overflow: hidden;
 }
-.wholeteachersignin{
+.whole{
+
 .wave{
 	position: fixed;
 	bottom: 0;
 	left: 0;
-    height: 100%;
+  height: 100%;
 	z-index: -1;
-	// -webkit-transform: scaleX(-1);
-    // transform: scaleX(-1);
 }
 
 .container{
@@ -52,7 +51,6 @@ body{
   position: relative;
   top: 10rem;
   right: 5rem;
-//   padding-bottom: 11rem !important;
 }
 
 form{

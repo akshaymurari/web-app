@@ -1,1 +1,1 @@
-npm i @material-ui/icons @material-ui/core bootstrap react-router-dom --save-dev sass redux react-redux redux-logger redux-thunk --save redux-devtools-extension jquery
+npm i @material-ui/icons @material-ui/core bootstrap react-router-dom --save-dev sass redux react-redux redux-logger redux-thunk --save redux-devtools-extension jquery react-router 
