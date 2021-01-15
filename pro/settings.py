@@ -24,7 +24,7 @@ SECRET_KEY = 'ts_hzt*ksas5ajcjpv*jayfj12wi)!ss51*%vb+4xz-o+@_qsc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+# "192.168.43.235"
 ALLOWED_HOSTS = []
 
 

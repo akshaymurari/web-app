@@ -9,7 +9,7 @@ class StudentUser(models.Model):
     profile = models.ImageField(default='360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg',upload_to='')
     datetime = models.DateTimeField(auto_now_add=True)
     gender = models.IntegerField(default=1)
-    lastloginat = models.DateTimeField(auto_now=True)
+    lastloginat = models.CharField(max_length=30)
 
 class TeacherUser(models.Model):
     username = models.CharField(max_length=30,primary_key=True)
@@ -18,7 +18,7 @@ class TeacherUser(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     profile = models.ImageField(default='360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg',upload_to='')
     gender = models.IntegerField(default=1)
-    lastloginat = models.DateTimeField(auto_now=True)
+    lastloginat = models.CharField(max_length=30)
 
 class StudentQuery(models.Model):
     created_by = models.ForeignKey(StudentUser, on_delete=models.PROTECT)

@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets 
 from django.core.mail import send_mail
 import json
+from mysql import connector
 from django.db.models import Q
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
@@ -53,6 +54,11 @@ class studentexists(APIView):
         print(request.data)
         if StudentUser.objects.filter(Q(rollno=request.data["rollno"])|Q(email=request.data["rollno"]),password=request.data["password"],gender=request.data["gender"]).exists():
             print(request.data)
+            con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
+            cur=con.cursor()
+            cur.execute("update query_studentuser set lastloginat="+repr(request.data["date"])+" where rollno="+repr(request.data["rollno"]))
+            con.commit()
+            con.close()
             return Response({'msg':True})
 class teacherexists(APIView):
     authentication_classes = [TokenAuthentication]
@@ -60,5 +66,10 @@ class teacherexists(APIView):
         print(request.data)
         if TeacherUser.objects.filter(Q(username=request.data["rollno"])|Q(email=request.data["rollno"]),password=request.data["password"],gender=request.data["gender"]).exists():
             print(request.data)
+            con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
+            cur=con.cursor()
+            cur.execute("update query_teacheruser set lastloginat="+repr(request.data["date"])+" where username="+repr(request.data["rollno"]))
+            con.commit()
+            con.close()
             return Response({'msg':True})
 

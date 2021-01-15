@@ -36,7 +36,7 @@ const Mainblog = () => {
                 <div className="container mt-5" >
                     <div className="row ml-sm-5" style={{ "marginTop": "8rem" }}>
                         {/* {data.map((v)=><MainCard image={v.image} title={v.info} info={v.title}/>)} */}
-                        <div className="card MainCard h-100 my-5 mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
+                        <div className="card MainCard h-100 my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={attendance} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props.title}</h5>
@@ -44,7 +44,7 @@ const Mainblog = () => {
                                 <Link to={props.link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
-                        <div className="card MainCard h-100  my-5 mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
+                        <div className="card MainCard h-100  my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={classlinks} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props.title}</h5>

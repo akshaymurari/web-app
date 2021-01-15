@@ -44,8 +44,10 @@ const SignIn = () => {
         }
     }
     const onsubmitlogin = async (e) => {
+        let d = new Date();
+        const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         e.preventDefault();
-        let info = { "gender": gender, "rollno": value, "password": valuePass }
+        let info = { "gender": gender, "rollno": value, "password": valuePass,'date':d_s }
         try {
             const data = await axios({
                 method: "post",

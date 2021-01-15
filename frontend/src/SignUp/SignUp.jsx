@@ -14,7 +14,7 @@ const SignUp = () => {
     const [isActiveEmail, setIsActiveEmail] = useState(false);
     const [valueEmail, setValueEmail] = useState('');
     const H = useHistory();
-    const [vis,setvis] = useState("hidden");
+    const [vis, setvis] = useState("hidden");
     const handleTextChange = (text) => {
         setValue(text);
         if (text !== '') {
@@ -54,8 +54,11 @@ const SignUp = () => {
     }
     const submitMember = async (event) => {
         event.preventDefault();
+        let d = new Date();
+        const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        console.log(d_s);
         console.log(`${gender} ${value} ${valueEmail} ${valuePass}`);
-        const info = { "gender": gender, "username": value, "rollno": value, "email": valueEmail, "password": valuePass }
+        const info = { "gender": gender, "username": value, "rollno": value, "email": valueEmail, "password": valuePass,"lastloginat":d_s }
         try {
             console.log("hiii");
             let data = await axios({
@@ -76,7 +79,7 @@ const SignUp = () => {
     }
     return (
         <div className="signUpPage wholesignup">
-            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{"visibility": vis}} role="alert">
+            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
                 rollnumber or email already exists
             </div>
             <img className="wave" src={wave} alt="wallpaper"></img>

@@ -55,9 +55,11 @@ const TeacherSignUp = () => {
         }
     }
     const submitMember = async (event) => {
+        let d = new Date();
+        const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         event.preventDefault();
         console.log(`${gender} ${value} ${valueEmail} ${valuePass}`);
-        const info = { "gender": gender, "username": value, "email": valueEmail, "password": valuePass }
+        const info = { "gender": gender, "username": value, "email": valueEmail, "password": valuePass,"lastloginat":d_s }
         try {
             console.log("hiii");
             let data = await axios({
