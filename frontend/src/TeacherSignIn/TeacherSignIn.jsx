@@ -111,7 +111,7 @@ const TeacherSignIn = () => {
                                 </ul>
                             </div>
                             <br />
-                            <a href="#" className="have">New to Visual Meet?</a>
+                            <a href="/TeacherSignUp" className="have">New to Visual Meet?</a>
                             <a href="/forgotpassteacher">Forgot Password?</a>
                             <input type="submit" onClick={onsubmitlogin} className="btn" value="Login"></input>
                         </form>
