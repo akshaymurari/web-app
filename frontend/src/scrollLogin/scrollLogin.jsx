@@ -13,11 +13,11 @@ const ScrollLogin = () =>{
     return(
         <>
         <div className="pageTwo"  id="login-center">
-            <Link className="link1" to="/TeacherSignUp">
-                <LoginCard image={teacher} role="Teacher" desc="Please Click on this card to SignUp as a Teacher" checked={checked}></LoginCard>
+            <Link className="link1" to="/TeacherSignIn">
+                <LoginCard image={teacher} role="Teacher" desc="Please Click on this card to SignIn as a Teacher" checked={checked}></LoginCard>
             </Link>
-            <Link to ="/SignUp" className="link1">
-                <LoginCard image={student} role="Student" desc="Please Click on this card to SignUp as a Student" checked={checked}></LoginCard>
+            <Link to ="/SignIn" className="link1">
+                <LoginCard image={student} role="Student" desc="Please Click on this card to SignIn as a Student" checked={checked}></LoginCard>
             </Link>
         </div>
         

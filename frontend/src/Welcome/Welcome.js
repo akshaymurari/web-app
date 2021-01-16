@@ -24,7 +24,6 @@ const Welcome = (props) => {
           <img className="icon" src={icon} alt="Icon of Visual Meet"></img>
           <div >
             <h1 className="title text-center">Welcome to Virtual Meet</h1>
-            {/* <br/> */}
             <p className="tag text-center">Making ClassRooms Interactive</p>
           </div>
         </div>

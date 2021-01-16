@@ -12,7 +12,7 @@ import {useHistory} from 'react-router-dom';
 const Mainblog = () => {
     const H = useHistory();
     let {user} = useParams();
-    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE" }, { "image": classlinks, "title": "", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
+    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
     { "image": event, "title": "", "info": "EVENTS" }]
     return (
         <div>
@@ -39,33 +39,33 @@ const Mainblog = () => {
                         <div className="card MainCard h-100 my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={attendance} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{props.title}</h5>
-                                <p className="card-text">{props.info}</p>
-                                <Link to={props.link} className="btn btn-primary">click to view...</Link>
+                                <h5 className="card-title">{props[0].title}</h5>
+                                <p className="card-text">{props[0].info}</p>
+                                <Link to={props[0].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                         <div className="card MainCard h-100  my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={classlinks} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{props.title}</h5>
-                                <p className="card-text">{props.info}</p>
-                                <Link to={props.link} className="btn btn-primary">click to view...</Link>
+                                <h5 className="card-title">{props[1].title}</h5>
+                                <p className="card-text">{props[1].info}</p>
+                                <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                         <div className="card MainCard h-100  my-5  mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={queries} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{props.title}</h5>
-                                <p className="card-text">{props.info}</p>
-                                <Link to={props.link} className="btn btn-primary">click to view...</Link>
+                                <h5 className="card-title">{props[2].title}</h5>
+                                <p className="card-text">{props[2].info}</p>
+                                <Link to={props[2].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                         <div className="card MainCard h-100  my-5  mx-auto rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={event} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{props.title}</h5>
-                                <p className="card-text">{props.info}</p>
-                                <Link to={props.link} className="btn btn-primary">click to view...</Link>
+                                <h5 className="card-title">{props[3].title}</h5>
+                                <p className="card-text">{props[3].info}</p>
+                                <Link to={props[3].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                     </div>

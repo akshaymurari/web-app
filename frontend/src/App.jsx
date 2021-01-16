@@ -7,7 +7,9 @@ import Welcome from './Welcome/Welcome';
 import TeacherSignIn from './TeacherSignIn/TeacherSignIn.jsx';
 import TeacherSignUp from './TeacherSignUp/TeacherSignUp.jsx';
 import Mainblog from './Mainblog/Mainblog.jsx';
-import ForgotPassword from './forgotpass/forgotpass.jsx'
+import ForgotPassword from './forgotpass/forgotpass.jsx';
+import Attendance from './attendance/attendance.jsx';
+import Teacherblog from './teacherblog/teacherblog.jsx';
 const App = () => {
 
   return (
@@ -21,7 +23,8 @@ const App = () => {
         <Route exact path='/TeacherSignIn' render={()=><TeacherSignIn/>}></Route>
         <Route exact path='/TeacherSignUp' render={()=><TeacherSignUp/>}></Route>
         <Route exact path='/mainblog/:user' component={()=><Mainblog/>}></Route>
-        <Route exact path='/attendance' component={()=><h1>in attendance</h1>}></Route>
+        <Route exact path='/attendance' component={()=><Attendance/>}></Route>
+        <Route exact path='/teacherblog' component={()=><Teacherblog/>}></Route>
       </Switch>
     </>
   )

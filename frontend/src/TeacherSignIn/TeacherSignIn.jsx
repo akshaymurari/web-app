@@ -60,7 +60,7 @@ const TeacherSignIn = () => {
             })
             console.log("hii");
             console.log(data.data);
-            H.push(`/mainblog/${value}`);
+            H.push(`/teacherblog`);
         }
         catch {
             setvis("visible")
