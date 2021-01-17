@@ -20,6 +20,12 @@ class student(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [DjangoModelPermissions]
 
+class addClassLinks(viewsets.ModelViewSet):
+    queryset = links.objects.all()
+    serializer_class = linksSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+
 class teacher(viewsets.ModelViewSet):
     queryset=TeacherUser.objects.all()
     serializer_class = TeacherUserSerializer
@@ -107,3 +113,7 @@ class addAttendance(APIView):
         except:
             return JsonResponse({"msg":False})
         pass
+
+
+
+
