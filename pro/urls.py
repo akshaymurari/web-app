@@ -13,6 +13,7 @@ urlpatterns = [
     path('studentexists/',views.studentexists.as_view()),
     path('teacherexists/',views.teacherexists.as_view()),
     path('classLinkBlog/<str:pk>',views.classLinkBlog.as_view()),
+    path('addAttendance/',views.addAttendance.as_view()),
     path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     path('admin/', admin.site.urls),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

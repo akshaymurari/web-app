@@ -3,7 +3,7 @@ from .models import StudentUser,TeacherUser,StudentQuery,StudentQueryAnswer,Teac
 
 @admin.register(StudentUser)
 class StudentUserAdmin(admin.ModelAdmin):
-    list_display = ['username','email','password','rollno','profile','datetime','gender',"lastloginat"]
+    list_display = ['username','email','password','rollno','profile','datetime','gender',"lastloginat","total_classes_attended","total_classes"]
 
 @admin.register(TeacherUser)
 class TeacherUserAdmin(admin.ModelAdmin):

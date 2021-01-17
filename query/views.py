@@ -88,3 +88,22 @@ class classLinkBlog(APIView):
         obj = links.objects.filter(section=pk,class_day=date)
         serializer = linksSerializer(obj,many=True)
         return JsonResponse(serializer.data,safe=False)
+
+class addAttendance(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self,request):
+        try:
+            con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
+            cur = con.cursor()
+            cur.execute("set sql_safe_updates=0")
+            for i in request.data:
+                # print(i)
+                if i['present']:
+                    cur.execute("update query_studentuser set total_classes_attended=total_classes_attended+1 where rollno="+repr(i["username"]))
+                cur.execute("update query_studentuser set total_classes=total_classes+1 where rollno="+repr(i['username']))
+                con.commit()
+            con.close()
+            return JsonResponse({"msg":True})
+        except:
+            return JsonResponse({"msg":False})
+        pass
