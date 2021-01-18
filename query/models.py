@@ -30,7 +30,7 @@ class links(models.Model):
     posted_at = models.DateTimeField(auto_now_add=True)
     section = models.CharField(max_length=5)
     subject = models.CharField(max_length=20)
-    class_time = models.DateTimeField(auto_now=True)
+    class_time = models.CharField(max_length=10)
     class_day = models.DateField(auto_now=True)
     
 class StudentQuery(models.Model):
@@ -47,3 +47,10 @@ class TeacherQueryAnswer(models.Model):
     posted_by = models.ForeignKey(TeacherUser, on_delete=models.PROTECT)
     answer = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
+
+class classWiseAttendanceStatus(models.Model):
+    username = models.ForeignKey(StudentUser,on_delete=models.PROTECT)
+    class_day = models.DateField(auto_now=True)
+    subject = models.CharField(max_length=20)
+    class_time = models.CharField(max_length=10)
+    get_status = models.CharField(max_length=10,default="attendance not taken")

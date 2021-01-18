@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import StudentUser,TeacherUser,links
-from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer
+from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus
+from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer
 from rest_framework.authentication import SessionAuthentication,TokenAuthentication
 from rest_framework.permissions import DjangoModelPermissions,IsAdminUser
 from django.http import HttpResponse,JsonResponse
@@ -25,6 +25,27 @@ class addClassLinks(viewsets.ModelViewSet):
     serializer_class = linksSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [DjangoModelPermissions]
+    # def destroy(self,request, *args, **kwargs):
+        # try:
+        #     obj = links(posted_by=request.data["posted_by"],class_time=request.data["class_time"])
+        #     obj.delete()
+        #     return JsonResponse({"msg":True})
+        # except:
+        #     return JsonResponse({"msg":False})
+        # pass
+
+class deleteClassLinks(APIView):
+    authentication_classes = [TokenAuthentication]
+    def delete(self,request):
+        try:
+            obj = links.objects.filter(posted_by=request.data["posted_by"],class_time=request.data["class_time"])
+            # print(obj)
+            for i in obj:
+                i.delete()
+            return JsonResponse({"msg":True})
+        except:
+            return JsonResponse({"msg":False})
+        pass
 
 class teacher(viewsets.ModelViewSet):
     queryset=TeacherUser.objects.all()
@@ -98,22 +119,60 @@ class classLinkBlog(APIView):
 class addAttendance(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self,request):
-        try:
+        # try:
             con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
             cur = con.cursor()
             cur.execute("set sql_safe_updates=0")
             for i in request.data:
-                # print(i)
+                print(i)
                 if i['present']:
+                    # print(i)
                     cur.execute("update query_studentuser set total_classes_attended=total_classes_attended+1 where rollno="+repr(i["username"]))
+                    con.commit()
+                    # cur.execute("update query_classwiseattendancestatus set get_status="+repr("present")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
+                    obj = classWiseAttendanceStatus(username_id=i["username"], subject=i["subject"],class_time=i["class_time"],get_status="present")                
+                    obj.save()
+                else:
+                    # cur.execute("update query_classwiseattendancestatus set get_status="+repr("absent")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
+                    obj = classWiseAttendanceStatus(username_id=i["username"], subject=i["subject"],class_time=i["class_time"],get_status="absent")                
+                    obj.save()
                 cur.execute("update query_studentuser set total_classes=total_classes+1 where rollno="+repr(i['username']))
                 con.commit()
             con.close()
             return JsonResponse({"msg":True})
+        # except:
+            # return JsonResponse({"msg":False})
+        # pass
+
+class teacherClassLinks(APIView):
+    authentication_classes = [TokenAuthentication]
+    def get(self,request,pk):
+        try:
+            # con=connector.connect(host="localhost",user="root",password="akshay",database="querydb")
+            # cur = con.cursor()
+            # cur.execute("select * from query_teacheruser")
+            obj = links.objects.filter(posted_by=pk)
+            serializer= linksSerializer(obj,many=True)
+            return JsonResponse(serializer.data,safe=False)
         except:
-            return JsonResponse({"msg":False})
-        pass
+            return JsonResponse({"msg":"error"})
 
+class attendanceBlog(APIView):
+    authentication_classes = [TokenAuthentication]
+    def get(self,request,pk):
+        try:
+            obj = StudentUser.objects.filter(section=pk)
+            serializer = StudentUserSerializer(obj,many=True)
+            return JsonResponse(serializer.data,safe=False)
+        except:
+            return JsonResponse({"msg":"error"})
 
-
-
+class getAttendanceStatus(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self,request):
+        try:
+            obj = classWiseAttendanceStatus.objects.get(username=request.data["username"],class_time=request.data["class_time"])
+            serializer = classWiseAttendanceStatusSerializer(obj)
+            return JsonResponse(serializer.data)
+        except:
+            return JsonResponse({"msg":"error"})

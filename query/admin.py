@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import StudentUser,TeacherUser,StudentQuery,StudentQueryAnswer,TeacherQueryAnswer,links
+from .models import StudentUser,TeacherUser,StudentQuery,StudentQueryAnswer,TeacherQueryAnswer,links,classWiseAttendanceStatus
 
 @admin.register(StudentUser)
 class StudentUserAdmin(admin.ModelAdmin):
-    list_display = ['username','email','password','rollno','profile','datetime','gender',"lastloginat","total_classes_attended","total_classes"]
+    list_display = ['username','email','password','rollno','profile','datetime','gender',"lastloginat","total_classes_attended","total_classes","section"]
 
 @admin.register(TeacherUser)
 class TeacherUserAdmin(admin.ModelAdmin):
@@ -24,3 +24,7 @@ class TeacherQueryAnswerAdmin(admin.ModelAdmin):
 @admin.register(links)
 class LinkAdmin(admin.ModelAdmin):
     list_display = ['posted_by','link','posted_at',"section",'subject','class_time','class_day']
+
+@admin.register(classWiseAttendanceStatus)
+class ClassWiseAttendanceStatusAdmin(admin.ModelAdmin):
+    list_display = ['username','class_day','class_time','subject','get_status']
