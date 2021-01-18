@@ -4,6 +4,7 @@ import signUp from "../assets/signUp.svg";
 import Avatar from "./Avatar/Avatar";
 import wave from "../assets/wave.png";
 import axios from 'axios';
+import {BaseUrl} from '../App.jsx';
 import { useHistory } from 'react-router-dom';
 const SignUp = () => {
     const [gender, setgender] = useState(1);
@@ -63,7 +64,7 @@ const SignUp = () => {
             console.log("hiii");
             let data = await axios({
                 method: 'post',
-                url: 'http://127.0.0.1:8000/studentStore/',
+                url: BaseUrl+'studentStore/',
                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: info,
                 responseType: 'json'

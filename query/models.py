@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 
 class StudentUser(models.Model):
     username = models.CharField(max_length=30,primary_key=True)
@@ -31,7 +31,7 @@ class links(models.Model):
     section = models.CharField(max_length=5)
     subject = models.CharField(max_length=20)
     class_time = models.CharField(max_length=10)
-    class_day = models.DateField(auto_now=True)
+    class_day = models.DateField(default=datetime.now().strftime("%Y-%m-%d"))
     
 class StudentQuery(models.Model):
     created_by = models.ForeignKey(StudentUser, on_delete=models.PROTECT)
@@ -50,7 +50,7 @@ class TeacherQueryAnswer(models.Model):
 
 class classWiseAttendanceStatus(models.Model):
     username = models.ForeignKey(StudentUser,on_delete=models.PROTECT)
-    class_day = models.DateField(auto_now=True)
+    class_day = models.DateField(auto_now_add=True)
     subject = models.CharField(max_length=20)
     class_time = models.CharField(max_length=10)
     get_status = models.CharField(max_length=10,default="attendance not taken")

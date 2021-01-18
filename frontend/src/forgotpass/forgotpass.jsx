@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import signInpic1 from "../assets/signInpic1.svg";
+import {BaseUrl} from '../App.jsx';
 import './forgotpass.scss'
 const ForgotPassword = (props) => {
         const H = useHistory();
@@ -26,7 +27,7 @@ const ForgotPassword = (props) => {
             try{
                 const data = await axios({
                     method:"post",
-                    url:"http://127.0.0.1:8000/forgetpassword/",
+                    url:BaseUrl+"forgetpassword/",
                     headers:{"Authorization":"Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
                     responseType:"json",
                     data:info

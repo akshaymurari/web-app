@@ -5,6 +5,7 @@ import Avatar from "./Avatar/Avatar";
 import wave from "../assets/wave.png";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import {BaseUrl} from '../App.jsx';
 const SignIn = () => {
     const H = useHistory();
     const [gender, setgender] = useState(1);
@@ -51,7 +52,7 @@ const SignIn = () => {
         try {
             const data = await axios({
                 method: "post",
-                url: "http://127.0.0.1:8000/studentexists/",
+                url: BaseUrl+"studentexists/",
                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: info,
                 responseType: 'json'

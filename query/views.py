@@ -151,7 +151,7 @@ class teacherClassLinks(APIView):
             # con=connector.connect(host="localhost",user="root",password="akshay",database="querydb")
             # cur = con.cursor()
             # cur.execute("select * from query_teacheruser")
-            obj = links.objects.filter(posted_by=pk)
+            obj = links.objects.filter(posted_by=pk,class_day=datetime.now().strftime("%Y-%m-%d"))
             serializer= linksSerializer(obj,many=True)
             return JsonResponse(serializer.data,safe=False)
         except:
@@ -171,7 +171,7 @@ class getAttendanceStatus(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self,request):
         try:
-            obj = classWiseAttendanceStatus.objects.get(username=request.data["username"],class_time=request.data["class_time"])
+            obj = classWiseAttendanceStatus.objects.get(username=request.data["username"],class_time=request.data["class_time"],class_day=datetime.now().strftime("%Y-%m-%d"))
             serializer = classWiseAttendanceStatusSerializer(obj)
             return JsonResponse(serializer.data)
         except:

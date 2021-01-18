@@ -5,6 +5,7 @@ import signInpic1 from "../assets/signInpic1.svg";
 import wave from "../assets/wave.png";
 import teacher from "../assets/teacher.png";
 import axios from 'axios';
+import {BaseUrl} from '../App.jsx';
 import { useHistory } from 'react-router-dom'
 const TeacherSignIn = () => {
     const H = useHistory();
@@ -53,7 +54,7 @@ const TeacherSignIn = () => {
         try {
             const data = await axios({
                 method: "post",
-                url: "http://127.0.0.1:8000/teacherexists/",
+                url: BaseUrl+"teacherexists/",
                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: info,
                 responseType: 'json'

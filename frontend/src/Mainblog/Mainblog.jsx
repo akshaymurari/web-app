@@ -45,11 +45,11 @@ const Mainblog = () => {
                             </div>
                         </div>
                         <div className="card MainCard h-100  my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
-                            <img src={classlinks} className="card-img-top img-responsive" alt="..." />
+<img src={classlinks} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{props[1].title}</h5>
                                 <p className="card-text">{props[1].info}</p>
-                                <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
+                                                            <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                         <div className="card MainCard h-100  my-5  mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>

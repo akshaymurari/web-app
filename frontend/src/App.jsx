@@ -11,6 +11,7 @@ import ForgotPassword from './forgotpass/forgotpass.jsx';
 import Attendance from './attendance/attendance.jsx';
 import Teacherblog from './teacherblog/teacherblog.jsx';
 import Resetpass from './resetpass/Resetpass.jsx'
+export const BaseUrl="http://127.0.0.1:8000/";
 const App = () => {
 
   return (

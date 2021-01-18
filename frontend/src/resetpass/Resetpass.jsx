@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import signInpic1 from "../assets/signInpic1.svg";
+import {BaseUrl} from '../App.jsx';
 const Resetpass = (props) => {
     const H = useHistory();
     const [value, setValue] = useState('');
@@ -39,7 +40,7 @@ const Resetpass = (props) => {
         try {
             const data = await axios({
                 method: "patch",
-                url: "http://127.0.0.1:8000/"+props.type+"Store/"+value+"/",
+                url: BaseUrl+props.type+"Store/"+value+"/",
                 headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 responseType: "json",
                 data: info
