@@ -10,6 +10,7 @@ import Mainblog from './Mainblog/Mainblog.jsx';
 import ForgotPassword from './forgotpass/forgotpass.jsx';
 import Attendance from './attendance/attendance.jsx';
 import Teacherblog from './teacherblog/teacherblog.jsx';
+import Resetpass from './resetpass/Resetpass.jsx'
 const App = () => {
 
   return (
@@ -18,6 +19,8 @@ const App = () => {
         <Route exact path="/" component={()=><Welcome/>}></Route>
         <Route exact path="/forgotpass" component={()=><ForgotPassword type="student"/>}></Route>
         <Route exact path="/forgotpassteacher" component={()=><ForgotPassword type="teacher"/>}></Route>
+        <Route exact path="/resetpass" component={()=><Resetpass type="student"/>}></Route>
+        <Route exact path="/resetpassteacher" component={()=><Resetpass type="teacher"/>}></Route>
         <Route exact path='/SignIn' render={()=><SignIn/>}></Route>
         <Route exact path='/SignUp' render={()=><SignUp/>}></Route>
         <Route exact path='/TeacherSignIn' render={()=><TeacherSignIn/>}></Route>
