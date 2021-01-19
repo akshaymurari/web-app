@@ -10,6 +10,14 @@ body{
     font-family: 'Poppins', sans-serif;
     // overflow: hidden;
 }
+loader-spinner{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	// background:#d4e8ca;
+	z-index:9999;
+}
 .wholesignup{
 .wave{
 	position: fixed;

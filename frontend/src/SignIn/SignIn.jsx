@@ -6,7 +6,10 @@ import wave from "../assets/wave.png";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import {BaseUrl} from '../App.jsx';
+import {useSelector,useDispatch} from 'react-redux';
 const SignIn = () => {
+    let state = useSelector(state=>state.signin);
+    let dispatch = useDispatch();
     const H = useHistory();
     const [gender, setgender] = useState(1);
     const [isActive, setIsActive] = useState(false);
@@ -16,7 +19,6 @@ const SignIn = () => {
     const [vis,setvis] = useState("hidden");
     const handleTextChange = (text) => {
         setValue(text);
-
         if (text !== '') {
             setIsActive(true);
         } else {
@@ -49,6 +51,7 @@ const SignIn = () => {
         const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         e.preventDefault();
         let info = { "gender": gender, "rollno": value, "password": valuePass,'date':d_s }
+        dispatch({type:'request_signin'});
         try {
             const data = await axios({
                 method: "post",
@@ -57,11 +60,13 @@ const SignIn = () => {
                 data: info,
                 responseType: 'json'
             })
+            dispatch({type:"success_signin",payload:data.data})
             console.log("hii");
             console.log(data.data);
             H.push(`/mainblog/${value}`);
         }
         catch {
+            dispatch({type:"error_signin",payload:"error"})
             setvis("visible")
             console.log("error");
         }
@@ -70,6 +75,17 @@ const SignIn = () => {
         <>
             <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
                 invalid details provided
+            </div>
+            <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
+                <div className="spinner-grow text-success mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-danger mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
             <div className="signUpPage whole">
                 <img className="wave" src={wave} alt="wallpaper"></img>

@@ -10,6 +10,8 @@ import Mainblog from './Mainblog/Mainblog.jsx';
 import ForgotPassword from './forgotpass/forgotpass.jsx';
 import Attendance from './attendance/attendance.jsx';
 import Teacherblog from './teacherblog/teacherblog.jsx';
+import {Provider} from 'react-redux';
+import Store from './redux/store.jsx';
 import Resetpass from './resetpass/Resetpass.jsx'
 export const BaseUrl="http://127.0.0.1:8000/";
 const App = () => {
@@ -18,17 +20,17 @@ const App = () => {
     <>
       <Switch>
         <Route exact path="/" component={()=><Welcome/>}></Route>
-        <Route exact path="/forgotpass" component={()=><ForgotPassword type="student"/>}></Route>
-        <Route exact path="/forgotpassteacher" component={()=><ForgotPassword type="teacher"/>}></Route>
-        <Route exact path="/resetpass" component={()=><Resetpass type="student"/>}></Route>
-        <Route exact path="/resetpassteacher" component={()=><Resetpass type="teacher"/>}></Route>
-        <Route exact path='/SignIn' render={()=><SignIn/>}></Route>
-        <Route exact path='/SignUp' render={()=><SignUp/>}></Route>
-        <Route exact path='/TeacherSignIn' render={()=><TeacherSignIn/>}></Route>
-        <Route exact path='/TeacherSignUp' render={()=><TeacherSignUp/>}></Route>
-        <Route exact path='/mainblog/:user' component={()=><Mainblog/>}></Route>
-        <Route exact path='/attendance' component={()=><Attendance/>}></Route>
-        <Route exact path='/teacherblog' component={()=><Teacherblog/>}></Route>
+        <Route exact path="/forgotpass" component={()=><Provider store={Store}><ForgotPassword type="student"/></Provider>}></Route>
+        <Route exact path="/forgotpassteacher" component={()=><Provider store={Store}><ForgotPassword type="teacher"/></Provider>}></Route>
+        <Route exact path="/resetpass" component={()=><Provider store={Store}><Resetpass type="student"/></Provider>}></Route>
+        <Route exact path="/resetpassteacher" component={()=><Provider store={Store}><Resetpass type="teacher"/></Provider>}></Route>
+        <Route exact path='/SignIn' render={()=><Provider store={Store}><SignIn/></Provider>}></Route>
+        <Route exact path='/SignUp' render={()=><Provider store={Store}><SignUp/></Provider>}></Route>
+        <Route exact path='/TeacherSignIn' render={()=><Provider store={Store}><TeacherSignIn/></Provider>}></Route>
+        <Route exact path='/TeacherSignUp' render={()=><Provider store={Store}><TeacherSignUp/></Provider>}></Route>
+        <Route exact path='/mainblog/:user' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
+        <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
+        <Route exact path='/teacherblog' component={()=><Provider store={Store}><Teacherblog/></Provider>}></Route>
       </Switch>
     </>
   )

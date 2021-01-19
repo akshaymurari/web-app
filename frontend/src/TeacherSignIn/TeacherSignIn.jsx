@@ -6,8 +6,11 @@ import wave from "../assets/wave.png";
 import teacher from "../assets/teacher.png";
 import axios from 'axios';
 import {BaseUrl} from '../App.jsx';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import {useSelector,useDispatch} from 'react-redux';
 const TeacherSignIn = () => {
+    let state = useSelector(state=>state.teachersignin);
+    let dispatch = useDispatch();
     const H = useHistory();
     const [gender, setgender] = useState(1);
     const [isActive, setIsActive] = useState(false);
@@ -48,9 +51,11 @@ const TeacherSignIn = () => {
     }
     const onsubmitlogin = async (e) => {
         let d = new Date();
-        const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         e.preventDefault();
+        console.log(d_s)
         let info = { "gender": gender, "rollno": value, "password": valuePass,"date":d_s }
+        dispatch({type:"request_teachersignin"});
         try {
             const data = await axios({
                 method: "post",
@@ -59,12 +64,14 @@ const TeacherSignIn = () => {
                 data: info,
                 responseType: 'json'
             })
+            dispatch({type:"success_teachersignin",payload:data.data});
             console.log("hii");
             console.log(data.data);
             H.push(`/teacherblog`);
         }
         catch {
-            setvis("visible")
+            dispatch({type:"error_teachersignin",payload:"error"});
+            setvis("visible");
             console.log("error");
         }
     }
@@ -72,6 +79,17 @@ const TeacherSignIn = () => {
         <>
             <div className="alert alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
                 invalid details provided
+            </div>
+            <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
+                <div className="spinner-grow text-success mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-danger mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
             <div className="signUpPage wholeteachersignin">
                 <img className="wave" src={wave} alt="wallpaper"></img>

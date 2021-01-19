@@ -6,7 +6,10 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import signInpic1 from "../assets/signInpic1.svg";
 import {BaseUrl} from '../App.jsx';
+import {useSelector,useDispatch} from 'react-redux';
 const Resetpass = (props) => {
+    let state=useSelector(state=>state.resetpass);
+    let dispatch = useDispatch();
     const H = useHistory();
     const [value, setValue] = useState('');
     const [isActivePass, setIsActivePass] = useState(false);
@@ -37,6 +40,7 @@ const Resetpass = (props) => {
         console.log(info);
         console.log(value);
         console.log(props.type);
+        dispatch({type:"request_resetpass"});
         try {
             const data = await axios({
                 method: "patch",
@@ -45,6 +49,7 @@ const Resetpass = (props) => {
                 responseType: "json",
                 data: info
             })
+            dispatch({type:"success_resetpass",payload:data.data})
             if (props.type === "student") {
                 H.push('/SignIn');
             }
@@ -56,6 +61,7 @@ const Resetpass = (props) => {
         catch {
             setvis(() => ({ "background": "#e05871", "visibility": "visible", "msg": "invalid email" }));
             console.log("error")
+            dispatch({type:"error_resetpass",payload:"error"});
         }
     }
 
@@ -63,6 +69,17 @@ const Resetpass = (props) => {
         <>
             <div className="alert text-center alert-dismissible fade show m-0 px-2" style={{ "visibility": vis.visibility, "background": vis.background }} role="alert">
                 {vis.msg}
+            </div>
+            <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
+                <div className="spinner-grow text-success mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-danger mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
             <div className="signUpPage whole">
                 <img className="wave" src={wave} alt="wallpaper"></img>
