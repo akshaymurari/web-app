@@ -87,7 +87,7 @@ const SignIn = () => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
-            <div className="signUpPage whole">
+            <div className="signUpPage whole" style={{visibility:(state.loading )? "hidden" : "visible"}}>
                 <img className="wave" src={wave} alt="wallpaper"></img>
                 <div className="container">
                     <img src={signInpic1} alt="sigup" className="img" mb-5 style={{ top: "4rem" }}></img>

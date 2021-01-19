@@ -81,7 +81,7 @@ const Resetpass = (props) => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
-            <div className="signUpPage whole">
+            <div className="signUpPage whole" style={{visibility:(state.loading )? "hidden" : "visible"}}>
                 <img className="wave" src={wave} alt="wallpaper"></img>
                 <h3 className="title text-center">Reset your password</h3>
                 <div className="container">

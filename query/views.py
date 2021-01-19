@@ -14,6 +14,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from rest_framework.filters import SearchFilter,OrderingFilter
 class student(viewsets.ModelViewSet):
     queryset=StudentUser.objects.all()
     serializer_class = StudentUserSerializer
@@ -158,7 +159,11 @@ class teacherClassLinks(APIView):
             return JsonResponse({"msg":"error"})
 
 class attendanceBlog(APIView):
+    queryset=StudentUser.objects.all()
+    serializer_class=StudentUserSerializer
     authentication_classes = [TokenAuthentication]
+    filter_backends =[OrderingFilter,SearchFilter]
+    search_fields =[]
     def get(self,request,pk):
         try:
             obj = StudentUser.objects.filter(section=pk)

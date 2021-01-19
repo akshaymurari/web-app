@@ -94,21 +94,22 @@ const SignUp = () => {
         }
     }
     return (
-        <div className="signUpPage wholesignup">
-            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
+        <>
+        <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
                 rollnumber or email already exists
+        </div>
+        <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
+            <div className="spinner-grow text-success mr-1" role="status">
+                <span className="sr-only">Loading...</span>
             </div>
-            <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
-                <div className="spinner-grow text-success mr-1" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-                <div className="spinner-grow text-danger mr-1" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-                <div className="spinner-grow text-warning mr-1" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
+            <div className="spinner-grow text-danger mr-1" role="status">
+                <span className="sr-only">Loading...</span>
             </div>
+            <div className="spinner-grow text-warning mr-1" role="status">
+                <span className="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div className="signUpPage wholesignup" style={{visibility:(state.loading )? "hidden" : "visible"}}>
             <img className="wave" src={wave} alt="wallpaper"></img>
             <div className="container"  >
                 <img src={signUp} alt="sigup" className="img"></img>
@@ -172,6 +173,7 @@ const SignUp = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

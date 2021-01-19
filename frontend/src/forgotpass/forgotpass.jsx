@@ -10,7 +10,7 @@ import { BaseUrl } from '../App.jsx';
 import './forgotpass.scss';
 const ForgotPassword = (props) => {
     const state = useSelector(state => state.forgetpass);
-    console.log(state);
+    // console.log(state);
     const dispatch = useDispatch();
     const H = useHistory();
     const [value, setValue] = useState('');
@@ -69,7 +69,7 @@ const ForgotPassword = (props) => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
-            <div className="signUpPage whole">
+            <div className="signUpPage whole" style={{visibility:(state.loading )? "hidden" : "visible"}}>
                 <img className="wave" src={wave} alt="wallpaper"></img>
                 <h3 className="title text-center">Password will be send to your mail</h3>
                 <div className="container">
