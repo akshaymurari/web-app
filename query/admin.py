@@ -27,4 +27,4 @@ class LinkAdmin(admin.ModelAdmin):
 
 @admin.register(classWiseAttendanceStatus)
 class ClassWiseAttendanceStatusAdmin(admin.ModelAdmin):
-    list_display = ['username','class_day','class_time','subject','get_status']
+    list_display = ['username','class_day','class_time','subject','get_status','section']

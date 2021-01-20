@@ -68,7 +68,7 @@ const SignUp = () => {
     const submitMember = async (event) => {
         event.preventDefault();
         let d = new Date();
-        const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         console.log(d_s);
         console.log(`${gender} ${value} ${valueEmail} ${valuePass}`);
         const info = { "gender": gender,"section":section, "username": value, "rollno": value, "email": valueEmail, "password": valuePass,"lastloginat":d_s }

@@ -12,7 +12,8 @@ import Attendance from './attendance/attendance.jsx';
 import Teacherblog from './teacherblog/teacherblog.jsx';
 import {Provider} from 'react-redux';
 import Store from './redux/store.jsx';
-import Resetpass from './resetpass/Resetpass.jsx'
+import Resetpass from './resetpass/Resetpass.jsx';
+import Takeattendance from './takeattendance/takeattendance.jsx';
 export const BaseUrl="http://127.0.0.1:8000/";
 const App = () => {
 
@@ -31,6 +32,8 @@ const App = () => {
         <Route exact path='/mainblog/:user' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
         <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
         <Route exact path='/teacherblog' component={()=><Provider store={Store}><Teacherblog/></Provider>}></Route>
+        <Route exact path='/takeattendance/:subject/:section/:time' component={()=><Provider store={Store}><Takeattendance/></Provider>}></Route>
+        <Route exact path='/error' component={()=><h1>Error</h1>}/>
       </Switch>
     </>
   )

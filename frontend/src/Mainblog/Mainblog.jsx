@@ -16,7 +16,7 @@ const Mainblog = () => {
     { "image": event, "title": "", "info": "EVENTS" }]
     return (
         <div>
-            <div className="container-fluid" style={{ "background": "#eaf2ef" }}>
+            <div className="container-fluid" style={{ "background": "#d7dff7" }}>
                 <div className="row fixed-top">
                     <div className="col-12 navbar navbar-light bg-dark">
                         <div className="">

@@ -12,7 +12,7 @@ urlpatterns = [
     path('',include(router.urls)),
     path('forgetpassword/',views.forgetpassword.as_view()),
     path('teacherClassLinks/<str:pk>',views.teacherClassLinks.as_view()),
-    path('attendanceBlog/<str:pk>',views.attendanceBlog.as_view()),
+    path('attendanceBlog/',views.attendanceBlog.as_view()),
     path('studentexists/',views.studentexists.as_view()),
     path('teacherexists/',views.teacherexists.as_view()),
     path('classLinkBlog/<str:pk>',views.classLinkBlog.as_view()),

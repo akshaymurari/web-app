@@ -8,7 +8,9 @@ let red=combineReducers({
     resetpass:Reducer('resetpass'),
     signin:Reducer('signin'),
     signup:Reducer('signup'),
-    teachersignin:Reducer('teachersignin')
+    teachersignin:Reducer('teachersignin'),
+    takeattendance:Reducer('takeattendance'),
+    uploadattendance:Reducer('uploadattendance')
 })
 let Store=createStore(red,composeWithDevTools(applyMiddleware(logger,thunk))) 
 export default Store;

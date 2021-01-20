@@ -131,11 +131,11 @@ class addAttendance(APIView):
                     cur.execute("update query_studentuser set total_classes_attended=total_classes_attended+1 where rollno="+repr(i["username"]))
                     con.commit()
                     # cur.execute("update query_classwiseattendancestatus set get_status="+repr("present")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
-                    obj = classWiseAttendanceStatus(username_id=i["username"], subject=i["subject"],class_time=i["class_time"],get_status="present")                
+                    obj = classWiseAttendanceStatus(username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"],get_status="present")                
                     obj.save()
                 else:
                     # cur.execute("update query_classwiseattendancestatus set get_status="+repr("absent")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
-                    obj = classWiseAttendanceStatus(username_id=i["username"], subject=i["subject"],class_time=i["class_time"],get_status="absent")                
+                    obj = classWiseAttendanceStatus(username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"],get_status="absent")                
                     obj.save()
                 cur.execute("update query_studentuser set total_classes=total_classes+1 where rollno="+repr(i['username']))
                 con.commit()
@@ -163,14 +163,28 @@ class attendanceBlog(APIView):
     serializer_class=StudentUserSerializer
     authentication_classes = [TokenAuthentication]
     filter_backends =[OrderingFilter,SearchFilter]
-    search_fields =[]
-    def get(self,request,pk):
-        try:
-            obj = StudentUser.objects.filter(section=pk)
+    search_fields =['section','username']
+    def get_attendance(self,subject,username):
+        # print("hii",subject,username)
+        obj = classWiseAttendanceStatus.objects.filter(subject=subject,username_id=username,get_status="present")
+        # print(len(obj))
+        return len(obj)
+    def post(self,request):
+        # try:
+            obj = StudentUser.objects.filter(section=request.data["section"])
             serializer = StudentUserSerializer(obj,many=True)
-            return JsonResponse(serializer.data,safe=False)
-        except:
-            return JsonResponse({"msg":"error"})
+            total_classes = classWiseAttendanceStatus.objects.filter(section=request.data["section"],subject=request.data["subject"])
+            ans=[]
+            print(serializer.data)
+            for i in serializer.data:
+                i['total_classes_attended']=self.get_attendance(request.data["subject"],i["username"])
+                i['total_classes']=len(total_classes)//len(obj)
+                i['id']=i['rollno']
+                ans.append(dict(i))
+            print(ans)
+            return JsonResponse(ans,safe=False)
+        # except:
+            # return JsonResponse({"msg":"error"})
 
 class getAttendanceStatus(APIView):
     authentication_classes = [TokenAuthentication]

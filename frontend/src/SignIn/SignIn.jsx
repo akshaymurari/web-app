@@ -48,7 +48,7 @@ const SignIn = () => {
     }
     const onsubmitlogin = async (e) => {
         let d = new Date();
-        const d_s=d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         e.preventDefault();
         let info = { "gender": gender, "rollno": value, "password": valuePass,'date':d_s }
         dispatch({type:'request_signin'});
