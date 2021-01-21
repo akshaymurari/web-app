@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import "./TeacherSignIn.scss";
 // import '../SignIn/SignIn'
 import signInpic1 from "../assets/signInpic1.svg";
@@ -8,6 +8,7 @@ import axios from 'axios';
 import {BaseUrl} from '../App.jsx';
 import { useHistory } from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
+import {setUSERNAME} from '../App.jsx';
 const TeacherSignIn = () => {
     let state = useSelector(state=>state.teachersignin);
     let dispatch = useDispatch();
@@ -65,8 +66,7 @@ const TeacherSignIn = () => {
                 responseType: 'json'
             })
             dispatch({type:"success_teachersignin",payload:data.data});
-            console.log("hii");
-            console.log(data.data);
+            setUSERNAME(value);
             H.push(`/teacherblog`);
         }
         catch {

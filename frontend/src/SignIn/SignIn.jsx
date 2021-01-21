@@ -5,7 +5,7 @@ import Avatar from "./Avatar/Avatar";
 import wave from "../assets/wave.png";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import {BaseUrl} from '../App.jsx';
+import {BaseUrl,setUSERNAME,getUSERNAME} from '../App.jsx';
 import {useSelector,useDispatch} from 'react-redux';
 const SignIn = () => {
     let state = useSelector(state=>state.signin);
@@ -60,10 +60,9 @@ const SignIn = () => {
                 data: info,
                 responseType: 'json'
             })
-            dispatch({type:"success_signin",payload:data.data})
-            console.log("hii");
-            console.log(data.data);
-            H.push(`/mainblog/${value}`);
+            dispatch({type:"success_signin",payload:data.data});
+            setUSERNAME(value);
+            H.push(`/mainblog`);
         }
         catch {
             dispatch({type:"error_signin",payload:"error"})

@@ -16,8 +16,11 @@ import Resetpass from './resetpass/Resetpass.jsx';
 import Takeattendance from './takeattendance/takeattendance.jsx';
 import ClassLinks from './ClassLinks/ClassLinks.jsx';
 export const BaseUrl="http://127.0.0.1:8000/";
+var USERNAME;
+const getUSERNAME=()=>{return USERNAME};
+const setUSERNAME=(k)=>{USERNAME=k};
+export {getUSERNAME,setUSERNAME};
 const App = () => {
-
   return (
     <>
       <Switch>
@@ -30,7 +33,7 @@ const App = () => {
         <Route exact path='/SignUp' render={()=><Provider store={Store}><SignUp/></Provider>}></Route>
         <Route exact path='/TeacherSignIn' render={()=><Provider store={Store}><TeacherSignIn/></Provider>}></Route>
         <Route exact path='/TeacherSignUp' render={()=><Provider store={Store}><TeacherSignUp/></Provider>}></Route>
-        <Route exact path='/mainblog/:user' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
+        <Route exact path='/mainblog' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
         <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
         <Route exact path='/teacherblog' component={()=><Provider store={Store}><Teacherblog/></Provider>}></Route>
         <Route exact path='/ClassLinks' component={()=><Provider store={Store}><ClassLinks/></Provider>}></Route>
