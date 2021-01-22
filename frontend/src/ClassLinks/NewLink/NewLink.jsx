@@ -30,11 +30,22 @@ class NewLink extends Component {
       descState,
     });
   };
-
+  onsectionStateChange: Function = (sectionState) => {
+    this.setState({
+      sectionState,
+    });
+  }
+  oneditorStateChange: Function =(editorState) => {
+    this.setState({
+      editorState,
+    });
+  }
   addClassLink: Function = () => {
     const newLink = {
       title: draftToHtml(convertToRaw(this.state.titleState.getCurrentContent())),
-      content: draftToHtml(convertToRaw(this.state.descState.getCurrentContent()))
+      content: draftToHtml(convertToRaw(this.state.descState.getCurrentContent())),
+      section: draftToHtml(convertToRaw(this.state.sectionState.getCurrentContent())),
+      date: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())),
     }
     console.log(newLink);
     this.props.addLink(newLink)
@@ -61,7 +72,8 @@ class NewLink extends Component {
             toolbar={
               {
                 fontSize: {
-                  options: [16, 18, 24, 30]
+                  options: [16, 18, 24, 30],
+                  defaultSize:14
                 }
               }
             }
@@ -120,6 +132,44 @@ class NewLink extends Component {
               }
             }
             placeholder="Description"
+            required
+          />
+          <Editor
+            style={{border: "2px red solid",
+            transform: this.props.show ? "translateY(10%)":"none", transition: "all 1.3s ease"}}
+            editorState={this.state.sectionState}
+            wrapperClassName="newWrapper"
+            editorClassName="newEditor2"
+            toolbarClassName="newToolBar"
+            onEditorStateChange={this.onsectionStateChange}
+            toolbar={
+              {
+                fontSize: {
+                  options: [8, 9, 10, 11, 12, 14, 16, 18],
+                  defaultSize: 14,
+                }
+              }
+            }
+            placeholder="section"
+            required
+          />
+          <Editor
+            style={{border: "2px red solid",
+            transform: this.props.show ? "translateY(10%)":"none", transition: "all 1.3s ease"}}
+            editorState={this.state.editorState}
+            wrapperClassName="newWrapper"
+            editorClassName="newEditor2"
+            toolbarClassName="newToolBar"
+            onEditorStateChange={this.oneditorStateChange}
+            toolbar={
+              {
+                fontSize: {
+                  options: [8, 9, 10, 11, 12, 14, 16, 18],
+                  defaultSize: 14,
+                }
+              }
+            }
+            placeholder="date(YYYY:MM:DD HH-MM-SS in this format)"
             required
           />
           <div style={{backgroundColor: "#00af91",

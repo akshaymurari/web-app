@@ -40,10 +40,13 @@ function ClassLinks(props) {
     const addClassLink = (newLink) => {
         const tempLink = {
             title: "<h1>ahsdjsadhk</h1>",
-            content: "<p>Heloasdasd</p>"
+            content: "<p>Heloasdasd</p>",
+            section:"<p>Heloasdasd</p>",
+            date:"<p>Heloasdasd</p>"
         }
         console.log(newLink);
         console.log(classLink);
+        
         setclassLink((prevData)=>{
             return [...prevData, newLink]
         })
@@ -54,10 +57,10 @@ function ClassLinks(props) {
         console.log(id);
         setclassLink((prevData) => 
             prevData.filter((curData, idx) => {
-                if(idx===id){
+                if(idx===id["id"]){
                     console.log("yo!")
                 }
-                return idx!==id;
+                return idx!==id["id"];
             })
         )
     }
@@ -74,6 +77,8 @@ function ClassLinks(props) {
                             id={idx}
                             title={val.title}
                             content={val.content}
+                            section={val.section}
+                            date={val.date}
                             deleteItem = {onDelete}
                         ></PostedLinks>
                     )

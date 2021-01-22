@@ -16,10 +16,6 @@ import Resetpass from './resetpass/Resetpass.jsx';
 import Takeattendance from './takeattendance/takeattendance.jsx';
 import ClassLinks from './ClassLinks/ClassLinks.jsx';
 export const BaseUrl="http://127.0.0.1:8000/";
-var USERNAME;
-const getUSERNAME=()=>{return USERNAME};
-const setUSERNAME=(k)=>{USERNAME=k};
-export {getUSERNAME,setUSERNAME};
 const App = () => {
   return (
     <>

@@ -6,7 +6,6 @@ import wave from "../assets/wave.png";
 import axios from 'axios';
 import {BaseUrl} from '../App.jsx';
 import { useHistory } from 'react-router-dom';
-import {getUSERNAME,setUSERNAME} from '../App.jsx';
 import {useSelector,useDispatch} from 'react-redux';
 const SignUp = () => {
     let state=useSelector(state=>state.signup);
@@ -85,7 +84,7 @@ const SignUp = () => {
             });
             dispatch({type:"success_signup",payload:data.data});
             console.log(value);
-            setUSERNAME(value);
+            localStorage.setItem('value',JSON.stringify({'rollno':value,'password':valuePass,'gender':gender}))
             const fun = () => H.push('/mainblog');
             fun();
         }

@@ -1,5 +1,6 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 import icon from '../assets/icon.png';
 import MainCard from './MainCard';
 import attendance from '../assets/attendance.jpg'
@@ -7,33 +8,67 @@ import classlinks from '../assets/classlinks.png'
 import queries from '../assets/query-board.png'
 import event from '../assets/calendar.png'
 import './Mainblog.scss';
-import {getUSERNAME} from '../App.jsx';
+import {BaseUrl} from '../App.jsx';
 import {useParams} from 'react-router';
 import {useHistory} from 'react-router-dom';
+import {useSelector,useDispatch} from 'react-redux';
 const Mainblog = () => {
+    console.log(localStorage.getItem('value'))
+    let state = useSelector(state=>state.signin);
+    let dispatch = useDispatch();
     const H = useHistory();
-    console.log(getUSERNAME());
-    if(getUSERNAME()===undefined){
-        H.push('/error');
-    }
+    useEffect(async ()=>{
+        let d = new Date();
+        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        // e.preventDefault();
+        const value=JSON.parse(localStorage.getItem('value'));
+        let info = {...value,'date':d_s };
+        dispatch({type:'request_signin'});
+        try {
+            const data = await axios({
+                method: "post",
+                url: BaseUrl+"studentexists/",
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: info,
+                responseType: 'json'
+            })
+            dispatch({type:"success_signin",payload:data.data});
+            H.push(`/mainblog`);
+        }
+        catch {
+            dispatch({type:"error_signin",payload:"error"})
+            H.push('/error');
+        }
+    },[])
     let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
     { "image": event, "title": "", "info": "EVENTS" }]
     return (
         <div>
-            <div className="container-fluid" style={{ "background": "#d7dff7" }}>
+            <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
+                <div className="spinner-grow text-success mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-danger mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div className="container-fluid" style={{ "background": "#d7dff7",visibility:(state.loading )? "hidden" : "visible" }}>
                 <div className="row fixed-top">
                     <div className="col-12 navbar navbar-light bg-dark">
                         <div className="">
                             <Link className="navbar-brand" >
                                 <img src={icon} width="30" height="30" className="d-inline-block align-top" alt="" />
-                                <label className="ml-2 text-white">hii {getUSERNAME()}</label>
+                                <label className="ml-2 text-white">hii {JSON.parse(localStorage.getItem('value')).rollno}</label>
                             </Link>
                         </div>
                         <label className="ml-auto text-white mt-1 text-center">
                             VISUAL MEET
                                 </label>
                         <div className="ml-auto">
-                            <button className="btn btn-outline-danger mr-2" onClick={()=>H.push("/")}>logout</button>
+                            <button className="btn btn-outline-danger mr-2" onClick={()=>{localStorage.removeItem('value');H.push("/");}}>logout</button>
                         </div>
                     </div>
                 </div>

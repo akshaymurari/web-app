@@ -52,6 +52,8 @@ function PostedLinks(props) {
     const classes = useStyles(props);
     const title = props.title;
     const content = props.content;
+    const section = props.section;
+    const date = props.date;
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -63,16 +65,19 @@ function PostedLinks(props) {
     };
 
     const deleteNote = () => {
-        props.deleteItem(props.id);
+        props.deleteItem({id:props.id,subject:props.title,link:props.content,date:props.date});
     };
 
     return(
         <div className="linkCard m-2 p-3">
-            <Markup content={"<h1>"+title+"</h1>"}/>
-            <br/>
-            <Markup content={content}/>
-            <br/>
-            <br/>
+            <Markup content={"subject :"+title+""}/>
+            {/* <br/> */}
+            <Markup content={"links : "+content}/>
+            {/* <br/> */}
+            <Markup content={"section :"+section}/>
+            {/* <br/> */}
+            <Markup content={"date : "+date}/>
+            {/* <br/> */}
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} 
                 style={{border: "none",
                     outline:"none"}} className={classes.linkMenuButton}>
