@@ -26,6 +26,29 @@ import { BaseUrl } from '../App.jsx';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 const Takeattendance = () => {
+    useEffect(async ()=>{
+        let d = new Date();
+        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        // e.preventDefault();
+        const value=JSON.parse(localStorage.getItem('value'));
+        let info = {...value,'date':d_s };
+        dispatch({type:'request_teachersignin'});
+        try {
+            const data = await axios({
+                method: "post",
+                url: BaseUrl+"teacherexists/",
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: info,
+                responseType: 'json'
+            })
+            dispatch({type:"success_teachersignin",payload:data.data});
+            // H.push(`/takeattendance`);
+        }
+        catch {
+            dispatch({type:"error_teachersignin",payload:"error"})
+            H.push('/error');
+        }
+    },[]);
     let [rows, setrows] = useState([]);
     const H = useHistory();
     const { subject, section ,time } = useParams();
@@ -64,7 +87,7 @@ const Takeattendance = () => {
                 data:rows
             })
             dispatch({"type":"success_uploadattendance","payload":data.data});
-            H.push('/teacherblog');
+            H.push('/ClassBlog');
         }
         catch{
             dispatch({"type":"error_uploadattendance","payload":"error"});

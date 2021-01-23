@@ -10,7 +10,10 @@ let red=combineReducers({
     signup:Reducer('signup'),
     teachersignin:Reducer('teachersignin'),
     takeattendance:Reducer('takeattendance'),
-    uploadattendance:Reducer('uploadattendance')
+    uploadattendance:Reducer('uploadattendance'),
+    classblog:Reducer('classblog'),
+    getclassblog:Reducer('getclassblog'),
+    deletenotes:Reducer('deletenotes')
 })
 let Store=createStore(red,composeWithDevTools(applyMiddleware(logger,thunk))) 
 export default Store;

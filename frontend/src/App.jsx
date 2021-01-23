@@ -15,6 +15,7 @@ import Store from './redux/store.jsx';
 import Resetpass from './resetpass/Resetpass.jsx';
 import Takeattendance from './takeattendance/takeattendance.jsx';
 import ClassLinks from './ClassLinks/ClassLinks.jsx';
+import ClassBlog from './ClassBlog/ClassBlog.jsx';
 export const BaseUrl="http://127.0.0.1:8000/";
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
         <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
         <Route exact path='/teacherblog' component={()=><Provider store={Store}><Teacherblog/></Provider>}></Route>
         <Route exact path='/ClassLinks' component={()=><Provider store={Store}><ClassLinks/></Provider>}></Route>
+        <Route exact path='/ClassBlog' component={()=><Provider store={Store}><ClassBlog/></Provider>}></Route>
         <Route exact path='/takeattendance/:subject/:section/:time' component={()=><Provider store={Store}><Takeattendance/></Provider>}></Route>
         <Route exact path='/error' component={()=><h1>Error</h1>}/>
       </Switch>

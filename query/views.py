@@ -21,6 +21,16 @@ class student(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [DjangoModelPermissions]
 
+class filterClassLinkBlogByUsername(APIView):
+    authentication_classes=[TokenAuthentication]
+    def get(self,request,pk):
+        date=datetime.now().strftime("%Y-%m-%d")
+        obj = links.objects.filter(posted_by_id=pk,class_day=date)
+        serializer = linksSerializer(obj,many=True)
+        print(serializer.data)
+        return JsonResponse(serializer.data,safe=False)
+        pass
+
 class addClassLinks(viewsets.ModelViewSet):
     queryset = links.objects.all()
     serializer_class = linksSerializer
@@ -39,10 +49,9 @@ class deleteClassLinks(APIView):
     authentication_classes = [TokenAuthentication]
     def delete(self,request):
         try:
-            obj = links.objects.filter(posted_by=request.data["posted_by"],class_time=request.data["class_time"])
-            # print(obj)
-            for i in obj:
-                i.delete()
+            print("hii")
+            obj = links.objects.get(id=request.data["id"])
+            obj.delete()
             return JsonResponse({"msg":True})
         except:
             return JsonResponse({"msg":False})
@@ -106,13 +115,20 @@ class teacherexists(APIView):
 
 class classLinkBlog(APIView):
     authentication_classes = [TokenAuthentication]
+    def post(self, request):
+        day=request.data["date"].split('T')[0]
+        obj = links(posted_by_id=request.data["posted_by"],class_time=request.data["date"],subject=request.data["subject"],section=request.data["section"],link=request.data["link"],class_day=day)
+        obj.save()
+        return JsonResponse({'msg':True})
+        pass
     def get(self,request,pk):
-        date=datetime.now().strftime("%Y-%m-%d")
+        date=datetime.now().strftime("%Y-%m-%dT%H:%M")
         # con=connector.connect(host="localhost",user="root",password="akshay",database="querydb")
         # cur = con.cursor()
         # print("select link,posted_at,subject,posted_by_id,class_time from query_links where section="+repr(pk)+" and class_day="+repr(date))
         # cur.execute("select link,posted_at,subject,posted_by_id,class_time from query_links where section="+repr(pk)+" and class_day="+repr(date))
         # data = cur.fetchall()
+        print("hiiiiiiiiiiiiiiiiiiiiiiii")
         obj = links.objects.filter(section=pk,class_day=date)
         serializer = linksSerializer(obj,many=True)
         return JsonResponse(serializer.data,safe=False)

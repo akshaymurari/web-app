@@ -1,6 +1,5 @@
 import React, { useState,useEffect } from 'react';
 import "./TeacherSignIn.scss";
-// import '../SignIn/SignIn'
 import signInpic1 from "../assets/signInpic1.svg";
 import wave from "../assets/wave.png";
 import teacher from "../assets/teacher.png";
@@ -66,7 +65,7 @@ const TeacherSignIn = () => {
             })
             dispatch({type:"success_teachersignin",payload:data.data});
             localStorage.setItem('value',JSON.stringify({'rollno':value,'password':valuePass,'gender':gender}));
-            H.push(`/teacherblog`);
+            H.push(`/ClassBlog`);
         }
         catch {
             dispatch({type:"error_teachersignin",payload:"error"});
