@@ -11,8 +11,8 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import './takeattendance.scss';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import './takeattendance.scss';
 import SearchIcon from '@material-ui/icons/Search';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -76,6 +76,7 @@ const Takeattendance = () => {
             v["section"]=section;
             v["subject"]=subject;
             v["class_time"]=time;
+            v["posted_by"]=JSON.parse(localStorage.getItem('value')).rollno;
         })
         console.log(rows);
         try{
@@ -84,7 +85,7 @@ const Takeattendance = () => {
                 url:BaseUrl+"addAttendance/",
                 headers:{"Authorization":"Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
                 responseType:"application/json",
-                data:rows
+                data:{"rows":rows,"teacheruser":JSON.parse(localStorage.getItem("value")).rollno}
             })
             dispatch({"type":"success_uploadattendance","payload":data.data});
             H.push('/ClassBlog');

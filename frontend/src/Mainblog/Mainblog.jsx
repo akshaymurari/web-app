@@ -40,7 +40,7 @@ const Mainblog = () => {
             H.push('/error');
         }
     },[])
-    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
+    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "","link":"/StudentClassBlog", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
     { "image": event, "title": "", "info": "EVENTS" }]
     return (
         <div>
@@ -88,7 +88,7 @@ const Mainblog = () => {
                             <div className="card-body">
                                 <h5 className="card-title">{props[1].title}</h5>
                                 <p className="card-text">{props[1].info}</p>
-                                                            <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
+                                <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                         <div className="card MainCard h-100  my-5  mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>

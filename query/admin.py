@@ -23,8 +23,8 @@ class TeacherQueryAnswerAdmin(admin.ModelAdmin):
 
 @admin.register(links)
 class LinkAdmin(admin.ModelAdmin):
-    list_display = ['posted_by','link','posted_at',"section",'subject','class_time','class_day']
+    list_display = ['posted_by','link','posted_at',"section",'subject','class_time','class_day','attendance_taken']
 
 @admin.register(classWiseAttendanceStatus)
 class ClassWiseAttendanceStatusAdmin(admin.ModelAdmin):
-    list_display = ['username','class_day','class_time','subject','get_status','section']
+    list_display = ['username','class_day','class_time','subject','get_status','section','posted_by']

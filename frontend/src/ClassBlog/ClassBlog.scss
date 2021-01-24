@@ -15,9 +15,14 @@
     flex-wrap: wrap;
     justify-content:space-evenly;
 }
+@media (max-width:581px){
+    #circleicon{
+        transform:translateX(-100%);
+    }
+}
 .boxx:hover{
-    box-shadow:  0rem 0rem 3rem 0rem #5f60fb !important;
+    box-shadow:  0rem 0rem 1.5rem 0rem #5f60fb !important;
 }
 .Notee:hover{
-    box-shadow:  0rem 0rem 3rem 0rem #5f60fb !important;
+    box-shadow:  0rem 0rem 1.5rem 0rem #5f60fb !important;
 }

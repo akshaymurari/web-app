@@ -17,6 +17,7 @@ urlpatterns = [
     path('studentexists/',views.studentexists.as_view()),
     path('teacherexists/',views.teacherexists.as_view()),
     path('classLinkBlog/<str:pk>',views.classLinkBlog.as_view()),
+    path('onSearchLinkBlog/',views.onSearchLinkBlog.as_view()),
     path('classLinkBlog/',views.classLinkBlog.as_view()),
     path('addAttendance/',views.addAttendance.as_view()),
     path('getAttendanceStatus/',views.getAttendanceStatus.as_view()),

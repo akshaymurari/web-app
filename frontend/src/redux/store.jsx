@@ -13,7 +13,9 @@ let red=combineReducers({
     uploadattendance:Reducer('uploadattendance'),
     classblog:Reducer('classblog'),
     getclassblog:Reducer('getclassblog'),
-    deletenotes:Reducer('deletenotes')
+    deletenotes:Reducer('deletenotes'),
+    StudentClassBlog:Reducer('StudentClassBlog'),
+    onSearchLinks:Reducer('onSearchLinks'),
 })
 let Store=createStore(red,composeWithDevTools(applyMiddleware(logger,thunk))) 
 export default Store;

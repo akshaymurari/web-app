@@ -83,7 +83,7 @@ const Notes = (props) => {
                     ))}
                 </Menu>
                 <h3>{props.subject}</h3>
-                <p>{props.link}</p>
+                <p><a href={props.link} target="_blank">{props.link}</a></p>
                 <p>{props.section}</p>
                 <p>{props.date}</p>
             </div>

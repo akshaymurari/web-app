@@ -6,7 +6,7 @@ from rest_framework.permissions import DjangoModelPermissions,IsAdminUser
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import viewsets 
+from rest_framework import serializers, viewsets 
 from django.core.mail import send_mail
 import json
 from mysql import connector
@@ -25,7 +25,7 @@ class filterClassLinkBlogByUsername(APIView):
     authentication_classes=[TokenAuthentication]
     def get(self,request,pk):
         date=datetime.now().strftime("%Y-%m-%d")
-        obj = links.objects.filter(posted_by_id=pk,class_day=date)
+        obj = links.objects.filter(posted_by_id=pk,class_day=date,attendance_taken=0)
         serializer = linksSerializer(obj,many=True)
         print(serializer.data)
         return JsonResponse(serializer.data,safe=False)
@@ -113,12 +113,26 @@ class teacherexists(APIView):
             con.close()
             return Response({'msg':True})
 
+class onSearchLinkBlog(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self,request):
+        print(request.data)
+        obj = classWiseAttendanceStatus.objects.filter(username_id=request.data["username"],subject=request.data["subject"])
+        serializer = classWiseAttendanceStatusSerializer(obj,many=True)
+        return JsonResponse(serializer.data,safe=False)
+        pass
+
 class classLinkBlog(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self, request):
         day=request.data["date"].split('T')[0]
         obj = links(posted_by_id=request.data["posted_by"],class_time=request.data["date"],subject=request.data["subject"],section=request.data["section"],link=request.data["link"],class_day=day)
         obj.save()
+        obj=StudentUser.objects.filter(section=request.data["section"])
+        for i in obj:
+            serializer=StudentUserSerializer(i)
+            obj1=classWiseAttendanceStatus(posted_by_id=request.data["posted_by"],username_id=serializer.data["username"],get_status="attendance_not_taken",class_time=request.data["date"],subject=request.data["subject"],section=request.data["section"],class_day=day)
+            obj1.save()
         return JsonResponse({'msg':True})
         pass
     def get(self,request,pk):
@@ -140,21 +154,30 @@ class addAttendance(APIView):
             con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
             cur = con.cursor()
             cur.execute("set sql_safe_updates=0")
-            for i in request.data:
-                print(i)
+            print(request.data)
+            for i in request.data["rows"]:
+                day=(i['class_time']).split('T')[0]
+                # print(i)
                 if i['present']:
                     # print(i)
                     cur.execute("update query_studentuser set total_classes_attended=total_classes_attended+1 where rollno="+repr(i["username"]))
                     con.commit()
-                    # cur.execute("update query_classwiseattendancestatus set get_status="+repr("present")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
-                    obj = classWiseAttendanceStatus(username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"],get_status="present")                
+                    # cur.execute("update query_classwiseattendancestatus set get_status="+repr("present")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"])
+                    # print("created")
+                    obj = classWiseAttendanceStatus.objects.get(class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"])                
+                    obj.get_status="present"
                     obj.save()
                 else:
                     # cur.execute("update query_classwiseattendancestatus set get_status="+repr("absent")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
-                    obj = classWiseAttendanceStatus(username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"],get_status="absent")                
+                    # print("creted")
+                    obj = classWiseAttendanceStatus.objects.get(class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"])                
+                    obj.get_status="absent"
                     obj.save()
                 cur.execute("update query_studentuser set total_classes=total_classes+1 where rollno="+repr(i['username']))
-                con.commit()
+                # con.commit()
+            print("update query_links set attendance_taken=1 where posted_by_id="+repr(request.data["teacheruser"])+" and section="+repr(i["section"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
+            cur.execute("update query_links set attendance_taken=1 where posted_by_id="+repr(request.data["teacheruser"])+" and section="+repr(i["section"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
+            con.commit()
             con.close()
             return JsonResponse({"msg":True})
         # except:
@@ -205,9 +228,11 @@ class attendanceBlog(APIView):
 class getAttendanceStatus(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self,request):
-        try:
-            obj = classWiseAttendanceStatus.objects.get(username=request.data["username"],class_time=request.data["class_time"],class_day=datetime.now().strftime("%Y-%m-%d"))
-            serializer = classWiseAttendanceStatusSerializer(obj)
-            return JsonResponse(serializer.data)
-        except:
-            return JsonResponse({"msg":"error"})
+        # try:
+            print("hiiiiiiiiiiik")
+            obj = classWiseAttendanceStatus.objects.filter(username_id=request.data["username"],class_day=datetime.now().strftime("%Y-%m-%d"))
+            serializer = classWiseAttendanceStatusSerializer(obj,many=True)
+            print(serializer.data)
+            return JsonResponse(serializer.data,safe=False)
+        # except:
+            # return JsonResponse({"msg":"error"})
