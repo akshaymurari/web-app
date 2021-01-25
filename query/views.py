@@ -165,6 +165,7 @@ class addAttendance(APIView):
             cur = con.cursor()
             cur.execute("set sql_safe_updates=0")
             print(request.data)
+            total_classes = len(links.objects.filter(section=request.data["rows"][0]["section"],attendance_taken=True))
             for i in request.data["rows"]:
                 day=(i['class_time']).split('T')[0]
                 # print(i)
@@ -174,17 +175,23 @@ class addAttendance(APIView):
                     con.commit()
                     # cur.execute("update query_classwiseattendancestatus set get_status="+repr("present")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"])
                     # print("created")
-                    obj = classWiseAttendanceStatus.objects.get(class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"])                
-                    obj.get_status="present"
+                    try:
+                        obj = classWiseAttendanceStatus.objects.get(class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"])                
+                        obj.get_status="present"
+                    except:
+                        obj = classWiseAttendanceStatus(get_status="present",class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"],link="disabled")                
                     obj.save()
                 else:
                     # cur.execute("update query_classwiseattendancestatus set get_status="+repr("absent")+" where username="+repr(i["username"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
                     # print("creted")
-                    obj = classWiseAttendanceStatus.objects.get(class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"])                
-                    obj.get_status="absent"
+                    try:
+                        obj = classWiseAttendanceStatus.objects.get(class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"])                
+                        obj.get_status="absent"
+                    except:
+                        obj = classWiseAttendanceStatus(get_status="absent",class_day=day,posted_by_id=i["posted_by"],username_id=i["username"],section=i['section'], subject=i["subject"],class_time=i["class_time"],link='disabled')                
                     obj.save()
-                cur.execute("update query_studentuser set total_classes=total_classes+1 where rollno="+repr(i['username']))
-                # con.commit()
+                cur.execute("update query_studentuser set total_classes="+repr(total_classes+1)+" where rollno="+repr(i['username']))
+                con.commit()
             print("update query_links set attendance_taken=1 where posted_by_id="+repr(request.data["teacheruser"])+" and section="+repr(i["section"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
             cur.execute("update query_links set attendance_taken=1 where posted_by_id="+repr(request.data["teacheruser"])+" and section="+repr(i["section"])+" and subject="+repr(i["subject"])+" and class_time="+repr(i["class_time"]))
             con.commit()
@@ -222,12 +229,12 @@ class attendanceBlog(APIView):
         # try:
             obj = StudentUser.objects.filter(section=request.data["section"])
             serializer = StudentUserSerializer(obj,many=True)
-            total_classes = classWiseAttendanceStatus.objects.filter(Q(get_status='absent')|Q(get_status="present"),section=request.data["section"],subject=request.data["subject"])
+            total_classes = links.objects.filter(attendance_taken=True,section=request.data["section"],subject=request.data["subject"])
             ans=[]
             print(serializer.data)
             for i in serializer.data:
                 i['total_classes_attended']=self.get_attendance(request.data["subject"],i["username"])
-                i['total_classes']=len(total_classes)//len(obj)
+                i['total_classes']=len(total_classes)
                 i['id']=i['rollno']
                 ans.append(dict(i))
             print(ans)

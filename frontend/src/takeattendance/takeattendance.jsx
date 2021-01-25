@@ -102,15 +102,15 @@ const Takeattendance = () => {
         {
             field: 'total_classes',
             headerName: 'TOTAL CLASSES',
+            description: 'total classes taken in this subject',
             width: 130,
-            description: 'total classes attended in this subject',
             sortable: false,
             type: 'number',
         },
         {
             field: 'total_classes_attended',
             headerName: 'TOTAL_CLASSES_ATTENDED',
-            description: 'total classes taken in this subject',
+            description: 'total classes attended in this subject',
             sortable: false,
             type: 'number',
             width: 180,

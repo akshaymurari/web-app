@@ -36,18 +36,27 @@ class links(models.Model):
 
 class StudentQuery(models.Model):
     created_by = models.ForeignKey(StudentUser, on_delete=models.PROTECT)
-    query = models.TextField()
-    datetime = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=20,primary_key=True)
+    description = models.TextField(default=None)
+    posted_on = models.DateTimeField(auto_now_add=True)
 
 class StudentQueryAnswer(models.Model):
     posted_by = models.ForeignKey(StudentUser, on_delete=models.PROTECT)
+    title = models.ForeignKey(StudentQuery,on_delete=models.CASCADE)
     answer = models.TextField()
-    datetime = models.DateTimeField(auto_now_add=True)
+    posted_on = models.DateTimeField(auto_now_add=True)
+
+class TeacherQuery(models.Model):
+    created_by = models.ForeignKey(TeacherUser, on_delete=models.PROTECT)
+    title = models.CharField(max_length=20,primary_key=True)
+    description = models.TextField(default=None)
+    posted_on = models.DateTimeField(auto_now_add=True)
 
 class TeacherQueryAnswer(models.Model):
     posted_by = models.ForeignKey(TeacherUser, on_delete=models.PROTECT)
+    title = models.ForeignKey(TeacherQuery, on_delete=models.CASCADE)
     answer = models.TextField()
-    datetime = models.DateTimeField(auto_now_add=True)
+    posted_on = models.DateTimeField(auto_now_add=True)
 
 class classWiseAttendanceStatus(models.Model):
     username = models.ForeignKey(StudentUser,on_delete=models.PROTECT)
@@ -63,6 +72,4 @@ class Events(models.Model):
     EventName = models.CharField(max_length=255)
     posted_time = models.DateTimeField(auto_now_add=True)
     Event_on = models.DateField(default=None)
-
-
 
