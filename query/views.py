@@ -222,7 +222,7 @@ class attendanceBlog(APIView):
         # try:
             obj = StudentUser.objects.filter(section=request.data["section"])
             serializer = StudentUserSerializer(obj,many=True)
-            total_classes = classWiseAttendanceStatus.objects.filter(section=request.data["section"],subject=request.data["subject"])
+            total_classes = classWiseAttendanceStatus.objects.filter(Q(get_status='absent')|Q(get_status="present"),section=request.data["section"],subject=request.data["subject"])
             ans=[]
             print(serializer.data)
             for i in serializer.data:
