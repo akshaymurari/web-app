@@ -57,3 +57,12 @@ class classWiseAttendanceStatus(models.Model):
     class_time = models.CharField(max_length=30,default=None)
     get_status = models.CharField(max_length=30,default=None)
     section = models.CharField(max_length=10,default=None)
+    link = models.CharField(max_length=255,default=None)
+
+class Events(models.Model):
+    EventName = models.CharField(max_length=255)
+    posted_time = models.DateTimeField(auto_now_add=True)
+    Event_on = models.DateField(default=None)
+
+
+

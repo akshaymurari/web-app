@@ -65,7 +65,7 @@ const TeacherSignIn = () => {
             })
             dispatch({type:"success_teachersignin",payload:data.data});
             localStorage.setItem('value',JSON.stringify({'rollno':value,'password':valuePass,'gender':gender}));
-            H.push(`/ClassBlog`);
+            H.push(`/teacherblog`);
         }
         catch {
             dispatch({type:"error_teachersignin",payload:"error"});

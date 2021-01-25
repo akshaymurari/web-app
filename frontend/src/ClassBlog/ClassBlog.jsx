@@ -13,15 +13,20 @@ import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import './ClassBlog.scss';
 import Notes from './Notes.jsx';
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CloseIcon from '@material-ui/icons/Close';
 import { useSelector, useDispatch } from 'react-redux';
 const ClassBlog = () => {
     const H = useHistory();
     let state = useSelector(state => state.teachersignin);
     let state1 = useSelector(state => state.classblog);
     let dispatch = useDispatch();
+    const [open, setOpen] = React.useState(true);
     let [onadd, setonadd] = useState(true);
     let [notesdata, setnotesdata] = useState([]);
+    const [vis,setvis]=useState("hidden")
     console.log(notesdata);
     useEffect(async () => {
         let d = new Date();
@@ -104,9 +109,11 @@ const ClassBlog = () => {
             dispatch({ 'type': "success_classblog" });
             setvalues({ "subject": "", "link": "", "section": "", "date": "" });
             setonadd((pre) => !pre);
+            setvis("visible");
         }
         catch {
             console.log("error");
+            setvis("hidden");
             dispatch({ 'type': "error_classblog" });
         }
     }
@@ -146,6 +153,24 @@ const ClassBlog = () => {
                         </Toolbar>
                     </AppBar>
                 </div>
+                <Collapse in={open} style={{visibility:vis}}>
+                    <Alert
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setOpen(false);
+                                }}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                    >
+                        Added SuccessFully
+                    </Alert>
+                </Collapse>
                 <div className="container pt-5">
                     <div className="row">
                         <div className="col-sm-6 border mx-auto boxx text-center px-md-3 shadow" style={{ background: "#d3e0f5", borderRadius: "2rem" }}>

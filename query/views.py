@@ -9,12 +9,14 @@ from rest_framework.views import APIView
 from rest_framework import serializers, viewsets 
 from django.core.mail import send_mail
 import json
+from rest_framework.filters import SearchFilter
 from mysql import connector
 from django.db.models import Q
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from rest_framework.filters import SearchFilter,OrderingFilter
+
 class student(viewsets.ModelViewSet):
     queryset=StudentUser.objects.all()
     serializer_class = StudentUserSerializer
@@ -30,6 +32,14 @@ class filterClassLinkBlogByUsername(APIView):
         print(serializer.data)
         return JsonResponse(serializer.data,safe=False)
         pass
+
+class getTotalAttendance(APIView):
+    authentication_classes=[TokenAuthentication]
+    def get(self,request,pk):
+        obj = StudentUser.objects.get(username=pk)
+        serializer = StudentUserSerializer(obj)
+        return JsonResponse(serializer.data)
+    pass
 
 class addClassLinks(viewsets.ModelViewSet):
     queryset = links.objects.all()
@@ -117,7 +127,7 @@ class onSearchLinkBlog(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self,request):
         print(request.data)
-        obj = classWiseAttendanceStatus.objects.filter(username_id=request.data["username"],subject=request.data["subject"])
+        obj = classWiseAttendanceStatus.objects.filter(username_id=request.data["username"],subject__contains=request.data["subject"])
         serializer = classWiseAttendanceStatusSerializer(obj,many=True)
         return JsonResponse(serializer.data,safe=False)
         pass
@@ -131,7 +141,7 @@ class classLinkBlog(APIView):
         obj=StudentUser.objects.filter(section=request.data["section"])
         for i in obj:
             serializer=StudentUserSerializer(i)
-            obj1=classWiseAttendanceStatus(posted_by_id=request.data["posted_by"],username_id=serializer.data["username"],get_status="attendance_not_taken",class_time=request.data["date"],subject=request.data["subject"],section=request.data["section"],class_day=day)
+            obj1=classWiseAttendanceStatus(posted_by_id=request.data["posted_by"],username_id=serializer.data["username"],get_status="attendance_not_taken",class_time=request.data["date"],subject=request.data["subject"],section=request.data["section"],class_day=day,link=request.data["link"])
             obj1.save()
         return JsonResponse({'msg':True})
         pass

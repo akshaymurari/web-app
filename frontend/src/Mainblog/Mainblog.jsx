@@ -55,7 +55,7 @@ const Mainblog = () => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
-            <div className="container-fluid" style={{ "background": "#d7dff7",visibility:(state.loading )? "hidden" : "visible" }}>
+            <div className="container-fluid" style={{ visibility:(state.loading )? "hidden" : "visible" }}>
                 <div className="row fixed-top">
                     <div className="col-12 navbar navbar-light bg-dark">
                         <div className="">
@@ -83,14 +83,6 @@ const Mainblog = () => {
                                 <Link to={props[0].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
-                        <div className="card MainCard h-100  my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
-<img src={classlinks} className="card-img-top img-responsive" alt="..." />
-                            <div className="card-body">
-                                <h5 className="card-title">{props[1].title}</h5>
-                                <p className="card-text">{props[1].info}</p>
-                                <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
-                            </div>
-                        </div>
                         <div className="card MainCard h-100  my-5  mx-auto  rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
                             <img src={queries} className="card-img-top img-responsive" alt="..." />
                             <div className="card-body">
@@ -105,6 +97,14 @@ const Mainblog = () => {
                                 <h5 className="card-title">{props[3].title}</h5>
                                 <p className="card-text">{props[3].info}</p>
                                 <Link to={props[3].link} className="btn btn-primary">click to view...</Link>
+                            </div>
+                        </div>
+                        <div className="card MainCard h-100  my-5 mx-auto px-0 rounded-lg shadow" style={{ "width": "15rem", "height": "12rem" }}>
+                            <img src={classlinks} className="card-img-top img-responsive" alt="..." />
+                            <div className="card-body">
+                                <h5 className="card-title">{props[1].title}</h5>
+                                <p className="card-text">{props[1].info}</p>
+                                <Link to={props[1].link} className="btn btn-primary">click to view...</Link>
                             </div>
                         </div>
                     </div>

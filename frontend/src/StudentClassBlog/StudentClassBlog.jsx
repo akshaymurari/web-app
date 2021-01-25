@@ -52,6 +52,7 @@ const StudentClassBlog = () => {
     useEffect(async () => {
         dispatch({ 'type': "request_StudentClassBlog" });
         const info = { "username": JSON.parse(localStorage.getItem("value")).rollno }
+        console.log(info);
         try {
             const data = await axios({
                 method: "post",
@@ -83,7 +84,6 @@ const StudentClassBlog = () => {
             })
             dispatch({ 'type': "success_onSearchLinks", "payload": data.data });
             setrows(data.data);
-
         }
         catch {
             dispatch({ 'type': "error_onSearchLinks", "payload": "error" });
@@ -114,6 +114,12 @@ const StudentClassBlog = () => {
             headerName: 'ATTENDANCE STATUS',
             description: 'Attandence status of this class',
             width: 220,
+        },
+        {
+            field: 'link',
+            headerName: 'LINK',
+            width: 200,
+            description: 'link was posted by',
         },
     ];
     const useStyles = makeStyles((theme) => ({
