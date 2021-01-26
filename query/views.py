@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,QueryBlog,QueryAnswerBlog
-from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer,QueryBlogSerializer,QueryAnswerBlogSerializer
+from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,QueryBlog,QueryAnswerBlog,Events
+from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer,QueryBlogSerializer,QueryAnswerBlogSerializer,EventSerializer
 from rest_framework.authentication import SessionAuthentication,TokenAuthentication
 from rest_framework.permissions import DjangoModelPermissions,IsAdminUser
 from django.http import HttpResponse,JsonResponse
@@ -40,6 +40,12 @@ class QueryBlogA(viewsets.ModelViewSet):
     search_fields = ['posted_by','type']
     pagination_class = Page
 
+class EventsBlog(viewsets.ModelViewSet):
+    queryset = Events.objects.all()
+    serializer_class = EventSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    pass
 
 class student(viewsets.ModelViewSet):
     queryset=StudentUser.objects.all()

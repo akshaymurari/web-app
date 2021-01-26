@@ -10,6 +10,7 @@ router.register('teacherStore',views.teacher,basename='teacher')
 router.register('addClassLinks',views.addClassLinks,basename='addlinks') 
 router.register('PostQueryQ',views.QueryBlogQ,basename='querypost') 
 router.register('PostQueryA',views.QueryBlogA,basename='queryanswerpost') 
+router.register('EventsBlog',views.EventsBlog,basename='events') 
 
 urlpatterns = [
     path('',include(router.urls)),

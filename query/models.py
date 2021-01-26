@@ -73,6 +73,7 @@ class classWiseAttendanceStatus(models.Model):
 
 class Events(models.Model):
     EventName = models.CharField(max_length=255)
+    EventDescription = models.TextField(default=None)
     posted_time = models.DateTimeField(auto_now_add=True)
     Event_on = models.DateField(default=None)
 

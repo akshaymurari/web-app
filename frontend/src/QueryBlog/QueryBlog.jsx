@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {BaseUrl} from '../App.jsx';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
@@ -44,7 +44,9 @@ const QueryBlog = () => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
-          <h1>in QueryBlog</h1>  
+            <div className="container-fluid" style={{visibility:(state.loading )? "hidden" : "visible"}}>
+                <h1>in QueryBlog</h1>  
+            </div>
         </>
     )
 }

@@ -39,8 +39,8 @@ const Mainblog = () => {
             H.push('/error');
         }
     },[])
-    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "","link":"/StudentClassBlog", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
-    { "image": event, "title": "", "info": "EVENTS" }]
+    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "","link":"/StudentClassBlog", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG","link":"/QueryBlog" },
+    { "image": event, "title": "", "info": "EVENTS","link":"/QueryBlog" }]
     return (
         <div>
             <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>

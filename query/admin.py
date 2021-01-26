@@ -35,7 +35,7 @@ class ClassWiseAttendanceStatusAdmin(admin.ModelAdmin):
 
 @admin.register(Events)
 class EventsAdmin(admin.ModelAdmin):
-    list_display = ['EventName',"posted_time","Event_on"]
+    list_display = ['EventName','EventDescription',"posted_time","Event_on"]
 
 @admin.register(QueryBlog)
 class QueryBlogAdmin(admin.ModelAdmin):
