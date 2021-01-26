@@ -13,7 +13,6 @@ import {useParams} from 'react-router';
 import {useHistory} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
 const Mainblog = () => {
-    console.log(localStorage.getItem('value'))
     let state = useSelector(state=>state.signin);
     let dispatch = useDispatch();
     const H = useHistory();

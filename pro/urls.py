@@ -8,6 +8,9 @@ router = DefaultRouter()
 router.register('studentStore',views.student,basename='student')
 router.register('teacherStore',views.teacher,basename='teacher') 
 router.register('addClassLinks',views.addClassLinks,basename='addlinks') 
+router.register('PostQueryQ',views.QueryBlogQ,basename='querypost') 
+router.register('PostQueryA',views.QueryBlogA,basename='queryanswerpost') 
+
 urlpatterns = [
     path('',include(router.urls)),
     path('forgetpassword/',views.forgetpassword.as_view()),

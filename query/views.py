@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus
-from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer
+from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,QueryBlog,QueryAnswerBlog
+from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer,QueryBlogSerializer,QueryAnswerBlogSerializer
 from rest_framework.authentication import SessionAuthentication,TokenAuthentication
 from rest_framework.permissions import DjangoModelPermissions,IsAdminUser
 from django.http import HttpResponse,JsonResponse
@@ -16,6 +16,30 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from rest_framework.filters import SearchFilter,OrderingFilter
+from rest_framework.pagination import PageNumberPagination
+
+class Page(PageNumberPagination):
+    page_size = 4
+    page_size_query_param = 'pagerecords'
+
+class QueryBlogQ(viewsets.ModelViewSet):
+    queryset = QueryBlog.objects.all()
+    serializer_class = QueryBlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    filter_backends = [SearchFilter]
+    search_fields = ['posted_by','type','title']
+    pagination_class = Page
+
+class QueryBlogA(viewsets.ModelViewSet):
+    queryset = QueryAnswerBlog.objects.all()
+    serializer_class = QueryAnswerBlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    filter_backends = [SearchFilter]
+    search_fields = ['posted_by','type']
+    pagination_class = Page
+
 
 class student(viewsets.ModelViewSet):
     queryset=StudentUser.objects.all()

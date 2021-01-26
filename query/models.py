@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 class StudentUser(models.Model):
     username = models.CharField(max_length=30,primary_key=True)
@@ -58,6 +60,7 @@ class TeacherQueryAnswer(models.Model):
     answer = models.TextField()
     posted_on = models.DateTimeField(auto_now_add=True)
 
+    
 class classWiseAttendanceStatus(models.Model):
     username = models.ForeignKey(StudentUser,on_delete=models.PROTECT)
     posted_by=models.ForeignKey(TeacherUser, on_delete=models.PROTECT,default=None)
@@ -73,3 +76,17 @@ class Events(models.Model):
     posted_time = models.DateTimeField(auto_now_add=True)
     Event_on = models.DateField(default=None)
 
+#updating query blog linking student and teacher together
+class QueryBlog(models.Model):
+    posted_by = models.CharField(max_length=255)
+    type = models.CharField(max_length=30,default=None)
+    title = models.CharField(max_length=20,primary_key=True)
+    description = models.TextField(default=None)
+    posted_on = models.DateTimeField(auto_now_add=True)
+
+class QueryAnswerBlog(models.Model):
+    posted_by = models.CharField(max_length=255)
+    title = models.ForeignKey(QueryBlog, on_delete=models.CASCADE)
+    type = models.CharField(max_length=30,default=None)
+    answer = models.TextField()
+    posted_on = models.DateTimeField(auto_now_add=True)

@@ -7,9 +7,10 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid, getColDef } from '@material-ui/data-grid';
 import { BaseUrl } from '../App.jsx';
 import { useSelector, useDispatch } from 'react-redux';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -118,6 +119,13 @@ const StudentClassBlog = () => {
         {
             field: 'link',
             headerName: 'LINK',
+            renderCell: (params) => {
+                // console.log(params);
+                return (<Link to={params.value} target="_blank">
+                    {params.value}
+                </Link>
+            )
+        },
             width: 200,
             description: 'link was posted by',
         },

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,TeacherQuery,TeacherQueryAnswer,StudentQuery,StudentQueryAnswer
+from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,TeacherQuery,TeacherQueryAnswer,StudentQuery,StudentQueryAnswer,QueryBlog,QueryAnswerBlog
 
 class StudentUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,3 +51,13 @@ class TeacherQueryAnswerSerializer(serializers.ModelSerializer):
         model = TeacherQueryAnswer
         fields = '__all__'
 
+class QueryBlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QueryBlog
+        fields = '__all__'
+
+class QueryAnswerBlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QueryAnswerBlog
+        fields = '__all__'
+        
