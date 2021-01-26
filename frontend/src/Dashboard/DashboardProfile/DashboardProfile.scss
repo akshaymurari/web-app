@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Potta+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Sniglet|Raleway:900);
+
+.dashboardProfile{
+    width: 100%;
+    position: relative;
+    display: block;
+}
+
+.dashboardProfileHeader{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.dashboardProfileUserProfilePic{
+    width: 11rem;
+    height: 10rem;
+    position: relative;
+}
+
+.dashboardProfileUserProfileName{
+    font-family: 'Sniglet', cursive;
+    font-weight: 900;
+    color: white;
+    font-size: 3rem;
+}
+
+.dashboardProfileBackground{
+    width: 100%;
+    height: 40vh;
+    background-color: #7bf159;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: block;
+}
+
+.dashboardProfileHeading{
+    font-family: 'Sniglet', cursive;
+    font-weight: 900;
+    color: white;
+    font-size: 5rem;
+}
+
+.dashboardProfileAttributes{
+    font-size: 2.3rem;
+    display: inline-block;
+    position: relative;
+    right: 7rem;
+    
+    @media screen and (max-width: 620px){
+        right:0rem;
+    }
+}
+
+.dashboardProfileValues{
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    text-decoration: underline;
+}
