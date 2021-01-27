@@ -18,17 +18,50 @@ const useStyles = makeStyles({
 })
 
 function DashboardEvent(props) {
-    const [visAlert,setVisAlert] = useState(false);
-    const classes = useStyles(props);
+    const [visAlert, setVisAlert] = useState(false);
     const H = useHistory();
+    const [onCLickDay,setOnClickDay] = useState("");
     const [showAddEvent, setshowAddEvent] = useState(false);
+    const [onAddEvent,setOnAddEvent] = useState(false);
     const [calander, setcalander] = useState([]);
     const [value, setValue] = useState(moment());
     const startDay = value.clone().startOf("month").startOf('week');
     const endDay = value.clone().endOf("month").endOf('week');
     let [eventDays, setEventDays] = useState({})
+    let [msg, setmsg] = useState({ "EventName": "", "EventDescription": "" })
     const state = useSelector(state => state.DashboardEvent);
+    const state1 = useSelector(state => {
+        if(props.type==="student"){
+            return state.signin;
+        }
+        if(props.type==="teacher"){
+            return state.teachersignin;
+        }});
+    // const state1 = useSelector(state => state.teachersignin);
     const dispatch = useDispatch();
+    useEffect(async () => {
+        let d = new Date();
+        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        // e.preventDefault();
+        const value=JSON.parse(localStorage.getItem('value'));
+        let info = {...value,'date':d_s };
+        dispatch({type:'request_signin'});
+        try {
+            const data = await axios({
+                method: "post",
+                url: BaseUrl+props.type+"exists/",
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: info,
+                responseType: 'json'
+            })
+            dispatch({type:"success_signin",payload:data.data});
+            // H.push(`/mainblog`);
+        }
+        catch {
+            dispatch({type:"error_signin",payload:"error"})
+            H.push('/error');
+        }
+    },[]);
     useEffect(async () => {
         dispatch({ 'type': "request_DashboardEvent" });
         try {
@@ -51,7 +84,7 @@ function DashboardEvent(props) {
             dispatch({ 'type': "error_DashboardEvent", payload: "" });
             H.push('/error');
         }
-    }, []);
+    }, [onAddEvent]);
     useEffect(() => {
         const a = [];
         const day = startDay.clone().subtract(1, "day");
@@ -109,7 +142,24 @@ function DashboardEvent(props) {
             },
         },
     }));
-
+    const onAddEventFunc = async (day,title,event) => {
+        try{
+            const info = {"Event_on":day,"EventName":title,"EventDescription":event};
+            const data = await axios({
+                method:"post",
+                url:BaseUrl+"EventsBlog/",
+                headers:{"Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
+                data:info,
+                responseType:"json"
+            });
+            console.log(data.data);
+            setOnAddEvent((pre)=>!pre);
+        }
+        catch{
+            H.push('/error');
+        }
+        console.log(day);
+    }
     const currentMonthName = () => value.format("MMMM");
     const currentYearName = () => value.format("YYYY");
     const prevYear = () => value.clone().subtract(1, "year");
@@ -133,75 +183,102 @@ function DashboardEvent(props) {
     const classes1 = useStyles1();
     return (
         <React.Fragment style={{ width: "100%" }}>
-            <Alert severity="info" style={{visibility:(visAlert)?"visible":"hidden",position:"sticky"}}>
-                <AlertTitle>Info</AlertTitle>
-                This is an info alert — <strong>check it out!</strong>
-            </Alert>
-            {showAddEvent ? <div className="dashboardEventBackDrop" onClick={closeAddEvent}></div> : null}
-            <h1 className="dashboardEventHeading">Events!</h1>
-            <div className="dashboardEvent m-auto">
-                <div className="dashboardEventHeader">
-                    <div className="mt-auto mb-auto">
-                        <Button onClick={() => { setValue(prevYear()) }}
-                        ><FastRewindIcon /></Button>
-                    </div>
-                    <div className="mt-auto mb-auto">
-                        <Button onClick={() => { setValue(prevMonth()) }}
-                        ><ArrowBackIosIcon /></Button>
-                    </div>
-                    <div className="ml-auto mt-3 mb-auto p-0" style={{ display: "inline-block", textAlign: "center" }}>
-                        <p>
-                            {headerContent}
-                        </p>
-                    </div>
-                    <div className="ml-auto mt-auto mb-auto">
-                        <Button onClick={() => { setValue(nextMonth()) }}
-                        ><ArrowForwardIosIcon /></Button>
-                    </div>
-                    <div className="mt-auto mb-auto">
-                        <Button onClick={() => { setValue(nextYear()) }}
-                        ><FastForwardIcon /></Button>
-                    </div>
+            <div className="loader-spinner" style={{ visibility: (state1.loading) ? "visible" : "hidden" }}>
+                <div className="spinner-grow text-success mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
                 </div>
-                <div>
-                    <div className="dayNames">
-                        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((dayName) => (
-                            <div className="eachDayNmae">{dayName}</div>
-                        ))}
+                <div className="spinner-grow text-danger mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div style={{ visibility: (state1.loading) ? "hidden" : "visible" }}>
+
+                <div style={{ position: "sticky", top: 0 }}>
+                    <Alert severity="info" style={{ visibility: (visAlert) ? "visible" : "hidden" }}>
+                        <AlertTitle style={{ textTransform: "uppercase" }}>{msg.EventName}</AlertTitle>
+                        {msg.EventDescription} — <strong>check it out!</strong>
+                    </Alert>
+                </div>
+                {showAddEvent ? <div className="dashboardEventBackDrop" onClick={closeAddEvent}></div> : null}
+                <h1 className="dashboardEventHeading">Events!</h1>
+                <div className="dashboardEvent m-auto">
+                    <div className="dashboardEventHeader">
+                        <div className="mt-auto mb-auto">
+                            <Button onClick={() => { setValue(prevYear()) }}
+                            ><FastRewindIcon /></Button>
+                        </div>
+                        <div className="mt-auto mb-auto">
+                            <Button onClick={() => { setValue(prevMonth()) }}
+                            ><ArrowBackIosIcon /></Button>
+                        </div>
+                        <div className="ml-auto mt-3 mb-auto p-0" style={{ display: "inline-block", textAlign: "center" }}>
+                            <p>
+                                {headerContent}
+                            </p>
+                        </div>
+                        <div className="ml-auto mt-auto mb-auto">
+                            <Button onClick={() => { setValue(nextMonth()) }}
+                            ><ArrowForwardIosIcon /></Button>
+                        </div>
+                        <div className="mt-auto mb-auto">
+                            <Button onClick={() => { setValue(nextYear()) }}
+                            ><FastForwardIcon /></Button>
+                        </div>
                     </div>
-                    {
-                        calander.map((week) => (
-                            <div>
-                                {
-                                    week.map((day) => (
-                                        <div className="day" style={{ background: (eventDays[isEvent(day)] != undefined) ? "#00b01d" : "#94eb6c" }}
-                                            onClick={() => {
-                                                console.log(day);                                            
-                                                setValue(day);
-                                                if (eventDays[isEvent(day)] != undefined){
-                                                    setVisAlert(true);
-                                                }
-                                                if (afterDay(day)) {
-                                                    setshowAddEvent(true);
-                                                }
-                                            }}
-                                        >
-                                            <div className={dayStyles(day)}>
-                                                {
-                                                    day.format("D").toString()
-                                                }
+                    <div>
+                        <div className="dayNames">
+                            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((dayName) => (
+                                <div className="eachDayNmae">{dayName}</div>
+                            ))}
+                        </div>
+                        {
+                            calander.map((week) => (
+                                <div>
+                                    {
+                                        week.map((day) => (
+                                            <div className="day" style={{ background: (eventDays[isEvent(day)] != undefined) ? "#00b01d" : "#94eb6c" }}
+                                                onClick={() => {
+                                                    setmsg({ ...eventDays[isEvent(day)] });
+                                                    console.log(day);
+                                                    if (eventDays[isEvent(day)] != undefined) {
+                                                        setValue(day);
+                                                        setVisAlert(true);
+                                                    }
+                                                    else if (afterDay(day) && props.type==="teacher") {
+                                                        setVisAlert(false);
+                                                        setOnClickDay(isEvent(day));
+                                                        // setValue({"EventName":"","EventDescription":""});
+                                                        setshowAddEvent(true);
+                                                    }
+                                                    else {
+                                                        setVisAlert(false);
+                                                        // setValue({"EventName":"","EventDescription":""});   
+                                                    }
+                                                }}
+                                            >
+                                                <div className={dayStyles(day)}>
+                                                    {
+                                                        day.format("D").toString()
+                                                    }
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>)
-                        )
-                    }
-                </div>
-                <div className="dashboardAddEventAreaForm">
-                    <DashboardAddEventArea
-                        showAddEvent={showAddEvent}
-                        closeAddEvent={closeAddEvent} />
+                                        ))
+                                    }
+                                </div>)
+                            )
+                        }
+                    </div>
+                    <div className="dashboardAddEventAreaForm">
+                        <DashboardAddEventArea
+                            type = {props.type}
+                            day = {onCLickDay}
+                            showAddEvent={showAddEvent}
+                            closeAddEvent={closeAddEvent}
+                            addEvent = {onAddEventFunc} />
+                    </div>
                 </div>
             </div>
         </React.Fragment>

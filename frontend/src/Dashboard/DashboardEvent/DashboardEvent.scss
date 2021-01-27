@@ -10,6 +10,15 @@
     margin: 1rem auto;
 }
 
+.loader-spinner{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	// background:#d4e8ca;
+	z-index:9999;
+}
+
 .dashboardEvent{
     z-index: -1;
     border: black 4px solid;

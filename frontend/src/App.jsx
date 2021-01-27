@@ -41,7 +41,8 @@ const App = () => {
         <Route exact path='/ClassBlog' component={()=><Provider store={Store}><ClassBlog/></Provider>}></Route>
         <Route exact path="/StudentClassBlog" component={()=><Provider store={Store}><StudentClassBlog/></Provider>}></Route>
         <Route exact path='/takeattendance/:subject/:section/:time' component={()=><Provider store={Store}><Takeattendance/></Provider>}></Route>
-        <Route exact path="/DashboardEvent" component={()=><Provider store={Store}><DashboardEvent/></Provider>}></Route>
+        <Route exact path="/DashboardEvent" component={()=><Provider store={Store}><DashboardEvent type="student" /></Provider>}></Route>
+        <Route exact path="/DashboardEventTeacher" component={()=><Provider store={Store}><DashboardEvent type="teacher"/></Provider>}></Route>
         <Route exact path="/QueryBlog" component={()=><Provider store={Store}><QueryBlog/></Provider>}></Route>
         <Route exact path='/error' component={()=><h1>Error</h1>}/>
       </Switch>

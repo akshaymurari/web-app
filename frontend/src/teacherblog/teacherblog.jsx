@@ -39,7 +39,7 @@ const Teacherblog = () => {
         }
     },[])
     let props = [ { "image": classlinks, "title": "","link":"/ClassBlog", "info": "ADDCLASS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
-    { "image": event, "title": "", "info": "EVENTS" }]
+    { "image": event, "title": "", "info": "EVENTS","link":"/DashboardEventTeacher" }]
     return (
         <div>
             <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>

@@ -8,6 +8,7 @@ let red=combineReducers({
     resetpass:Reducer('resetpass'),
     signin:Reducer('signin'),
     signup:Reducer('signup'),
+    // studentsignin:Reducer('signin'),
     teachersignin:Reducer('teachersignin'),
     takeattendance:Reducer('takeattendance'),
     uploadattendance:Reducer('uploadattendance'),

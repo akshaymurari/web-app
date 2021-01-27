@@ -21,10 +21,16 @@ const useStyles = makeStyles({
 })
 
 function DastboardAddEventArea(props) {
+    // console.log(props);
     const classes = useStyles(props);
     const [dashboardEvent, setdashboardEvent] = useState("");
+    const [eventTitle, seteventTitle] = useState("");
+
     const eventAdderHandler = (event) => {
         setdashboardEvent(event.target.value)
+    }
+    const eventTitleHandler = (e) => {
+        seteventTitle(e.target.value)
     }
     return (
         <div className="dashBoardAddEventToCalander" style={{
@@ -34,12 +40,15 @@ function DastboardAddEventArea(props) {
         }}>
             <form>
                 <label for="addEvent">Add Event</label>
+                <input placeholder="Add the Event Title" name="addEventtitle" className="mb-4 dashBoardAddEventToCalanderInput" value={eventTitle} onChange={eventTitleHandler}></input>
                 <textarea placeholder="Add the Event Description" name="addEvent" className="dashBoardAddEventToCalanderInput" value={dashboardEvent} onChange={eventAdderHandler}></textarea>
                 <br/>
-                <Button className={classes.addEventToCalanderButton} onClick={()=>{
-                    props.closeAddEvent();
-                    setdashboardEvent("");
-                }}>
+                <Button className={classes.addEventToCalanderButton} onClick={ () => {
+                        props.addEvent(props.day,eventTitle,dashboardEvent);
+                        props.closeAddEvent();
+                        setdashboardEvent("");
+                        seteventTitle("");
+                    }}>
                     <AddIcon className={classes.addEventToCalanderIcon}></AddIcon>
                 </Button>
             </form>
