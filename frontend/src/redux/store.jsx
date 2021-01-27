@@ -19,6 +19,9 @@ let red=combineReducers({
     onSearchLinks:Reducer('onSearchLinks'),
     QueryBlog:Reducer('QueryBlog'),
     DashboardEvent:Reducer('DashboardEvent'),
+    titleExists:Reducer('titleExists'),
+    addQuestion:Reducer('addQuestion'),
+
 })
 let Store=createStore(red,composeWithDevTools(applyMiddleware(logger,thunk))) 
 export default Store;

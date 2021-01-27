@@ -12,17 +12,31 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import axios from 'axios';
 import { BaseUrl } from '../../App.jsx';
-
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles({
 
 })
 
 function DashboardEvent(props) {
+    const useStyles2 = makeStyles((theme) => ({
+        root: {
+            width: '100%',
+        },
+        heading: {
+            fontSize: theme.typography.pxToRem(15),
+            fontWeight: theme.typography.fontWeightRegular,
+        },
+    }));
+    const classes2 = useStyles2();
     const [visAlert, setVisAlert] = useState(false);
     const H = useHistory();
-    const [onCLickDay,setOnClickDay] = useState("");
+    const [onCLickDay, setOnClickDay] = useState("");
     const [showAddEvent, setshowAddEvent] = useState(false);
-    const [onAddEvent,setOnAddEvent] = useState(false);
+    const [onAddEvent, setOnAddEvent] = useState(false);
     const [calander, setcalander] = useState([]);
     const [value, setValue] = useState(moment());
     const startDay = value.clone().startOf("month").startOf('week');
@@ -31,37 +45,38 @@ function DashboardEvent(props) {
     let [msg, setmsg] = useState({ "EventName": "", "EventDescription": "" })
     const state = useSelector(state => state.DashboardEvent);
     const state1 = useSelector(state => {
-        if(props.type==="student"){
+        if (props.type === "student") {
             return state.signin;
         }
-        if(props.type==="teacher"){
+        if (props.type === "teacher") {
             return state.teachersignin;
-        }});
+        }
+    });
     // const state1 = useSelector(state => state.teachersignin);
     const dispatch = useDispatch();
     useEffect(async () => {
         let d = new Date();
-        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
         // e.preventDefault();
-        const value=JSON.parse(localStorage.getItem('value'));
-        let info = {...value,'date':d_s };
-        dispatch({type:'request_signin'});
+        const value = JSON.parse(localStorage.getItem('value'));
+        let info = { ...value, 'date': d_s };
+        dispatch({ type: 'request_signin' });
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl+props.type+"exists/",
+                url: BaseUrl + props.type + "exists/",
                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: info,
                 responseType: 'json'
             })
-            dispatch({type:"success_signin",payload:data.data});
+            dispatch({ type: "success_signin", payload: data.data });
             // H.push(`/mainblog`);
         }
         catch {
-            dispatch({type:"error_signin",payload:"error"})
+            dispatch({ type: "error_signin", payload: "error" })
             H.push('/error');
         }
-    },[]);
+    }, []);
     useEffect(async () => {
         dispatch({ 'type': "request_DashboardEvent" });
         try {
@@ -142,20 +157,20 @@ function DashboardEvent(props) {
             },
         },
     }));
-    const onAddEventFunc = async (day,title,event) => {
-        try{
-            const info = {"Event_on":day,"EventName":title,"EventDescription":event};
+    const onAddEventFunc = async (day, title, event) => {
+        try {
+            const info = { "Event_on": day, "EventName": title, "EventDescription": event };
             const data = await axios({
-                method:"post",
-                url:BaseUrl+"EventsBlog/",
-                headers:{"Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
-                data:info,
-                responseType:"json"
+                method: "post",
+                url: BaseUrl + "EventsBlog/",
+                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: info,
+                responseType: "json"
             });
             console.log(data.data);
-            setOnAddEvent((pre)=>!pre);
+            setOnAddEvent((pre) => !pre);
         }
-        catch{
+        catch {
             H.push('/error');
         }
         console.log(day);
@@ -195,7 +210,24 @@ function DashboardEvent(props) {
                 </div>
             </div>
             <div style={{ visibility: (state1.loading) ? "hidden" : "visible" }}>
-
+                <div className={classes2.root}>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel2a-content"
+                            id="panel2a-header"
+                        >
+                            <Typography  className={classes2.heading}>Note ⬇️</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                please click on the highlighted button for event name 
+                                if you are a teacher then click on upcoming days button for 
+                                adding events
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                </div>
                 <div style={{ position: "sticky", top: 0 }}>
                     <Alert severity="info" style={{ visibility: (visAlert) ? "visible" : "hidden" }}>
                         <AlertTitle style={{ textTransform: "uppercase" }}>{msg.EventName}</AlertTitle>
@@ -247,7 +279,7 @@ function DashboardEvent(props) {
                                                         setValue(day);
                                                         setVisAlert(true);
                                                     }
-                                                    else if (afterDay(day) && props.type==="teacher") {
+                                                    else if (afterDay(day) && props.type === "teacher") {
                                                         setVisAlert(false);
                                                         setOnClickDay(isEvent(day));
                                                         // setValue({"EventName":"","EventDescription":""});
@@ -273,11 +305,11 @@ function DashboardEvent(props) {
                     </div>
                     <div className="dashboardAddEventAreaForm">
                         <DashboardAddEventArea
-                            type = {props.type}
-                            day = {onCLickDay}
+                            type={props.type}
+                            day={onCLickDay}
                             showAddEvent={showAddEvent}
                             closeAddEvent={closeAddEvent}
-                            addEvent = {onAddEventFunc} />
+                            addEvent={onAddEventFunc} />
                     </div>
                 </div>
             </div>

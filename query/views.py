@@ -31,6 +31,26 @@ class QueryBlogQ(viewsets.ModelViewSet):
     search_fields = ['posted_by','type','title']
     pagination_class = Page
 
+class QueryBlogAQ(APIView):
+    authentication_classes = [TokenAuthentication]
+    search_fields = ['posted_by','type','title']
+    pagination_class = Page
+    def get(self,request,pk):
+        obj = QueryBlog.objects.filter(posted_by=pk)
+        serializer = QueryBlogSerializer(obj,many=True)
+        return JsonResponse(serializer.data,safe=False)
+
+class GetQueryQ(viewsets.ModelViewSet):
+    serializer_class = QueryBlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    filter_backends = [SearchFilter]
+    search_fields = ['posted_by','type','title']
+    pagination_class = Page
+    def get_queryset(self):
+        print(self.kwargs)
+        return QueryBlog.objects.filter(posted_by=self.kwargs['pk'])
+
 class QueryBlogA(viewsets.ModelViewSet):
     queryset = QueryAnswerBlog.objects.all()
     serializer_class = QueryAnswerBlogSerializer
