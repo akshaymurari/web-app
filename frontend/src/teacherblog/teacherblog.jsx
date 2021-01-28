@@ -38,7 +38,7 @@ const Teacherblog = () => {
             H.push('/error');
         }
     },[])
-    let props = [ { "image": classlinks, "title": "","link":"/ClassBlog", "info": "ADDCLASS" }, { "image": queries, "title": "", "info": "QUERYBLOG" },
+    let props = [ { "image": classlinks, "title": "","link":"/ClassBlog", "info": "ADDCLASS" }, { "image": queries, "title": "", "info": "QUERYBLOG","link":"/teacherQueryBlog" },
     { "image": event, "title": "", "info": "EVENTS","link":"/DashboardEventTeacher" }]
     return (
         <div>
