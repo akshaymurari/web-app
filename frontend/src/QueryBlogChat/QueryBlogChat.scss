@@ -25,6 +25,7 @@
 .queryBlogChatAreaLeftPane{
     height: 100%;
     border-radius: 10px 0 0 10px;
+    position: relative;
     @media screen and (max-width: 767px){
         display:none;
     }
@@ -99,6 +100,7 @@
             border-radius: 8px;
             padding: 5px;
             .queryBlogChatMessageName{
+                border-top: 4px;
                 font-size: 0.9rem;
                 font-weight: 900;
             }

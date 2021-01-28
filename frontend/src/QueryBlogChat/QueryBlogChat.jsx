@@ -44,7 +44,10 @@ function QueryBlogChat(props) {
         let codesArray = []
         sym.forEach(el => codesArray.push('0x' + el))
         let emoji = String.fromCodePoint(...codesArray)
-        setnewMessage(newMessage.message+emoji);
+        setnewMessage({
+            who_sent: "me",
+            message: newMessage.message+emoji,
+        });
     }
 
     const messagesEndRef = useRef(null);
@@ -69,6 +72,27 @@ function QueryBlogChat(props) {
                             <img src={profile_pic} style={{width: "9rem", height: "8rem"}}></img>
                             <h1>Hello!</h1>
                             <p>---Name---</p>
+                        </div>
+                        <h3 style={{
+                            marginLeft: "20px"
+                        }}>TOPIC:</h3>
+                        <h3 style={{
+                            border: "black 0.8px solid",
+                            borderLeft: "#79d70f 5px solid",
+                            marginTop: "20px",
+                            padding: "8px",
+                        }}>Title of the Topic</h3>
+                        <div style={{
+                            position:"absolute",
+                            bottom: "0.3rem",
+                            lineHeight: "0.5px",
+                            textAlign: "center",
+                            display: "block",
+                            margin: "0 2rem",
+                            fontSize: "0.8rem"
+                        }}>
+                            <p>Please Follow the Community GuideLines</p>
+                            <p>Virtual Meet</p>
                         </div>
                     </div>
                     <div className="col-md-9 p-0 queryBlogChatAreaRightPane" style={{border: "black 1px solid"}}>
