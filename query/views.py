@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,QueryBlog,QueryAnswerBlog,Events
-from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer,QueryBlogSerializer,QueryAnswerBlogSerializer,EventSerializer
+from .models import StudentUser,TeacherUser,links,classWiseAttendanceStatus,QueryBlog,QueryAnswerBlog,Events,NotificationBlog
+from .serializers import StudentUserSerializer,TeacherUserSerializer,TeacherUserSerializerP,StudentUserSerializerP,linksSerializer,classWiseAttendanceStatusSerializer,QueryBlogSerializer,QueryAnswerBlogSerializer,EventSerializer,NotificationBlogSerializer
 from rest_framework.authentication import SessionAuthentication,TokenAuthentication
 from rest_framework.permissions import DjangoModelPermissions,IsAdminUser
 from django.http import HttpResponse,JsonResponse
@@ -30,6 +30,34 @@ class QueryBlogQ(viewsets.ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ['posted_by','type','title']
     pagination_class = Page
+
+class NotificationBlogG(viewsets.ModelViewSet):
+    queryset = NotificationBlog.objects.all()
+    serializer_class = NotificationBlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    filter_backends = [SearchFilter]
+    search_fields = ['seen']
+
+class getNotifications(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self, request):
+        today = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(today)
+        obj = NotificationBlog.objects.filter(seen=0,visibility_time__gte=today,username=request.data["username"])
+        print(obj)
+        serializer = NotificationBlogSerializer(obj,many=True)
+        # print(serializer.data)
+        if request.data["seen"]:
+            con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
+            cur = con.cursor()
+            # print("update query_NotificationBlog set seen="+repr(1)+" where username="+repr(request.data["username"]))
+            cur.execute("update query_notificationblog set seen="+repr(1)+" where username="+repr(request.data["username"]))
+            con.commit()
+            con.close()
+        return JsonResponse(serializer.data,safe=False)
+
+
 
 class QueryBlogAQ(APIView):
     authentication_classes = [TokenAuthentication]

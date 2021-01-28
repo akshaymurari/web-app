@@ -21,7 +21,8 @@ let red=combineReducers({
     DashboardEvent:Reducer('DashboardEvent'),
     titleExists:Reducer('titleExists'),
     addQuestion:Reducer('addQuestion'),
-
+    getNotifications:Reducer('getNotifications'),
+    showNotifications:Reducer('showNotifications')
 })
 let Store=createStore(red,composeWithDevTools(applyMiddleware(logger,thunk))) 
 export default Store;

@@ -91,3 +91,11 @@ class QueryAnswerBlog(models.Model):
     type = models.CharField(max_length=30,default=None)
     answer = models.TextField()
     posted_on = models.DateTimeField(auto_now_add=True)
+
+class NotificationBlog(models.Model):
+    username = models.CharField(max_length=100)
+    seen = models.BooleanField(default=False)
+    title = models.CharField(max_length=255,default=None)
+    description = models.TextField(default=None)
+    visibility_time = models.DateTimeField(default=None)
+    posted_on = models.DateTimeField(auto_now_add=True)

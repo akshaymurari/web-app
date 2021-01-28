@@ -18,6 +18,7 @@ import ClassLinks from './ClassLinks/ClassLinks.jsx';
 import ClassBlog from './ClassBlog/ClassBlog.jsx';
 import StudentClassBlog from './StudentClassBlog/StudentClassBlog.jsx';
 import QueryBlog from './QueryBlog/QueryBlog.jsx';
+import NotificationBlog from './NotificationBlog/NotificationBlog.jsx';
 import DashboardEvent from './Dashboard/DashboardEvent/DashboardEvent.jsx';
 
 export const BaseUrl="http://127.0.0.1:8000/";
@@ -44,6 +45,8 @@ const App = () => {
         <Route exact path="/DashboardEvent" component={()=><Provider store={Store}><DashboardEvent type="student" /></Provider>}></Route>
         <Route exact path="/DashboardEventTeacher" component={()=><Provider store={Store}><DashboardEvent type="teacher"/></Provider>}></Route>
         <Route exact path="/QueryBlog" component={()=><Provider store={Store}><QueryBlog type="student"/></Provider>}></Route>
+        <Route exact path='/NotificationBlog' component={()=><Provider store={Store}><NotificationBlog type="student"></NotificationBlog></Provider>}></Route>
+        <Route exact path='/teacherNotificationBlog' component={()=><Provider store={Store}><NotificationBlog type="teacher"></NotificationBlog></Provider>}></Route>
         <Route exact path="/teacherQueryBlog" component={()=><Provider store={Store}><QueryBlog type="teacher"/></Provider>}></Route>
         <Route exact path='/error' component={()=><h1>Error</h1>}/>
       </Switch>

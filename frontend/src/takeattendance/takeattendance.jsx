@@ -309,7 +309,7 @@ const Takeattendance = () => {
                 </div>
                 <div className="row mt-5" style={{ visibility: (state.loading || state1.loading) ? "hidden" : "visible" }}>
                     <div style={{ height: '73vh', width: '100%' }}>
-                        <DataGrid rows={rows} columns={columns} pageSize={page} checkboxSelection onSelectionChange={onCheckBoxClick} />
+                        <DataGrid rows={rows} columns={columns} pageSize={page} checkboxSelection={true} onSelectionChange={onCheckBoxClick} />
                     </div>
                 </div>
             </div>

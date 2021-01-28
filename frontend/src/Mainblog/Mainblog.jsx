@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React, { useEffect,useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import icon from '../assets/icon.png';
@@ -8,42 +8,72 @@ import classlinks from '../assets/classlinks.png'
 import queries from '../assets/query-board.png'
 import event from '../assets/calendar.png'
 import './Mainblog.scss';
-import {BaseUrl} from '../App.jsx';
-import {useParams} from 'react-router';
-import {useHistory} from 'react-router-dom';
-import {useSelector,useDispatch} from 'react-redux';
+import { BaseUrl } from '../App.jsx';
+import { useParams } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Badge from '@material-ui/core/Badge';
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
+import useInterval from 'react-useinterval';
+import { useSelector, useDispatch } from 'react-redux';
 const Mainblog = () => {
-    let state = useSelector(state=>state.signin);
+    const [noBadges,setNoBadges] = useState(0);
+    const state1 = useSelector(state => state.getNotifications);
+    let state = useSelector(state => state.signin);
+    const [delay,setDelay] = useState(1000);
     let dispatch = useDispatch();
     const H = useHistory();
-    useEffect(async ()=>{
+    useEffect(async () => {
         let d = new Date();
-        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
         // e.preventDefault();
-        const value=JSON.parse(localStorage.getItem('value'));
-        let info = {...value,'date':d_s };
-        dispatch({type:'request_signin'});
+        const value = JSON.parse(localStorage.getItem('value'));
+        let info = { ...value, 'date': d_s };
+        // dispatch({ type: 'request_signin' });
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl+"studentexists/",
+                url: BaseUrl + "studentexists/",
                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: info,
                 responseType: 'json'
             })
-            dispatch({type:"success_signin",payload:data.data});
-            H.push(`/mainblog`);
+            dispatch({ type: "success_signin", payload: data.data });
+            // H.push(`/mainblog`);
         }
         catch {
-            dispatch({type:"error_signin",payload:"error"})
+            dispatch({ type: "error_signin", payload: "error" })
             H.push('/error');
         }
-    },[])
-    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE","link":"/attendance" }, { "image": classlinks, "title": "","link":"/StudentClassBlog", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG","link":"/QueryBlog" },
-    { "image": event, "title": "", "info": "EVENTS","link":"/DashboardEvent" }]
+    }, []);
+    const getNotifications = async () => {
+        setDelay(null);
+        // dispatch({"type":"request_getNotifications"})
+        try{
+            const data = await axios({
+                method : 'post',
+                url:BaseUrl+`getNotifications/`,
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data:{"username":JSON.parse(localStorage.getItem('value')).rollno,seen:0},
+                responseType : 'json'
+            });
+            // dispatch({"type":"success_getNotifications",payload:data.data});
+            setNoBadges((data.data).length);
+            // console.log((data.data).length);
+            setDelay(1000);
+        }
+        catch{
+            // dispatch({"type":"error_getNotifications",payload:""});
+            setDelay(null);
+        }
+    }
+    useInterval(getNotifications,delay)
+    let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE", "link": "/attendance" }, { "image": classlinks, "title": "", "link": "/StudentClassBlog", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG", "link": "/QueryBlog" },
+    { "image": event, "title": "", "info": "EVENTS", "link": "/DashboardEvent" }]
     return (
         <div>
-            <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
+            <div className="loader-spinner" style={{ visibility: (state.loading ) ? "visible" : "hidden" }}>
                 <div className="spinner-grow text-success mr-1" role="status">
                     <span className="sr-only">Loading...</span>
                 </div>
@@ -54,7 +84,7 @@ const Mainblog = () => {
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
-            <div className="container-fluid" style={{ visibility:(state.loading )? "hidden" : "visible" }}>
+            <div className="container-fluid" style={{ visibility: (state.loading ) ? "hidden" : "visible" }}>
                 <div className="row fixed-top">
                     <div className="col-12 navbar navbar-light bg-dark">
                         <div className="">
@@ -66,8 +96,13 @@ const Mainblog = () => {
                         <label className="ml-auto text-white mt-1 text-center">
                             VISUAL MEET
                                 </label>
-                        <div className="ml-auto">
-                            <button className="btn btn-outline-danger mr-2" onClick={()=>{localStorage.removeItem('value');H.push("/");}}>logout</button>
+                        <div className="ml-auto text-white">
+                            <IconButton aria-label="show 17 new notifications" color="inherit">
+                                <Badge badgeContent={noBadges} color="secondary" onClick={()=>H.push('/NotificationBlog')}>
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton>
+                            <button className="btn btn-outline-danger ml-3 mr-2" onClick={() => { localStorage.removeItem('value'); H.push("/"); }}>logout</button>
                         </div>
                     </div>
                 </div>

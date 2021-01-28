@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import StudentUser,TeacherUser,StudentQuery,StudentQueryAnswer,TeacherQueryAnswer,links,classWiseAttendanceStatus,Events,TeacherQuery,QueryBlog,QueryAnswerBlog
+from .models import StudentUser,TeacherUser,StudentQuery,StudentQueryAnswer,TeacherQueryAnswer,links,classWiseAttendanceStatus,Events,TeacherQuery,QueryBlog,QueryAnswerBlog,NotificationBlog
 
 @admin.register(StudentUser)
 class StudentUserAdmin(admin.ModelAdmin):
@@ -44,3 +44,8 @@ class QueryBlogAdmin(admin.ModelAdmin):
 @admin.register(QueryAnswerBlog)
 class QueryAnswerBlogAdmin(admin.ModelAdmin):
     list_display = ['posted_by','type','title','answer','posted_on']
+
+@admin.register(NotificationBlog)
+class NotificationBlogAdmin(admin.ModelAdmin):
+    list_display = ['username','title','description','visibility_time','seen','posted_on']
+
