@@ -21,6 +21,7 @@ import QueryBlog from './QueryBlog/QueryBlog.jsx';
 import NotificationBlog from './NotificationBlog/NotificationBlog.jsx';
 import DashboardEvent from './Dashboard/DashboardEvent/DashboardEvent.jsx';
 import QueryBlogChat from './QueryBlogChat/QueryBlogChat.jsx';
+import Dashboard from './Dashboard/Dashboard.jsx';
 
 export const BaseUrl="http://127.0.0.1:8000/";
 const App = () => {
@@ -32,11 +33,13 @@ const App = () => {
         <Route exact path="/forgotpassteacher" component={()=><Provider store={Store}><ForgotPassword type="teacher"/></Provider>}></Route>
         <Route exact path="/resetpass" component={()=><Provider store={Store}><Resetpass type="student"/></Provider>}></Route>
         <Route exact path="/resetpassteacher" component={()=><Provider store={Store}><Resetpass type="teacher"/></Provider>}></Route>
-        <Route exact path='/SignIn' render={()=><Provider store={Store}><SignIn/></Provider>}></Route>
-        <Route exact path='/SignUp' render={()=><Provider store={Store}><SignUp/></Provider>}></Route>
-        <Route exact path='/TeacherSignIn' render={()=><Provider store={Store}><TeacherSignIn/></Provider>}></Route>
-        <Route exact path='/TeacherSignUp' render={()=><Provider store={Store}><TeacherSignUp/></Provider>}></Route>
+        <Route exact path='/SignIn' component={()=><Provider store={Store}><SignIn/></Provider>}></Route>
+        <Route exact path='/SignUp' component={()=><Provider store={Store}><SignUp/></Provider>}></Route>
+        <Route exact path='/TeacherSignIn' component={()=><Provider store={Store}><TeacherSignIn/></Provider>}></Route>
+        <Route exact path='/TeacherSignUp' component={()=><Provider store={Store}><TeacherSignUp/></Provider>}></Route>
         <Route exact path='/mainblog' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
+        <Route exact path='/Dashboard' component={()=><Provider store={Store}><Dashboard type="student"/></Provider>}></Route>
+        <Route exact path='/teacherDashboard' component={()=><Provider store={Store}><Dashboard type="teacher"/></Provider>}></Route>
         <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
         <Route exact path='/teacherblog' component={()=><Provider store={Store}><Teacherblog/></Provider>}></Route>
         <Route exact path='/ClassLinks' component={()=><Provider store={Store}><ClassLinks/></Provider>}></Route>

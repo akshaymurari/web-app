@@ -85,8 +85,7 @@ const SignUp = () => {
             dispatch({type:"success_signup",payload:data.data});
             console.log(value);
             localStorage.setItem('value',JSON.stringify({'rollno':value,'password':valuePass,'gender':gender}))
-            const fun = () => H.push('/mainblog');
-            fun();
+            H.push(`/Dashboard`);
         }
         catch {
             dispatch({type:"error_signup",payload:'error'});

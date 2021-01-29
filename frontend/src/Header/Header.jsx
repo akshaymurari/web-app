@@ -4,12 +4,15 @@ import { Link } from 'react-scroll';
 import icon from "../assets/icon.png";
 import './Header.scss';
 import '../scrollLogin/scrollLogin.scss';
+import {useHistory} from 'react-router-dom';
 
-const Header = () => {
+const Header = (e) => {
+    // e.preventdefault();
+    const H = useHistory();
     return (
         <>
             <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-                <div class="container-fluid">
+                <div className="container-fluid">
                     <a className="navbar-brand" href="#">
                         <img src={icon} width="40" height="40" alt="" style={{ borderRadius: '10px' }}></img>
                     </a>
@@ -23,7 +26,7 @@ const Header = () => {
                                 <Link className="ml-auto mr-3" to="login-center" smooth={true} style={{ color: "#fff" }}><button className="signin">LOGIN</button></Link>
                             </li>
                             <li className="nav-item">
-                                <a className="ml-auto mr-3" href="/SignUp" style={{ color: "#fff" }}>
+                                <a className="ml-auto mr-3" onClick={()=>H.push('/SignUp')}  style={{ color: "#fff" }}>
                                     <button type="button" className="btn btn-outline-warning ml-2"><span>SIGNUP</span></button>
                                 </a>
                             </li>

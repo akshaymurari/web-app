@@ -8,6 +8,7 @@
     z-index: 10 !important;
     height: 100%;
     position: fixed !important;
+    overflow-y: scroll;
     width: 20vw;
     @media screen and (max-width: "1000px"){
         width: 40vw;

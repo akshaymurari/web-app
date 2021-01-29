@@ -26,6 +26,7 @@ const useStyles = makeStyles({
 });
 
 function DashboardProfile(props) {
+    console.log(props);
     const classes = useStyles(props);
     return (
         <div className="dashboardProfile">
@@ -34,18 +35,18 @@ function DashboardProfile(props) {
                 <br/>
                 <div className="dashboardProfileHeader">
                     <img src={ProfilePic} alt="User Profile pic"  className="dashboardProfileUserProfilePic"></img>
-                    <p className="dashboardProfileUserProfileName">Damon Salvatore</p><br/>
+                    <p className="dashboardProfileUserProfileName">{props.rollno}</p><br/>
                 </div>
             </div>
             <div className="dashboardProfileDetailes" style={{textAlign:"center", fontFamily: "Balsamiq Sans, cursive", width: "628px", display: "flex", flexDirection: "column", margin: "auto", maxWidth: "95vw"}}>
                 <h1 className="dashboardProfileAttributes">Name: </h1><br/>
-                <p className="dashboardProfileValues">Damon Salvatore</p><br/>
+                <p className="dashboardProfileValues">{props.rollno}</p><br/>
                 <h1 className="dashboardProfileAttributes">Roll Number: </h1><br/>
-                <p className="dashboardProfileValues">19H51A05G2</p><br/>
-                <h1 className="dashboardProfileAttributes">Email: </h1><br/>
-                <p className="dashboardProfileValues">damonsalvatore@gmail.com</p><br/>
-                <h1 className="dashboardProfileAttributes">Section: </h1><br/>
-                <p className="dashboardProfileValues">S06</p><br/>
+                <p className="dashboardProfileValues">{props.rollno}</p><br/>
+                {/* <h1 className="dashboardProfileAttributes">Email: </h1><br/>
+                <p className="dashboardProfileValues">damonsalvatore@gmail.com</p><br/> */}
+                {/* <h1 className="dashboardProfileAttributes">Section: </h1><br/>
+                <p className="dashboardProfileValues">S06</p><br/> */}
                 <h1 className="dashboardProfileAttributes">About Me: </h1><br/>
                 <input id="txt" type="text" className="dashboardProfileValues" style={{width: "80%"}}></input><br/>
             </div>

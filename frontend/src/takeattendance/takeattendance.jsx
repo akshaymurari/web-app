@@ -43,7 +43,7 @@ const Takeattendance = () => {
                 responseType: 'json'
             })
             dispatch({ type: "success_teachersignin", payload: data.data });
-            // H.push(`/takeattendance`);
+            // H.push(`/takeattendance`);      
         }
         catch {
             dispatch({ type: "error_teachersignin", payload: "error" })

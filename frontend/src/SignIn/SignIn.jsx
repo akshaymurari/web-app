@@ -62,7 +62,7 @@ const SignIn = () => {
             })
             dispatch({type:"success_signin",payload:data.data});
             localStorage.setItem('value',JSON.stringify({'rollno':value,'password':valuePass,'gender':gender}));
-            H.push(`/mainblog`);
+            H.push(`/Dashboard`);
         }
         catch {
             dispatch({type:"error_signin",payload:"error"})

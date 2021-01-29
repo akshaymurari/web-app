@@ -9,6 +9,7 @@ import * as FaIcons from 'react-icons/fa';
 import {CgProfile} from 'react-icons/cg';
 import {BiNotepad,BiLink,BiCalendarEvent} from 'react-icons/bi';
 import {VscCommentDiscussion} from 'react-icons/vsc';
+import {useHistory} from 'react-router-dom';
 
 
 const useStyles = makeStyles({
@@ -33,9 +34,10 @@ const useStyles = makeStyles({
 });
 
 function DashboardMenu(props) {
+    // console.log(props);
     const classes = useStyles(props);
     const [view, setView] = React.useState('list');
-
+    const H = useHistory();
     const handleChange = (event, nextView) => {
         setView(nextView);
     };
@@ -53,10 +55,11 @@ function DashboardMenu(props) {
         "dashboardMenuClose": props.open===false
     }
 
+    // const H = useHistory();
     return (
-        <div className={`dashboardMenu ${props.open? `dashboardMenuStyles`: ``}`} style={{height:"100vh", paddingTop: "4rem", position: "relative"}}>
+        <div className={`dashboardMenu ${props.open? `dashboardMenuStyles`: ``}`} style={{height:"100%", paddingTop: "4rem", position: ""}}>
             <img src={Profile_pic} alt="Profile" style={{width:"9rem", height:"8rem"}} className="mt-5 mb-3"></img>
-            <p>Hello! --Name--</p>
+            <p>Hello! {props.username}</p>
             <ToggleButtonGroup orientation="vertical" value={view} exclusive onChange={handleChange} className={classes.dashboardMenuButtonGroup}>
                 <ToggleButton value="profile" aria-label="profile" selected ={content==="profile"?true:false} onClick={() => {
                     setcontent("profile");
@@ -69,7 +72,7 @@ function DashboardMenu(props) {
                 </ToggleButton>
                 <ToggleButton value="attendance" aria-label="attendance" selected ={content==="attendance"?true:false} onClick={() => {
                     setcontent("attendance");
-                    togglingDisplay();
+                    H.push('/attendance');
                 }} className={`${content==="attendance"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}>
                     <BiNotepad style={{
@@ -82,6 +85,7 @@ function DashboardMenu(props) {
                 <ToggleButton value="classLinks" aria-label="classLinks" selected ={content==="classLinks"?true:false} onClick={() => {
                     setcontent("classLinks");
                     togglingDisplay();
+                    H.push('/StudentClassBlog');
                 }} className={`${content==="classLinks"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}><BiLink style={{
                         color: "black",
@@ -93,6 +97,7 @@ function DashboardMenu(props) {
                 <ToggleButton value="queryBlog" aria-label="queryBlog" selected ={content==="queryBlog"?true:false} onClick={() => {
                     setcontent("queryBlog");
                     togglingDisplay();
+                    H.push('/QueryBlog');
                 }} className={`${content==="queryBlog"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}><VscCommentDiscussion style={{
                         color: "black",
@@ -103,6 +108,7 @@ function DashboardMenu(props) {
                 <ToggleButton value="events" aria-label="events" selected ={content==="events"?true:false} onClick={() => {
                     setcontent("events");
                     togglingDisplay();
+                    H.push('/DashboardEvent');
                 }} className={`${content==="events"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}><BiCalendarEvent 
                     style={{
@@ -112,8 +118,8 @@ function DashboardMenu(props) {
                     </BiCalendarEvent>Events</h6>
                 </ToggleButton>
             </ToggleButtonGroup>
-            <a className="ml-auto mr-3" href="/SignUp" style={{ color: "#fff", position:"relative",top: "5rem"}}>
-                <button type="button" className="btn btn-outline-danger ml-2"><span>LOGOUT</span></button>
+            <a className="ml-auto mr-3" href="/" style={{ color: "#fff", position:"relative",top: "5rem"}}>
+                <button type="button" className="btn btn-outline-danger ml-2" onClick={() => { localStorage.removeItem('value'); }}><span>LOGOUT</span></button>
             </a>
         </div>
     )
