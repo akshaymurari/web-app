@@ -22,6 +22,20 @@ class Page(PageNumberPagination):
     page_size = 4
     page_size_query_param = 'pagerecords'
 
+class getNotificationResponse(APIView):
+    def post(self, request):
+        ans=[]
+        print(request.data)
+        for i in request.data:
+            if NotificationBlog.objects.filter(username=i["username"],seen=1,visibility_time=i["visibility_time"],title=i["title"]).exists():
+                ans.append({"seen":True,"username":i["username"],"id":i["username"]})
+            else:
+                ans.append({"username":i["username"],"seen":False,"id":i["username"]})
+        print(ans)
+        return JsonResponse(ans,safe=False)    
+    pass
+
+
 class QueryBlogQ(viewsets.ModelViewSet):
     queryset = QueryBlog.objects.all()
     serializer_class = QueryBlogSerializer

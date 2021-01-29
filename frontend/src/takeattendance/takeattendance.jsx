@@ -25,6 +25,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BaseUrl } from '../App.jsx';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 const Takeattendance = () => {
     useEffect(async () => {
@@ -50,21 +51,32 @@ const Takeattendance = () => {
             H.push('/error');
         }
     }, []);
+    const cols1 = [
+        { field: 'id', headerName: 'USERNAME', width: 260 },
+        { field: 'seen', headerName: 'SEEN BY USER', width: 350 },
+    ];
+    const [rows1, setrows1] = useState([]);
     let [rows, setrows] = useState([]);
     const H = useHistory();
     const { subject, section, time } = useParams();
     let state = useSelector(state => state.takeattendance);
     const dispatch = useDispatch();
     let state1 = useSelector(state => state.uploadattendance);
+    const state2 = useSelector(state => state.getAttendanceNotification);
     const [uploadDetails, setuploadDetails] = useState([]);
     const onCheckBoxClick = (p) => {
         // console.log(p.rowIds);
-        console.log(p.field);
+        console.log(p.rowIds);
         setuploadDetails(p.rowIds);
     }
     const uploadAttendanceForm = async () => {
         dispatch({ "type": "request_uploadattendance" });
         let dict = {};
+        rows1.map((v)=>{
+            if(v.seen){
+                dict[v.username]=true;
+            }     
+        });
         uploadDetails.map((val) => {
             dict[val] = true;
         })
@@ -79,7 +91,7 @@ const Takeattendance = () => {
             v["subject"] = subject;
             v["class_time"] = time;
             v["posted_by"] = JSON.parse(localStorage.getItem('value')).rollno;
-        })
+        });
         // console.log(rows);
         try {
             const data = await axios({
@@ -97,6 +109,7 @@ const Takeattendance = () => {
             H.push('/error');
         }
     }
+    const [checked, setchecked] = useState(false);
     const columns = [
         // { field: 'id', headerName: 'ID', width: 130 },
         { field: 'id', headerName: 'ROLLNO', width: 160 },
@@ -231,19 +244,56 @@ const Takeattendance = () => {
     const handleChange = (event) => {
         setpage(event.target.value);
     };
-    const sendAttendanceNotification = async () => {
-        // dispatch({'type':'request_sendAttendanceNotification'});
-        // dispatch({'type':'success_sendAttendanceNotification',payload:data.data});
-        // dispatch({'type':'error_sendAttendanceNotification',payload:""});
-        console.log("add notification");
-        // try{
-        //     const data = await axios({
-        //         url:BaseUrl+''
-        //     });
-        // }
-        // catch{
-
-        // }
+    const getAttendanceNotification = async (sendData) => {
+        console.log(sendData);
+        dispatch({ 'type': 'request_getAttendanceNotification' });
+        // clearTimeout(id);
+        // const id=setTimeout(60000);
+        try {
+            const data = await axios({
+                method: "post",
+                url: BaseUrl + 'getNotificationResponse/',
+                headers: { "Authorization": "token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: sendData,
+                responseType: "json"
+            });
+            dispatch({ 'type': 'success_getAttendanceNotification', payload: data.data });
+            console.log(data.data);
+            setrows1(data.data);
+        }
+        catch {
+            dispatch({ 'type': 'error_getAttendanceNotification', payload: "" });
+        }
+    }
+    const sendAttendanceNotification = async (e) => {
+        // console.log("add notification");
+        const d = new Date();
+        console.log(rows);
+        let sendData = [];
+        rows.map(async (v) => {
+            e.preventDefault();
+            const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + (d.getMinutes() + 2) + ":" + d.getSeconds();
+            dispatch({ 'type': 'request_sendAttendanceNotification' });
+            const info = { ...v, "seen": 0, "visibility_time": d_s, "title": subject, "description": "your attendance was added 😃 which was taken on " + time };
+            console.log(info);
+            sendData.push({...info,id:info.username});
+            try {
+                const data = await axios({
+                    url: BaseUrl + 'NotificationBlogG/',
+                    headers: { "Authorization": "token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                    data: info,
+                    method: "post",
+                    responseType: "json"
+                });
+                dispatch({ 'type': 'success_sendAttendanceNotification', payload: data.data });
+                console.log(data.data);
+            }
+            catch {
+                dispatch({ 'type': 'error_sendAttendanceNotification', payload: "" });
+            }
+        })
+        dispatch({ 'type': 'request_getAttendanceNotification' });
+        setTimeout(() => getAttendanceNotification(sendData), 30000);
     }
     return (
         <>
@@ -251,100 +301,104 @@ const Takeattendance = () => {
                 <div className="row ">
                     <div className={classes.root}>
                         <AppBar position="static">
-                                {/* <IconButton
+                            {/* <IconButton
                                     edge="start"
                                     className={classes.menuButton}
                                     color="inherit"
                                     aria-label="open drawer">
                                     <MenuIcon />
                                 </IconButton>  */}
-                             <Toolbar>
-                                <IconButton onClick={sendAttendanceNotification} >
-                                    <AddIcon className="text-white m-0" />
-                                </IconButton>
-                            <Typography className={classes.title} variant="h6" noWrap>
-                                Takeattendance
+                            <Toolbar>
+                                <Button variant="contained" onClick={sendAttendanceNotification} className="mr-3 bg-warning">start</Button>
+                                <Typography className={classes.title} variant="h6" noWrap>
+                                    Takeattendance
                             </Typography>
-                            <div>
-                                <FormControl className={classes2.formControl} style={{ color: "#fff !important", marginTop: "-0rem" }}>
-                                    <InputLabel id="demo-simple-select-label" className="text-white">pages</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={page}
-                                        className="text-white"
-                                        onChange={handleChange}
+                                <div>
+                                    <FormControl className={classes2.formControl} style={{ color: "#fff !important", marginTop: "-0rem" }}>
+                                        <InputLabel id="demo-simple-select-label" className="text-white">pages</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={page}
+                                            className="text-white"
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value={5}>5</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem>
+                                            <MenuItem value={15}>15</MenuItem>
+                                            <MenuItem value={20}>20</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                <div>
+                                    <Button onClick={uploadAttendanceForm} style={{ background: "#d7dff7" }}
+                                        variant="contained"
+                                        color="default"
+                                        className={classes3.button}
+                                        startIcon={<CloudUploadIcon />}
                                     >
-                                        <MenuItem value={5}>5</MenuItem>
-                                        <MenuItem value={10}>10</MenuItem>
-                                        <MenuItem value={15}>15</MenuItem>
-                                        <MenuItem value={20}>20</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div>
-                            <div>
-                                <Button onClick={uploadAttendanceForm} style={{ background: "#d7dff7" }}
-                                    variant="contained"
-                                    color="default"
-                                    className={classes3.button}
-                                    startIcon={<CloudUploadIcon />}
-                                >
-                                    Upload
+                                        Upload
                                     </Button>
-                            </div>
+                                </div>
                             </Toolbar>
                         </AppBar>
+                    </div>
                 </div>
-            </div>
-            <div className="row">
-                <div className={classes1.root}>
-                    <Accordion>
-                        <AccordionSummary style={{ background: "#d7dff7", border: "none !important" }}
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header">
-                            <Typography className={classes.heading} color="primary" style={{ fontWeight: "600" }}>Note <DoubleArrowIcon color="primary" style={{ fontSize: "1rem" }} /></Typography>
-                        </AccordionSummary>
-                        <AccordionDetails style={{ background: "#d7dff7", border: "none !important" }}>
-                            <Typography>
-                                please click on checkbox if student is present or keep blank in case student is absent
+                <div className="row">
+                    <div className={classes1.root}>
+                        <Accordion>
+                            <AccordionSummary style={{ background: "#d7dff7", border: "none !important" }}
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header">
+                                <Typography className={classes.heading} color="primary" style={{ fontWeight: "600" }}>Note <DoubleArrowIcon color="primary" style={{ fontSize: "1rem" }} /></Typography>
+                            </AccordionSummary>
+                            <AccordionDetails style={{ background: "#d7dff7", border: "none !important" }}>
+                                <Typography>
+                                    please click on checkbox if student is present or keep blank in case student is absent
                                 </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                </div>
-            </div>
-            <div className="row">
-                <div className="loader-spinner" style={{ visibility: (state.loading) ? "visible" : "hidden" }}>
-                    <div className="spinner-grow text-success mr-1" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                    <div className="spinner-grow text-danger mr-1" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                    <div className="spinner-grow text-warning mr-1" role="status">
-                        <span className="sr-only">Loading...</span>
+                            </AccordionDetails>
+                        </Accordion>
                     </div>
                 </div>
-            </div>
-            <div className="row mt-5" style={{ visibility: (state.loading || state1.loading) ? "hidden" : "visible" }}>
-                <div style={{ height: '73vh', width: '100%' }}>
-                    <DataGrid rows={rows} columns={columns} pageSize={page} checkboxSelection={true} onCellClick={onCheckBoxClick} />
+                <div className="row">
+                    <div className="loader-spinner" style={{ visibility: (state.loading) ? "visible" : "hidden" }}>
+                        <div className="spinner-grow text-success mr-1" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        <div className="spinner-grow text-danger mr-1" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        <div className="spinner-grow text-warning mr-1" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="row mt-5" style={{ visibility: (state.loading || state1.loading) ? "hidden" : "visible" }}>
+                    <div style={{ height: '43vh', width: '100%' }}>
+                        <DataGrid rows={rows1} columns={cols1} pageSize={3} />
+                    </div>
+                    <div style={{ height: '43vh', width: '100%' }}>
+                        <DataGrid rows={rows} columns={columns} pageSize={page} checkboxSelection={true} onSelectionChange={onCheckBoxClick} />
+                    </div>
+                    {/* <table class="table table-striped table-hover">
+                         
+                    </table> */}
                 </div>
             </div>
-        </div>
-            {/* <div> */ }
-    <div className="loader-spinner1" style={{ visibility: (state1.loading) ? "visible" : "hidden" }}>
-        <div className="spinner-grow text-success mr-1" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <div className="spinner-grow text-danger mr-1" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        <div className="spinner-grow text-warning mr-1" role="status">
-            <span className="sr-only">Loading...</span>
-        </div>
-        {/* </div> */}
-    </div>
+            {/* <div> */}
+            <div className="loader-spinner1" style={{ visibility: (state1.loading || state2.loading) ? "visible" : "hidden" }}>
+                <div className="spinner-grow text-success mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-danger mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div className="spinner-grow text-warning mr-1" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                {/* </div> */}
+            </div>
         </>
     )
 }

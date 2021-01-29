@@ -70,7 +70,7 @@ function DashboardMenu(props) {
                         margin: "auto 1rem"
                     }}></CgProfile>  Profile</h6>
                 </ToggleButton>
-                <ToggleButton value="attendance" aria-label="attendance" selected ={content==="attendance"?true:false} onClick={() => {
+                <ToggleButton style={{"display": (props.type==="student")?"visible":"none"}} value="attendance" aria-label="attendance" selected ={content==="attendance"?true:false} onClick={() => {
                     setcontent("attendance");
                     H.push('/attendance');
                 }} className={`${content==="attendance"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
@@ -85,7 +85,7 @@ function DashboardMenu(props) {
                 <ToggleButton value="classLinks" aria-label="classLinks" selected ={content==="classLinks"?true:false} onClick={() => {
                     setcontent("classLinks");
                     togglingDisplay();
-                    H.push('/StudentClassBlog');
+                    (props.type==="student")?H.push('/StudentClassBlog'):H.push('/ClassBlog');
                 }} className={`${content==="classLinks"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}><BiLink style={{
                         color: "black",
@@ -97,7 +97,7 @@ function DashboardMenu(props) {
                 <ToggleButton value="queryBlog" aria-label="queryBlog" selected ={content==="queryBlog"?true:false} onClick={() => {
                     setcontent("queryBlog");
                     togglingDisplay();
-                    H.push('/QueryBlog');
+                    (props.type==="student")?H.push('/QueryBlog'):H.push('/teacherQueryBlog');
                 }} className={`${content==="queryBlog"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}><VscCommentDiscussion style={{
                         color: "black",
@@ -108,7 +108,7 @@ function DashboardMenu(props) {
                 <ToggleButton value="events" aria-label="events" selected ={content==="events"?true:false} onClick={() => {
                     setcontent("events");
                     togglingDisplay();
-                    H.push('/DashboardEvent');
+                    (props.type==="student")?H.push('/DashboardEvent'):H.push('/DashboardEventTeacher');
                 }} className={`${content==="events"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}><BiCalendarEvent 
                     style={{

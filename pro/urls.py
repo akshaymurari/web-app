@@ -19,6 +19,7 @@ urlpatterns = [
     path('GetQueryQ/<str:pk>/',views.GetQueryQ.as_view({'get': 'list'})),
     path('GetQueryA/<str:pk>/',views.GetQueryA.as_view({'get': 'list'})),
     # path('GetQueryQ/<str:pk>/',views.QueryBlogAQ.as_view()),
+    path('getNotificationResponse/',views.getNotificationResponse.as_view()),
     path('getNotifications/',views.getNotifications.as_view()),
     path('forgetpassword/',views.forgetpassword.as_view()),
     path('teacherClassLinks/<str:pk>',views.teacherClassLinks.as_view()),

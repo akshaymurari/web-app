@@ -41,7 +41,7 @@ const App = () => {
         <Route exact path='/Dashboard' component={()=><Provider store={Store}><Dashboard type="student"/></Provider>}></Route>
         <Route exact path='/teacherDashboard' component={()=><Provider store={Store}><Dashboard type="teacher"/></Provider>}></Route>
         <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
-        <Route exact path='/teacherblog' component={()=><Provider store={Store}><Teacherblog/></Provider>}></Route>
+        <Route exact path='/teacherblog' component={()=><Provider store={Store}><Dashboard type="teacher"/></Provider>}></Route>
         <Route exact path='/ClassLinks' component={()=><Provider store={Store}><ClassLinks/></Provider>}></Route>
         <Route exact path='/ClassBlog' component={()=><Provider store={Store}><ClassBlog/></Provider>}></Route>
         <Route exact path="/StudentClassBlog" component={()=><Provider store={Store}><StudentClassBlog/></Provider>}></Route>
