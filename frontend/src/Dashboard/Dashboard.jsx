@@ -5,22 +5,32 @@ import DashboardHeader from './DashboardHeader';
 import './Dashboard.scss'
 import DashboardProfile from './DashboardProfile/DashboardProfile';
 import DashboardEvent from './DashboardEvent/DashboardEvent';
+import * as FaIcons from 'react-icons/fa';
+import {useHistory} from 'react-router-dom';
 
 function Dashboard() {
-    const [content, setcontent] = useState("profile");
+    const [showSideBar, setshowSideBar] = useState(true);
+    const H = useHistory();
+    const diplayDashboardContent = (content) => {
+        console.log(content);
+        if(true){
+            return <DashboardProfile/>
+        }
+    }
+
     return (
-        /* <div className="dashboard container">
-            <div className="row d-flex align-items-stretch">
-                <div className="col-lg-2 col-md-3 p-0">
-                    <DashboardMenu/>
-                </div>
-                <div className="col">
-                    <DashboardContent/>
+        <React.Fragment>
+            <DashboardHeader click={()=>setshowSideBar(!showSideBar)}></DashboardHeader>
+            <DashboardMenu open={showSideBar} whatToDisplay={diplayDashboardContent}></DashboardMenu>
+            <div className="dashboard container">
+                <div className="" style={{
+                    width: "100vw",
+                    zIndex: "1"
+                    }}>
+                    { diplayDashboardContent() }
                 </div>
             </div>
-        </div> */
-        /* <DashboardProfile></DashboardProfile> */
-        <DashboardEvent></DashboardEvent>
+        </React.Fragment>
     )
 }
 

@@ -37,7 +37,7 @@ function DashboardProfile(props) {
                     <p className="dashboardProfileUserProfileName">Damon Salvatore</p><br/>
                 </div>
             </div>
-            <div style={{textAlign:"center", fontFamily: "Balsamiq Sans, cursive"}}>
+            <div className="dashboardProfileDetailes" style={{textAlign:"center", fontFamily: "Balsamiq Sans, cursive", width: "628px", display: "flex", flexDirection: "column", margin: "auto", maxWidth: "95vw"}}>
                 <h1 className="dashboardProfileAttributes">Name: </h1><br/>
                 <p className="dashboardProfileValues">Damon Salvatore</p><br/>
                 <h1 className="dashboardProfileAttributes">Roll Number: </h1><br/>
@@ -47,7 +47,7 @@ function DashboardProfile(props) {
                 <h1 className="dashboardProfileAttributes">Section: </h1><br/>
                 <p className="dashboardProfileValues">S06</p><br/>
                 <h1 className="dashboardProfileAttributes">About Me: </h1><br/>
-                <input id="txt" type="text" className="dashboardProfileValues" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';"></input><br/>
+                <input id="txt" type="text" className="dashboardProfileValues" style={{width: "80%"}}></input><br/>
             </div>
             <Button variant="outlined" className={classes.profileEditButton}>
                 <EditIcon className={classes.editIcon}></EditIcon>

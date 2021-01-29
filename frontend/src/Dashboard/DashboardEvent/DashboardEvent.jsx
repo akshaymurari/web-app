@@ -43,7 +43,7 @@ function DashboardEvent(props) {
     const endDay = value.clone().endOf("month").endOf('week');
     let [eventDays, setEventDays] = useState({})
     let [msg, setmsg] = useState({ "EventName": "", "EventDescription": "" })
-    const state = useSelector(state => state.DashboardEvent);
+    /* const state = useSelector(state => state.DashboardEvent); */
     const state1 = useSelector(state => {
         if (props.type === "student") {
             return state.signin;
@@ -74,7 +74,7 @@ function DashboardEvent(props) {
         }
         catch {
             dispatch({ type: "error_signin", payload: "error" })
-            H.push('/error');
+            // H.push('/error');
         }
     }, []);
     useEffect(async () => {
