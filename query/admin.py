@@ -43,7 +43,7 @@ class QueryBlogAdmin(admin.ModelAdmin):
 
 @admin.register(QueryAnswerBlog)
 class QueryAnswerBlogAdmin(admin.ModelAdmin):
-    list_display = ['posted_by','type','title','answer','posted_on']
+    list_display = ['posted_by','type','title','message','posted_on']
 
 @admin.register(NotificationBlog)
 class NotificationBlogAdmin(admin.ModelAdmin):

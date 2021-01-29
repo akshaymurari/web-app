@@ -10,12 +10,14 @@ router.register('teacherStore',views.teacher,basename='teacher')
 router.register('addClassLinks',views.addClassLinks,basename='addlinks') 
 router.register('PostQueryQ',views.QueryBlogQ,basename='querypost') 
 router.register('PostQueryA',views.QueryBlogA,basename='queryanswerpost') 
+# router.register('PostQueryA/',views.QueryBlogA,basename='queryanswerpost') 
 router.register('EventsBlog',views.EventsBlog,basename='events') 
 router.register('NotificationBlogG',views.NotificationBlogG,basename='notifications') 
 
 urlpatterns = [
     path('',include(router.urls)),
     path('GetQueryQ/<str:pk>/',views.GetQueryQ.as_view({'get': 'list'})),
+    path('GetQueryA/<str:pk>/',views.GetQueryA.as_view({'get': 'list'})),
     # path('GetQueryQ/<str:pk>/',views.QueryBlogAQ.as_view()),
     path('getNotifications/',views.getNotifications.as_view()),
     path('forgetpassword/',views.forgetpassword.as_view()),

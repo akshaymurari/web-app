@@ -31,6 +31,7 @@ class QueryBlogQ(viewsets.ModelViewSet):
     search_fields = ['posted_by','type','title']
     pagination_class = Page
 
+
 class NotificationBlogG(viewsets.ModelViewSet):
     queryset = NotificationBlog.objects.all()
     serializer_class = NotificationBlogSerializer
@@ -47,7 +48,7 @@ class getNotifications(APIView):
         obj = NotificationBlog.objects.filter(seen=0,visibility_time__gte=today,username=request.data["username"])
         print(obj)
         serializer = NotificationBlogSerializer(obj,many=True)
-        # print(serializer.data)
+        print(serializer.data)
         if request.data["seen"]:
             con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
             cur = con.cursor()
@@ -87,6 +88,21 @@ class QueryBlogA(viewsets.ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ['posted_by','type']
     pagination_class = Page
+    # def get_queryset(self):
+    #     print(self.kwargs)
+    #     return QueryBlog.objects.filter(title_id=self.kwargs['pk'])
+
+class GetQueryA(viewsets.ModelViewSet):
+    # queryset = QueryAnswerBlog.objects.all()
+    serializer_class = QueryAnswerBlogSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [DjangoModelPermissions]
+    filter_backends = [SearchFilter]
+    search_fields = ['posted_by','type']
+    # pagination_class = Page
+    def get_queryset(self):
+        print(self.kwargs)
+        return QueryAnswerBlog.objects.filter(title=self.kwargs['pk'])
 
 class EventsBlog(viewsets.ModelViewSet):
     queryset = Events.objects.all()

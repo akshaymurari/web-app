@@ -82,6 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'querydb',
         'USER':'root',
+        'OPTIONS': {'charset': 'utf8mb4'},
         'PORT':3306,
         'PASSWORD':'akshay',
         'HOST':'localhost'

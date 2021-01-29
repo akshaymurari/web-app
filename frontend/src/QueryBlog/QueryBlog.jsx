@@ -31,7 +31,6 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-
 import './QueryBlog.scss'
 import './BlogCards.css';
 
@@ -44,6 +43,8 @@ const QueryBlog = (props) => {
             return state.teachersignin;
         }
     });
+    console.log(props);
+    console.log("hiii")
     let state1 = useSelector(state => state.QueryBlog);
     let state2 = useSelector(state => state.titleExists);
     let state3 = useSelector(state => state.addQuestion);
@@ -71,6 +72,7 @@ const QueryBlog = (props) => {
         const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
         const value = JSON.parse(localStorage.getItem('value'));
         let info = { ...value, 'date': d_s };
+        console.log(info)
         if(props.type==="student"){
             dispatch({ type: 'request_signin' });
         }

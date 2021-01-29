@@ -83,7 +83,7 @@
             border-radius: 8px;
             margin-right: 10px;
             margin-bottom: 10px;
-            background-color: #80ffdb;
+            background-color: #80ffdb !important;
             border: rgba(0, 0, 0, 0.3) 0.5px solid;
             .queryBlogChatMessageName{
                 font-size: 0.9rem;
@@ -95,6 +95,8 @@
             margin-left: 10px;
             margin-bottom: 10px;
             font-size: 1.2rem;
+            min-width: 100px;
+            max-width: 75%;      
             background-color: #cffffe;
             width: max-content;
             border-radius: 8px;

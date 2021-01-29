@@ -47,7 +47,8 @@ const Mainblog = () => {
             H.push('/error');
         }
     }, []);
-    const getNotifications = async () => {
+    const [updateNotifications,setUpdateNotifications] = useState(true);
+    useEffect(async () => {
         setDelay(null);
         // dispatch({"type":"request_getNotifications"})
         try{
@@ -61,14 +62,18 @@ const Mainblog = () => {
             // dispatch({"type":"success_getNotifications",payload:data.data});
             setNoBadges((data.data).length);
             // console.log((data.data).length);
-            setDelay(1000);
+            setDelay(10000);
         }
         catch{
             // dispatch({"type":"error_getNotifications",payload:""});
             setDelay(null);
         }
+    },[updateNotifications])
+    const getNotifications = async () => {
+        setDelay(null);
+        setUpdateNotifications((pre)=>!pre);
     }
-    useInterval(getNotifications,delay)
+    useInterval(getNotifications,delay);
     let props = [{ "image": attendance, "title": "", "info": "ATTENDANCE", "link": "/attendance" }, { "image": classlinks, "title": "", "link": "/StudentClassBlog", "info": "CLASSLINKS" }, { "image": queries, "title": "", "info": "QUERYBLOG", "link": "/QueryBlog" },
     { "image": event, "title": "", "info": "EVENTS", "link": "/DashboardEvent" }]
     return (

@@ -89,7 +89,7 @@ class QueryAnswerBlog(models.Model):
     posted_by = models.CharField(max_length=255)
     title = models.ForeignKey(QueryBlog, on_delete=models.CASCADE)
     type = models.CharField(max_length=30,default=None)
-    answer = models.TextField()
+    message = models.TextField()
     posted_on = models.DateTimeField(auto_now_add=True)
 
 class NotificationBlog(models.Model):

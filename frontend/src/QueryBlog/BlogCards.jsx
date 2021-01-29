@@ -26,7 +26,7 @@ const BlogCards = (props) => {
                     <DeleteIcon fontSize="large" className="text-white" />
                 </IconButton></div>)
             }
-            <blockquote class="blockquote mb-0" onClick={()=>H.push(`/QueryAnswerBlog/${props.title}`)} >
+            <blockquote class="blockquote mb-0" onClick={()=>H.push(`/QueryAnswerBlog/${props.title}/${props.user_type}`)} >
                 <h3 style={{ textTransform: "uppercase" }}>
                 {props.title}
                 </h3>

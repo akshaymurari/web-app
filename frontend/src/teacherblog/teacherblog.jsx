@@ -46,7 +46,8 @@ const Teacherblog = () => {
             H.push('/error');
         }
     }, []);
-    const getNotifications = async () => {
+    const [updateNotifications,setUpdateNotifications] = useState(true);
+    useEffect(async ()=>{
         setDelay(null);
         // dispatch({"type":"request_getNotifications"})
         try {
@@ -60,12 +61,15 @@ const Teacherblog = () => {
             // dispatch({"type":"success_getNotifications",payload:data.data});
             setNoBadges((data.data).length);
             // console.log((data.data).length);
-            setDelay(1000);
+            setDelay(10000);
         }
         catch {
             // dispatch({"type":"error_getNotifications",payload:""});
             setDelay(null);
         }
+    },[updateNotifications]);
+    const getNotifications = async () => {
+        setUpdateNotifications((pre) => !pre);
     }
     useInterval(getNotifications, delay)
     let props = [{ "image": classlinks, "title": "", "link": "/ClassBlog", "info": "ADDCLASS" }, { "image": queries, "title": "", "info": "QUERYBLOG", "link": "/teacherQueryBlog" },

@@ -1,4 +1,4 @@
-import React, {useState,useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './QueryBlogChat.scss';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Button, makeStyles } from '@material-ui/core';
@@ -7,7 +7,12 @@ import profile_pic from '../assets/male_avatar.png';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
-//npm i emoji-mart
+import useInterval from 'react-useinterval';
+import { useParams } from 'react-router-dom';
+import { BaseUrl } from '../App.jsx';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
     queryBlogChatAddEmoji: {
@@ -21,23 +26,162 @@ const useStyles = makeStyles({
 });
 
 function QueryBlogChat(props) {
-    const classes=useStyles(props);
-    const [messages, setmessages] = useState([{
-        who_sent: "student",
-        message: "Hello"
-    }]);
+    const { title, type } = useParams();
+    let state = useSelector(state => {
+        if (type === "student") {
+            return state.signin;
+        }
+        if (type === "teacher") {
+            return state.teachersignin;
+        }
+    });
+    const H = useHistory();
+    const [delay, setDelay] = useState(100);
+    const classes = useStyles(props);
+    const state2 = useSelector(state2 => state2.showQueryBlogMessages);
+    const dispatch = useDispatch();
+    const [messages, setmessages] = useState([]);
+    useEffect(async () => {
+        let d = new Date();
+        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        const value = JSON.parse(localStorage.getItem('value'));
+        let info = { ...value, 'date': d_s };
+        if (type === "student") {
+            dispatch({ type: 'request_signin' });
+        }
+        else if (type === "teacher") {
+            dispatch({ type: 'request_teachersignin' });
+        }
+        try {
+            const data = await axios({
+                method: "post",
+                url: BaseUrl + type + "exists/",
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: info,
+                responseType: 'json'
+            })
+            if (props.type === "student") {
+                dispatch({ type: "success_signin", payload: data.data });
+            }
+            else if (props.type === "teacher") {
+                dispatch({ type: "success_teachersignin", payload: data.data });
+            }
+            // H.push(`/mainblog`);
+        }
+        catch {
+            if (props.type === "student") {
+                dispatch({ type: "error_signin", payload: "" });
+            }
+            else if (props.type === "teacher") {
+                dispatch({ type: "error_teachersignin", payload: "" });
+            }
+            H.push('/error');
+        }
+    }, []);
     const [showEmoji, setshowEmoji] = useState(false);
     const [backDrop, setbackDrop] = useState(false);
-    const [newMessage, setnewMessage] = useState([{
-        who_sent: "me",
-        message: ""
-    }]);
-    const handleChange = e => {
-        console.log(newMessage)
+    const state1 = useSelector(state => state.sendQueryBlogMessages);
+    const [newMessage, setnewMessage] = useState([
+        //     {
+        //     posted_by: "me",
+        //     message: "hello"
+        // }
+    ]);
+    const [updateMessage, setupdateMessage] = useState(true);
+    console.log(messages);
+    useEffect(async () => {
+        dispatch({ "type": "request_showQueryBlogMessages" })
+        setDelay(null);
+        try {
+            const data = await axios({
+                method: 'get',
+                url: BaseUrl + `GetQueryA/${title}/`,
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: { "username": JSON.parse(localStorage.getItem('value')).rollno, seen: 0 },
+                responseType: 'json'
+            });
+            let msg = data.data;
+            // console.log(msg);
+            msg.reverse();
+            dispatch({ "type": "success_showQueryBlogMessages", payload: msg });
+            setmessages(msg);
+            // messages
+            // console.log((data.data).len);
+            setDelay(1000);
+        }
+        catch {
+            dispatch({ "type": "error_showQueryBlogMessages", payload: "" });
+            setDelay(null);
+        }
+    }, [updateMessage]);
+    const showQueryBlogMessages = async (e) => {
+        setDelay(null);
+        setupdateMessage((pre) => !pre);
+    }
+    useInterval(showQueryBlogMessages,delay);
+    const onSubmitMessage = async () => {
+        dispatch({ "type": "request_sendQueryBlogMessages" })
+        const info = { "type": type, "title": title, "posted_by": JSON.parse(localStorage.getItem('value')).rollno, "message": newMessage.message };
+        console.log(info);
+        setDelay(null);
+        try {
+            const data = await axios({
+                method: 'post',
+                url: BaseUrl + `PostQueryA/`,
+                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                data: info,
+                responseType: 'json'
+            });
+            let msg = [...messages, newMessage.message];
+            // console.log(msg);
+            msg.reverse();
+            setmessages(msg);
+            dispatch({ "type": "success_sendQueryBlogMessages", payload: msg });
+            setDelay(1000);
+            setnewMessage({
+                posted_by: "",
+                message: ""
+            });
+            // console.log((data.data).len);
+        }
+        catch {
+            dispatch({ "type": "error_sendQueryBlogMessages", payload: "" });
+            setDelay(null);
+        }
+    }
+    const handleChange = async (e) => {
+        // console.log(newMessage);
         setnewMessage({
-            who_sent: "me",
+            posted_by: "me",
             message: e.target.value
         });
+        // dispatch({"type":"request_sendQueryBlogMessages"})
+        // const info={"type":props.type,"title":title,"posted_by":JSON.parse(localStorage.getItem('value')).rollno,"message":e.target.value};
+        // setDelay(null);
+        // try{
+        //     const data = await axios({
+        //         method : 'post',
+        //         url:BaseUrl+`PostQueryA/`,
+        //         headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+        //         data:info,
+        //         responseType : 'json'
+        //     });
+        //     let msg=[...messages,e.target.value];
+        //     // console.log(msg);
+        //     msg.reverse();
+        //     setmessages(msg);
+        //     dispatch({"type":"success_sendQueryBlogMessages",payload:msg});
+        //     setnewMessage({
+        //         posted_by: "me",
+        //         message: e.target.value
+        //     });
+        //     setDelay(1000);
+        //     // console.log((data.data).len);
+        // }
+        // catch{
+        //     dispatch({"type":"error_sendQueryBlogMessages",payload:""});
+        //     setDelay(null);
+        // }
     }
     const addEmoji = e => {
         let sym = e.unified.split('-')
@@ -45,8 +189,8 @@ function QueryBlogChat(props) {
         sym.forEach(el => codesArray.push('0x' + el))
         let emoji = String.fromCodePoint(...codesArray)
         setnewMessage({
-            who_sent: "me",
-            message: newMessage.message+emoji,
+            posted_by: "me",
+            message: newMessage.message + emoji,
         });
     }
 
@@ -55,23 +199,34 @@ function QueryBlogChat(props) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     };
     useEffect(scrollToBottom, [messages]);
-    
+
     return (
         <div className="queryBlogChatScreen p-0">
-            {backDrop? <div style={{width:"100%", height: "100%", position: "absolute", zIndex:"20", border: "0"}} onClick={(e)=>{
+            {backDrop ? <div style={{ width: "100%", height: "100%", position: "absolute", zIndex: "20", border: "0" }} onClick={(e) => {
                 setbackDrop(false);
                 setshowEmoji(false);
-            }}></div>: null}
+            }}></div> : null}
             <div className="queryBlogChatArea container ">
-                <div className="row align-items-stretch" style={{height: "100%", borderRadius: "10px"}}>
+                <div className="row align-items-stretch" style={{ height: "100%", borderRadius: "10px" }}>
                     <div className="col-md-3 p-0 queryBlogChatAreaLeftPane">
-                        <div className="queryBlogChatBack">
+                        <div className="loader-spinner" style={{ visibility: (state1.loading) ? "visible" : "hidden" }}>
+                            <div className="spinner-grow text-success mr-1" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                            <div className="spinner-grow text-danger mr-1" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                            <div className="spinner-grow text-warning mr-1" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div className="queryBlogChatBack" >
                             <Button><ArrowBackIcon></ArrowBackIcon></Button>
                         </div>
                         <div className="queryBlogChatTitle">
-                            <img src={profile_pic} style={{width: "9rem", height: "8rem"}}></img>
+                            <img src={profile_pic} style={{ width: "9rem", height: "8rem" }}></img>
                             <h1>Hello!</h1>
-                            <p>---Name---</p>
+                            <p>{JSON.parse(localStorage.getItem('value')).rollno}</p>
                         </div>
                         <h3 style={{
                             marginLeft: "20px"
@@ -81,9 +236,9 @@ function QueryBlogChat(props) {
                             borderLeft: "#79d70f 5px solid",
                             marginTop: "20px",
                             padding: "8px",
-                        }}>Title of the Topic</h3>
+                        }}>{title}</h3>
                         <div style={{
-                            position:"absolute",
+                            position: "absolute",
                             bottom: "0.3rem",
                             lineHeight: "0.5px",
                             textAlign: "center",
@@ -92,73 +247,60 @@ function QueryBlogChat(props) {
                             fontSize: "0.8rem"
                         }}>
                             <p>Please Follow the Community GuideLines</p>
-                            <p>Virtual Meet</p>
+                            <p>Visual Meet</p>
                         </div>
                     </div>
-                    <div className="col-md-9 p-0 queryBlogChatAreaRightPane" style={{border: "black 1px solid"}}>
+                    <div className="col-md-9 p-0 queryBlogChatAreaRightPane" style={{ border: "black 1px solid" }}>
                         <div className="queryBlogChatMessagesArea">
                             <div className="queryBlogChatHeader p-2">
                                 <h1 className="queryBlogChatHeaderHeading">Discussion Forum 🔍</h1>
                             </div>
                             <div className="queryBlogChats">
                                 <div ref={messagesEndRef} />
-                                {messages.map((value, idx)=>(
-                                    <div className={value.who_sent} id={idx}>
-                                        <p className="queryBlogChatMessageName">{value.who_sent==="me"?"Me":"Name of the person"}</p>
+                                {messages.map((value, idx) => (
+                                    <div className={((JSON.parse(localStorage.getItem('value')).rollno) === value.posted_by) ? "me" : "student"}
+                                        style={{ background: ((JSON.parse(localStorage.getItem('value')).rollno) === value.posted_by) ? "80ffdb" : (value.type === "student") ? "#cffffe" : "#fcf876" }} id={idx}>
+                                        <p className="queryBlogChatMessageName">{value.posted_by === (JSON.parse(localStorage.getItem('value')).rollno) ? "Me" : value.posted_by}</p>
                                         <p>{value.message}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
                         <div className="queryBlogChatNewMessageArea">
-                            {showEmoji? (
+                            {showEmoji ? (
                                 <span style={{
                                     position: "absolute",
                                     bottom: "80px",
                                     left: "10px",
                                     zIndex: "40",
                                 }}>
-                                    <Picker onSelect={(e)=>addEmoji(e)} title="Visual Meet"/>:
+                                    <Picker onSelect={(e) => addEmoji(e)} title="Visual Meet" />:
                                 </span>
-                                ): null
+                            ) : null
                             }
                             <InsertEmoticonIcon
-                            className={classes.queryBlogChatAddEmoji}
-                            style={{
-                                fontSize:"1.8rem"
-                            }}
-                            onClick={() => {
-                                setshowEmoji(!showEmoji);
-                                setbackDrop(!backDrop);
-                            }}></InsertEmoticonIcon>
-                            <textarea placeholder="Enter you Message" className="queryBlogChatNewMessageTeaxtArea mt-2" value={newMessage.message} onChange={(event)=>handleChange(event)} id="cin" style={{width: "75%"}} 
-                            onKeyPress={
-                                (e)=>{
-                                    var code = e.keyCode || e.which;
-                                    if (code === 13 && !e.shiftKey){
-                                        e.preventDefault();
-                                        if(newMessage.message!==""){
-                                            setmessages([
-                                                newMessage,
-                                                ...messages,
-                                            ]);
-                                            setnewMessage({
-                                                ...newMessage,
-                                                message: ""
-                                            });
+                                className={classes.queryBlogChatAddEmoji}
+                                style={{
+                                    fontSize: "1.8rem"
+                                }}
+                                onClick={() => {
+                                    setshowEmoji(!showEmoji);
+                                    setbackDrop(!backDrop);
+                                }}></InsertEmoticonIcon>
+                            <textarea placeholder="Enter you Message" className="queryBlogChatNewMessageTeaxtArea mt-2" value={newMessage.message} onChange={(event) => handleChange(event)} id="cin" style={{ width: "75%" }}
+                                onKeyPress={
+                                    (e) => {
+                                        var code = e.keyCode || e.which;
+                                        if (code === 13 && !e.shiftKey) {
+                                            e.preventDefault();
+                                            if (newMessage.message !== "") {
+                                                onSubmitMessage();
+                                            }
                                         }
                                     }
-                                }
-                            }></textarea>
-                            <Button onClick={()=>{
-                                setmessages([
-                                    newMessage,
-                                    ...messages,
-                                ]);
-                                setnewMessage({
-                                    ...newMessage,
-                                    message: ""
-                                });
+                                }></textarea>
+                            <Button onClick={() => {
+                                onSubmitMessage();
                             }}><SendIcon></SendIcon></Button>
                         </div>
                     </div>

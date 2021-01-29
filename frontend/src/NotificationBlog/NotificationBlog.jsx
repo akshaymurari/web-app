@@ -4,19 +4,21 @@ import { DataGrid } from '@material-ui/data-grid';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { BaseUrl } from '../App.jsx';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 
 const NotificationBlog = (props) => {
-    let state = useSelector(state =>{
-        if(props.type==="student"){
+    let state = useSelector(state => {
+        if (props.type === "student") {
             return state.signin;
         }
-        else{
+        else {
             return state.teachersignin;
         }
     });
     let dispatch = useDispatch();
-    const [noOfMessages,setNoOfMessages] = useState(0);
+    const [noOfMessages, setNoOfMessages] = useState(0);
     const H = useHistory();
     useEffect(async () => {
         let d = new Date();
@@ -24,10 +26,10 @@ const NotificationBlog = (props) => {
         // e.preventDefault();
         const value = JSON.parse(localStorage.getItem('value'));
         let info = { ...value, 'date': d_s };
-        if(props.type==="student"){
+        if (props.type === "student") {
             dispatch({ type: 'request_signin' });
         }
-        else{
+        else {
             dispatch({ type: 'request_teachersignin' });
         }
         try {
@@ -38,19 +40,19 @@ const NotificationBlog = (props) => {
                 data: info,
                 responseType: 'json'
             });
-            if(props.type==="student"){
+            if (props.type === "student") {
                 dispatch({ type: "success_signin", payload: data.data });
             }
-            else{
+            else {
                 dispatch({ type: "success_teachersignin", payload: data.data });
             }
             // H.push(`/mainblog`);
         }
         catch {
-            if(props.type==="student"){
+            if (props.type === "student") {
                 dispatch({ type: "error_signin", payload: "" });
             }
-            else{
+            else {
                 dispatch({ type: "error_teachersignin", payload: "" });
             }
             H.push('/error');
@@ -64,21 +66,21 @@ const NotificationBlog = (props) => {
                 method: 'post',
                 url: BaseUrl + `getNotifications/`,
                 headers: { 'Authorization': 'Token de5fca1fb449f586b63136af9a12ab5afc96602e' },
-                data:{"username":JSON.parse(localStorage.getItem('value')).rollno,"seen":1},
+                data: { "username": JSON.parse(localStorage.getItem('value')).rollno, "seen": 1 },
                 responseType: 'json'
             });
-            dispatch({ 'type': 'success_showNotifications',payload: data.data});
+            dispatch({ 'type': 'success_showNotifications', payload: data.data });
             setRows(data.data);
             setNoOfMessages(data.data.length);
         }
         catch {
-            dispatch({ 'type': 'error_showNotifications',payload: ""});
+            dispatch({ 'type': 'error_showNotifications', payload: "" });
             H.push('/error')
         }
-    },[]);
-    useEffect(async () => {
+    }, []);
+    // useEffect(async () => {
 
-    },[]);
+    // },[]);
 
     const columns = [
         { field: 'title', headerName: 'TITLE', width: 160 },
@@ -95,14 +97,18 @@ const NotificationBlog = (props) => {
             width: 230
         },
     ];
-
-
     const [rows, setRows] = useState([]);
-
+    const addNotification = () => {
+        console.log("clicked");
+    }
     return (
-        <div className="container-fluid fixed-top mt-0" style={{ height: "100vh", background: "#c5d2ed" }}>
-            <div className="container mt-5">
-                <Alert severity="success">{(noOfMessages==0)?"You have seen All the messages":`unseen messages count ${noOfMessages}`}</Alert>
+        <div className="container-fluid fixed-top  py-4" style={{ height:"100vh" ,background: "#c5d2ed" }}>
+            {/* {(props.type==="teacher")?(<IconButton onClick={addNotification} className="absolute ml-auto primary" >
+                <AddIcon className="text-info" style={{fontSize:"4rem"}}/>
+            </IconButton>):""} */}
+            <div className="container mt-3">
+                <Alert severity="success">{(noOfMessages == 0) ? "You have seen All the messages" : `unseen messages count ${noOfMessages}`}
+                </Alert>
                 <div className="loader-spinner" style={{ visibility: (state.loading) ? "visible" : "hidden" }}>
                     <div className="spinner-grow text-success mr-1" role="status">
                         <span className="sr-only">Loading...</span>

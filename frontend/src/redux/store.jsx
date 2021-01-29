@@ -22,7 +22,10 @@ let red=combineReducers({
     titleExists:Reducer('titleExists'),
     addQuestion:Reducer('addQuestion'),
     getNotifications:Reducer('getNotifications'),
-    showNotifications:Reducer('showNotifications')
+    showNotifications:Reducer('showNotifications'),
+    showQueryBlogMessages:Reducer('showQueryBlogMessages'),
+    sendQueryBlogMessages:Reducer('sendQueryBlogMessages'),
+    sendAttendanceNotification:Reducer('sendAttendanceNotification')
 })
-let Store=createStore(red,composeWithDevTools(applyMiddleware(logger,thunk))) 
+let Store=createStore(red) 
 export default Store;

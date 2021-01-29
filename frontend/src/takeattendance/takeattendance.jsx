@@ -24,74 +24,76 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { BaseUrl } from '../App.jsx';
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import AddIcon from '@material-ui/icons/Add';
 const Takeattendance = () => {
-    useEffect(async ()=>{
+    useEffect(async () => {
         let d = new Date();
-        const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
         // e.preventDefault();
-        const value=JSON.parse(localStorage.getItem('value'));
-        let info = {...value,'date':d_s };
-        dispatch({type:'request_teachersignin'});
+        const value = JSON.parse(localStorage.getItem('value'));
+        let info = { ...value, 'date': d_s };
+        dispatch({ type: 'request_teachersignin' });
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl+"teacherexists/",
+                url: BaseUrl + "teacherexists/",
                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: info,
                 responseType: 'json'
             })
-            dispatch({type:"success_teachersignin",payload:data.data});
+            dispatch({ type: "success_teachersignin", payload: data.data });
             // H.push(`/takeattendance`);
         }
         catch {
-            dispatch({type:"error_teachersignin",payload:"error"})
+            dispatch({ type: "error_teachersignin", payload: "error" })
             H.push('/error');
         }
-    },[]);
+    }, []);
     let [rows, setrows] = useState([]);
     const H = useHistory();
-    const { subject, section ,time } = useParams();
+    const { subject, section, time } = useParams();
     let state = useSelector(state => state.takeattendance);
     const dispatch = useDispatch();
-    let state1=useSelector(state=>state.uploadattendance);
+    let state1 = useSelector(state => state.uploadattendance);
     const [uploadDetails, setuploadDetails] = useState([]);
     const onCheckBoxClick = (p) => {
-        console.log(p.rowIds);
+        // console.log(p.rowIds);
+        console.log(p.field);
         setuploadDetails(p.rowIds);
     }
     const uploadAttendanceForm = async () => {
-        dispatch({"type":"request_uploadattendance"});
-        let dict={};
-        uploadDetails.map((val)=>{
-            dict[val]=true;
+        dispatch({ "type": "request_uploadattendance" });
+        let dict = {};
+        uploadDetails.map((val) => {
+            dict[val] = true;
         })
-        rows.map((v)=>{
-            if(dict[v['username']]){
-                v["present"]=true;
+        rows.map((v) => {
+            if (dict[v['username']]) {
+                v["present"] = true;
             }
-            else{
-                v["present"]=false;
+            else {
+                v["present"] = false;
             }
-            v["section"]=section;
-            v["subject"]=subject;
-            v["class_time"]=time;
-            v["posted_by"]=JSON.parse(localStorage.getItem('value')).rollno;
+            v["section"] = section;
+            v["subject"] = subject;
+            v["class_time"] = time;
+            v["posted_by"] = JSON.parse(localStorage.getItem('value')).rollno;
         })
-        console.log(rows);
-        try{
+        // console.log(rows);
+        try {
             const data = await axios({
-                method:"post",
-                url:BaseUrl+"addAttendance/",
-                headers:{"Authorization":"Token de5fca1fb449f586b63136af9a12ab5afc96602e"},
-                responseType:"application/json",
-                data:{"rows":rows,"teacheruser":JSON.parse(localStorage.getItem("value")).rollno}
+                method: "post",
+                url: BaseUrl + "addAttendance/",
+                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                responseType: "application/json",
+                data: { "rows": rows, "teacheruser": JSON.parse(localStorage.getItem("value")).rollno }
             })
-            dispatch({"type":"success_uploadattendance","payload":data.data});
+            dispatch({ "type": "success_uploadattendance", "payload": data.data });
             H.push('/ClassBlog');
         }
-        catch{
-            dispatch({"type":"error_uploadattendance","payload":"error"});
+        catch {
+            dispatch({ "type": "error_uploadattendance", "payload": "error" });
             H.push('/error');
         }
     }
@@ -124,10 +126,10 @@ const Takeattendance = () => {
         },
     ];
     useEffect(async () => {
-        console.log("hii");
+        // console.log("hii");
         dispatch({ 'type': "request_takeattendance" });
         try {
-            console.log("hii");
+            // console.log("hii");
             const data = await axios({
                 method: "post",
                 url: BaseUrl + 'attendanceBlog/',
@@ -135,13 +137,13 @@ const Takeattendance = () => {
                 headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
                 data: { "section": section, "subject": subject }
             });
-            console.log(data.data);
+            // console.log(data.data);
             setrows(data.data);
             dispatch({ 'type': "success_takeattendance", payload: data.data });
         }
         catch {
             dispatch({ 'type': "error_takeattendance", payload: "error" });
-            console.log("error")
+            // console.log("error")
         }
     }, []);
     const useStyles3 = makeStyles((theme) => ({
@@ -229,92 +231,90 @@ const Takeattendance = () => {
     const handleChange = (event) => {
         setpage(event.target.value);
     };
+    const sendAttendanceNotification = async () => {
+        // dispatch({'type':'request_sendAttendanceNotification'});
+        // dispatch({'type':'success_sendAttendanceNotification',payload:data.data});
+        // dispatch({'type':'error_sendAttendanceNotification',payload:""});
+        console.log("add notification");
+        // try{
+        //     const data = await axios({
+        //         url:BaseUrl+''
+        //     });
+        // }
+        // catch{
+
+        // }
+    }
     return (
         <>
             <div className="container-fluid p-0" style={{ visibility: (state1.loading) ? "hidden" : "visible" }}>
                 <div className="row ">
                     <div className={classes.root}>
                         <AppBar position="static">
-                            <Toolbar>
-                                <IconButton
+                                {/* <IconButton
                                     edge="start"
                                     className={classes.menuButton}
                                     color="inherit"
                                     aria-label="open drawer">
                                     <MenuIcon />
+                                </IconButton>  */}
+                             <Toolbar>
+                                <IconButton onClick={sendAttendanceNotification} >
+                                    <AddIcon className="text-white m-0" />
                                 </IconButton>
-                                <Typography className={classes.title} variant="h6" noWrap>
-                                    Takeattendance
-                                </Typography>
-                                <div>
-                                    <FormControl className={classes2.formControl} style={{ color: "#fff !important", marginTop: "-0rem" }}>
-                                        <InputLabel id="demo-simple-select-label" className="text-white">pages</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={page}
-                                            className="text-white"
-                                            onChange={handleChange}
-                                        >
-                                            <MenuItem value={5}>5</MenuItem>
-                                            <MenuItem value={10}>10</MenuItem>
-                                            <MenuItem value={15}>15</MenuItem>
-                                            <MenuItem value={20}>20</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                                <div>
-                                    <Button onClick={uploadAttendanceForm} style={{ background: "#d7dff7" }}
-                                        variant="contained"
-                                        color="default"
-                                        className={classes3.button}
-                                        startIcon={<CloudUploadIcon />}
+                            <Typography className={classes.title} variant="h6" noWrap>
+                                Takeattendance
+                            </Typography>
+                            <div>
+                                <FormControl className={classes2.formControl} style={{ color: "#fff !important", marginTop: "-0rem" }}>
+                                    <InputLabel id="demo-simple-select-label" className="text-white">pages</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={page}
+                                        className="text-white"
+                                        onChange={handleChange}
                                     >
-                                        Upload
+                                        <MenuItem value={5}>5</MenuItem>
+                                        <MenuItem value={10}>10</MenuItem>
+                                        <MenuItem value={15}>15</MenuItem>
+                                        <MenuItem value={20}>20</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                            <div>
+                                <Button onClick={uploadAttendanceForm} style={{ background: "#d7dff7" }}
+                                    variant="contained"
+                                    color="default"
+                                    className={classes3.button}
+                                    startIcon={<CloudUploadIcon />}
+                                >
+                                    Upload
                                     </Button>
-                                </div>
+                            </div>
                             </Toolbar>
                         </AppBar>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className={classes1.root}>
-                        <Accordion>
-                            <AccordionSummary style={{ background: "#d7dff7", border: "none !important" }}
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header">
-                                <Typography className={classes.heading} color="primary" style={{ fontWeight: "600" }}>Note <DoubleArrowIcon color="primary" style={{ fontSize: "1rem" }} /></Typography>
-                            </AccordionSummary>
-                            <AccordionDetails style={{ background: "#d7dff7", border: "none !important" }}>
-                                <Typography>
-                                    please click on checkbox if student is present or keep blank in case student is absent
-                                </Typography>
-                            </AccordionDetails>
-                        </Accordion>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="loader-spinner" style={{ visibility: (state.loading) ? "visible" : "hidden" }}>
-                        <div className="spinner-grow text-success mr-1" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </div>
-                        <div className="spinner-grow text-danger mr-1" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </div>
-                        <div className="spinner-grow text-warning mr-1" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="row mt-5" style={{ visibility: (state.loading || state1.loading) ? "hidden" : "visible" }}>
-                    <div style={{ height: '73vh', width: '100%' }}>
-                        <DataGrid rows={rows} columns={columns} pageSize={page} checkboxSelection={true} onSelectionChange={onCheckBoxClick} />
-                    </div>
                 </div>
             </div>
-            {/* <div> */}
-                <div className="loader-spinner1" style={{ visibility: (state1.loading) ? "visible" : "hidden" }}>
+            <div className="row">
+                <div className={classes1.root}>
+                    <Accordion>
+                        <AccordionSummary style={{ background: "#d7dff7", border: "none !important" }}
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header">
+                            <Typography className={classes.heading} color="primary" style={{ fontWeight: "600" }}>Note <DoubleArrowIcon color="primary" style={{ fontSize: "1rem" }} /></Typography>
+                        </AccordionSummary>
+                        <AccordionDetails style={{ background: "#d7dff7", border: "none !important" }}>
+                            <Typography>
+                                please click on checkbox if student is present or keep blank in case student is absent
+                                </Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                </div>
+            </div>
+            <div className="row">
+                <div className="loader-spinner" style={{ visibility: (state.loading) ? "visible" : "hidden" }}>
                     <div className="spinner-grow text-success mr-1" role="status">
                         <span className="sr-only">Loading...</span>
                     </div>
@@ -324,8 +324,27 @@ const Takeattendance = () => {
                     <div className="spinner-grow text-warning mr-1" role="status">
                         <span className="sr-only">Loading...</span>
                     </div>
-                {/* </div> */}
+                </div>
             </div>
+            <div className="row mt-5" style={{ visibility: (state.loading || state1.loading) ? "hidden" : "visible" }}>
+                <div style={{ height: '73vh', width: '100%' }}>
+                    <DataGrid rows={rows} columns={columns} pageSize={page} checkboxSelection={true} onCellClick={onCheckBoxClick} />
+                </div>
+            </div>
+        </div>
+            {/* <div> */ }
+    <div className="loader-spinner1" style={{ visibility: (state1.loading) ? "visible" : "hidden" }}>
+        <div className="spinner-grow text-success mr-1" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <div className="spinner-grow text-danger mr-1" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        <div className="spinner-grow text-warning mr-1" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+        {/* </div> */}
+    </div>
         </>
     )
 }
