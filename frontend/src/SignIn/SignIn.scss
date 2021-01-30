@@ -10,6 +10,12 @@ body{
     font-family: 'Poppins', sans-serif;
     // overflow: hidden;
 }
+
+.signInCompletePage{
+	background-color: white !important;
+	z-index: 0 !important;
+}
+
 .loader-spinner{
 	position:absolute;
 	top:50%;
@@ -25,7 +31,7 @@ body{
 	bottom: 0;
 	left: 0;
   height: 100%;
-	z-index: -1;
+	z-index: 0 !important;
 }
 
 .container{
@@ -121,7 +127,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #38d39f;
+	background-color: trna;
 	transition: .4s;
 }
 
@@ -179,7 +185,7 @@ form{
 }
 
 .input-div.focus > .i > i{
-	color: #38d39f;
+	color: #c8f0e3;
 }
 
 .input-div > div > input{
