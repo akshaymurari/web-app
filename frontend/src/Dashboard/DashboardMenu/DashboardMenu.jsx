@@ -72,7 +72,7 @@ function DashboardMenu(props) {
                 </ToggleButton>
                 <ToggleButton style={{"display": (props.type==="student")?"visible":"none"}} value="attendance" aria-label="attendance" selected ={content==="attendance"?true:false} onClick={() => {
                     setcontent("attendance");
-                    H.push('/attendance');
+                    H.push('/DashboardAttendence');
                 }} className={`${content==="attendance"?classes.dashboardMenuButtonSelected:""} ${classes.dashboardMenuButton}`}>
                     <h6 className="mr-auto my-auto" style={{color: "black"}}>
                     <BiNotepad style={{

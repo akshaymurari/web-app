@@ -8,7 +8,7 @@ import TeacherSignIn from './TeacherSignIn/TeacherSignIn.jsx';
 import TeacherSignUp from './TeacherSignUp/TeacherSignUp.jsx';
 import Mainblog from './Mainblog/Mainblog.jsx';
 import ForgotPassword from './forgotpass/forgotpass.jsx';
-import Attendance from './attendance/attendance.jsx';
+import DashboardAttendence from './Dashboard/DashboardAttendence/DashboardAttendence.jsx';
 import Teacherblog from './teacherblog/teacherblog.jsx';
 import {Provider} from 'react-redux';
 import Store from './redux/store.jsx';
@@ -40,7 +40,7 @@ const App = () => {
         <Route exact path='/mainblog' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
         <Route exact path='/Dashboard' component={()=><Provider store={Store}><Dashboard type="student"/></Provider>}></Route>
         <Route exact path='/teacherDashboard' component={()=><Provider store={Store}><Dashboard type="teacher"/></Provider>}></Route>
-        <Route exact path='/attendance' component={()=><Provider store={Store}><Attendance/></Provider>}></Route>
+        <Route exact path='/DashboardAttendence' component={()=><Provider store={Store}><DashboardAttendence/></Provider>}></Route>
         <Route exact path='/teacherblog' component={()=><Provider store={Store}><Dashboard type="teacher"/></Provider>}></Route>
         <Route exact path='/ClassLinks' component={()=><Provider store={Store}><ClassLinks/></Provider>}></Route>
         <Route exact path='/ClassBlog' component={()=><Provider store={Store}><ClassBlog/></Provider>}></Route>

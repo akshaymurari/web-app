@@ -16,6 +16,8 @@ router.register('NotificationBlogG',views.NotificationBlogG,basename='notificati
 
 urlpatterns = [
     path('',include(router.urls)),
+    path('getSubjects/<str:pk>/',views.getSubjects.as_view()),
+    path('subWiseAttendance/',views.subWiseAttendance.as_view()),
     path('GetQueryQ/<str:pk>/',views.GetQueryQ.as_view({'get': 'list'})),
     path('GetQueryA/<str:pk>/',views.GetQueryA.as_view({'get': 'list'})),
     # path('GetQueryQ/<str:pk>/',views.QueryBlogAQ.as_view()),

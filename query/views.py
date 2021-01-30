@@ -35,6 +35,28 @@ class getNotificationResponse(APIView):
         return JsonResponse(ans,safe=False)    
     pass
 
+class subWiseAttendance(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self,request):
+        obj = links.objects.filter(subject=request.data["subject"],section=request.data["section"])
+        classesTaken = len(obj)
+        obj = classWiseAttendanceStatus.objects.filter(subject=request.data["subject"],username=request.data["username"],get_status="present")
+        classsesAttended = len(obj)
+        print(classesTaken,classsesAttended)
+        return JsonResponse({"classsesAttended":classsesAttended,"classesTaken":classesTaken})
+        pass
+
+class getSubjects(APIView):
+    authentication_classes = [TokenAuthentication]
+    def get(self,request,pk):
+        con = connector.connect(host="localhost",user="root",password="akshay",database="querydb")
+        cur = con.cursor()
+        cur.execute("select distinct subject from query_links where section="+repr(pk))
+        ans=[]
+        for i in (cur.fetchall()):
+            ans.append(i[0])
+        con.close()
+        return JsonResponse(ans,safe=False)
 
 class QueryBlogQ(viewsets.ModelViewSet):
     queryset = QueryBlog.objects.all()
