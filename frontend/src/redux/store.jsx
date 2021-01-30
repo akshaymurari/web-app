@@ -27,6 +27,8 @@ let red=combineReducers({
     sendQueryBlogMessages:Reducer('sendQueryBlogMessages'),
     sendAttendanceNotification:Reducer('sendAttendanceNotification'),
     getAttendanceNotification:Reducer('getAttendanceNotification'),
+    NotesBlog:Reducer('NotesBlog'),
+    AddNotesInBlog:Reducer('AddNotesInBlog')
 })
 let Store=createStore(red) 
 export default Store;

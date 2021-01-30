@@ -21,6 +21,7 @@ import QueryBlog from './QueryBlog/QueryBlog.jsx';
 import NotificationBlog from './NotificationBlog/NotificationBlog.jsx';
 import DashboardEvent from './Dashboard/DashboardEvent/DashboardEvent.jsx';
 import QueryBlogChat from './QueryBlogChat/QueryBlogChat.jsx';
+// import NotesBlog from './NotesBlog/NotesBlog.jsx';
 import Dashboard from './Dashboard/Dashboard.jsx';
 
 export const BaseUrl="http://127.0.0.1:8000/";
@@ -54,6 +55,7 @@ const App = () => {
         <Route exact path='/teacherNotificationBlog' component={()=><Provider store={Store}><NotificationBlog type="teacher"></NotificationBlog></Provider>}></Route>
         <Route exact path="/QueryAnswerBlog/:title/:type" component={()=><Provider store={Store}><QueryBlogChat /></Provider>}></Route>
         {/* <Route exact path="/teacherQueryAnswerBlog/:title/:type" component={()=><Provider store={Store}><QueryBlogChat /></Provider>}></Route> */}
+        {/* <Route exact path='/NotesBlog' component={()=><Provider store={Store}><NotesBlog></NotesBlog></Provider>}></Route> */}
         <Route exact path='/error' component={()=><h1>Error</h1>}/>
       </Switch>
     </>

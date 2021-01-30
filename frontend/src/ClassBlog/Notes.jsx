@@ -61,7 +61,7 @@ const Notes = (props) => {
     const ITEM_HEIGHT = 48;
     return (
         <>
-            <div className="p-3 pr-5 mx-3 my-4 Notee border shadow" style={{ background: "#d3e0f5", borderRadius: "2rem" }}>
+            <div className="p-3 pr-5 mx-3 my-4 Notee border shadow" style={{ background: (props.attendance_taken==0)?"#d3e0f5":"3f50b5", borderRadius: "2rem" }}>
                 {/* <div style={{visibility:(props.attendance_taken==0)?"visible":"hidden"}}> */}
                     <IconButton 
                         aria-label="more"
