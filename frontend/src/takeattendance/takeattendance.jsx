@@ -273,6 +273,7 @@ const Takeattendance = () => {
         rows.map(async (v) => {
             e.preventDefault();
             const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + (d.getMinutes() + 2) + ":" + d.getSeconds();
+            
             dispatch({ 'type': 'request_sendAttendanceNotification' });
             const info = { ...v, "seen": 0, "visibility_time": d_s, "title": subject, "description": "your attendance was added 😃 which was taken on " + time };
             console.log(info);

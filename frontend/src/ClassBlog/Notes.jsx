@@ -13,10 +13,16 @@ const Notes = (props) => {
     const state = useSelector(state=>state.deletenotes);
     const dispatch=useDispatch();
     console.log(props);
-    const options = [
-        'delete',
-        'upload'
-    ];
+    let options;
+    if(props.attendance_taken==0){
+        options = [
+            'delete',
+            'upload'
+        ];
+    }
+    else{
+        options = []
+    }
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
   
@@ -56,32 +62,35 @@ const Notes = (props) => {
     return (
         <>
             <div className="p-3 pr-5 mx-3 my-4 Notee border shadow" style={{ background: "#d3e0f5", borderRadius: "2rem" }}>
-                <IconButton 
-                    aria-label="more"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                >
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu
-                    id="long-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                        style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '20ch',
-                        },
-                    }}>
-                    {options.map((option) => (
-                        <MenuItem key={option} selected={option === 'delete'} onClick={()=>handleClose(option)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
+                {/* <div style={{visibility:(props.attendance_taken==0)?"visible":"hidden"}}> */}
+                    <IconButton 
+                        aria-label="more"
+                        aria-controls="long-menu"
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        
+                        id="long-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                            style: {
+                                maxHeight: ITEM_HEIGHT * 4.5,
+                                width: '20ch',
+                            },
+                        }}>
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'delete'} onClick={()=>handleClose(option)}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                {/* </div> */}
                 <h3>{props.subject}</h3>
                 <p><a href={props.link} target="_blank">{props.link}</a></p>
                 <p>{props.section}</p>

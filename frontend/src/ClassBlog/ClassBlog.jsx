@@ -220,7 +220,7 @@ const ClassBlog = () => {
                 </div>
                 <div className="container mt-5" style={{ visibility: (state1.loading) ? "hidden" : "visible" }}>
                     <div className="notesblog" >
-                        {notesdata.map((val, i) => <Notes id={val.id} subject={val.subject} fun={ondel} link={val.link} date={val.class_time} section={val.section} />)}
+                        {notesdata.map((val, i) => <Notes id={val.id} attendance_taken={val.attendance_taken} subject={val.subject} fun={ondel} link={val.link} date={val.class_time} section={val.section} />)}
                     </div>
                 </div>
             </div>

@@ -157,7 +157,8 @@ class filterClassLinkBlogByUsername(APIView):
     authentication_classes=[TokenAuthentication]
     def get(self,request,pk):
         date=datetime.now().strftime("%Y-%m-%d")
-        obj = links.objects.filter(posted_by_id=pk,class_day=date,attendance_taken=0)
+        # obj = links.objects.filter(posted_by_id=pk,class_day=date,attendance_taken=0)
+        obj = links.objects.filter(posted_by_id=pk,class_day=date)
         serializer = linksSerializer(obj,many=True)
         print(serializer.data)
         return JsonResponse(serializer.data,safe=False)
