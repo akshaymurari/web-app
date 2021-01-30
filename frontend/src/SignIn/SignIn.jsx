@@ -16,7 +16,7 @@ const SignIn = () => {
     const [value, setValue] = useState('');
     const [isActivePass, setIsActivePass] = useState(false);
     const [valuePass, setValuePass] = useState('');
-    const [vis,setvis] = useState("hidden");
+    const [vis,setvis] = useState("none");
     const handleTextChange = (text) => {
         setValue(text);
         if (text !== '') {
@@ -66,13 +66,13 @@ const SignIn = () => {
         }
         catch {
             dispatch({type:"error_signin",payload:"error"})
-            setvis("visible")
+            setvis("block")
             console.log("error");
         }
     }
     return (
-        <>
-            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
+        <div className="signInCompletePage">
+            <div className="alert text-center alert-danger alert-dismissible fade show m-0 px-2" style={{ display: vis }} role="alert">
                 invalid details provided
             </div>
             <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
@@ -132,7 +132,7 @@ const SignIn = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
