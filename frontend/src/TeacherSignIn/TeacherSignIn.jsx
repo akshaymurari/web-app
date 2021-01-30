@@ -16,7 +16,7 @@ const TeacherSignIn = () => {
     const [value, setValue] = useState('');
     const [isActivePass, setIsActivePass] = useState(false);
     const [valuePass, setValuePass] = useState('');
-    const [vis, setvis] = useState("hidden");
+    const [vis, setvis] = useState("none");
 
     const handleTextChange = (text) => {
         setValue(text);
@@ -69,13 +69,13 @@ const TeacherSignIn = () => {
         }
         catch {
             dispatch({type:"error_teachersignin",payload:"error"});
-            setvis("visible");
+            setvis("block");
             console.log("error");
         }
     }
     return (
-        <>
-            <div className="alert alert-danger alert-dismissible fade show m-0 px-2" style={{ "visibility": vis }} role="alert">
+        <div className="teacherSignInWholePage">
+            <div className="alert alert-danger alert-dismissible fade show m-0 px-2" style={{ display: vis }} role="alert">
                 invalid details provided
             </div>
             <div className="loader-spinner" style={{visibility:(state.loading )? "visible" : "hidden"}}>
@@ -128,14 +128,14 @@ const TeacherSignIn = () => {
                                 </ul>
                             </div>
                             <br />
-                            <a href="/TeacherSignUp" className="have">New to Visual Meet?</a>
-                            <a href="/forgotpassteacher">Forgot Password?</a>
+                            <a href="/TeacherSignUp" className="have mr-4">New to Visual Meet?</a>
+                            <a href="/forgotpassteacher ml-4">Forgot Password?</a>
                             <input type="submit" onClick={onsubmitlogin} className="btn" value="Login"></input>
                         </form>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

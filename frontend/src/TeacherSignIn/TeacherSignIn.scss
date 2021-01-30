@@ -10,13 +10,19 @@ body{
     font-family: 'Poppins', sans-serif;
     // overflow: hidden;
 }
+
+.teacherSignInWholePage{
+	background-color: white !important;
+	z-index: -1 !important;
+}
+
 .wholeteachersignin{
 .wave{
 	position: fixed;
 	bottom: 0;
 	left: 0;
     height: 100%;
-	z-index: -1;
+	z-index: 0 !important;
 	// -webkit-transform: scaleX(-1);
     // transform: scaleX(-1);
 }
