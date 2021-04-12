@@ -12,6 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import './ClassBlog.scss';
+import Token from "../secret_key"
 import Notes from './Notes.jsx';
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
@@ -27,41 +28,41 @@ const ClassBlog = () => {
     let [onadd, setonadd] = useState(true);
     let [notesdata, setnotesdata] = useState([]);
     const [vis,setvis]=useState("hidden")
+    const [user,setuser] = useState([]);
     console.log(notesdata);
     useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        // e.preventDefault();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
+        const token = (localStorage.getItem('token'));
+        const info = {token,type:"teacher"}
         dispatch({ type: 'request_teachersignin' });
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl + "teacherexists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl + "verifytoken/",
+                headers: { 'Authorization': `Token ${Token}` },
                 data: info,
                 responseType: 'json'
             })
             dispatch({ type: "success_teachersignin", payload: data.data });
-            H.push(`/ClassBlog`);
+            setuser(data.data);
+            setonadd((pre)=> !pre);
+            // H.push(`/ClassBlog`);
         }
         catch {
             dispatch({ type: "error_teachersignin", payload: "error" })
             H.push('/error');
         }
     }, []);
-    let [values, setvalues] = useState({ "subject": "", "link": "", "section": "", "date": "" })
+    let [values, setvalues] = useState({ "subject": "", "link": "", "section": "", "start_at": "","attendance_status":0,"username":user["username"] })
     useEffect(async () => {
         dispatch({ 'type': 'request_getclassblog' });
         try {
             const data = await axios({
-                method: 'get',
-                url: BaseUrl + 'filterClassLinkBlogByUsername/' + JSON.parse(localStorage.getItem('value')).rollno,
-                headers: { 'Authorization': 'Token de5fca1fb449f586b63136af9a12ab5afc96602e' },
-                responseType: 'json'
+                method: 'post',
+                url: BaseUrl + 'getlink/',
+                responseType: 'json',
+                data:{token:localStorage.getItem("token"),username:user["username"],type:"teacher"}
             })
-            console.log("hii");
+            // console.log("hii");
             dispatch({ 'type': 'success_getclassblog', payload: data.data });
             console.log(data.data);
             setnotesdata(data.data);
@@ -92,23 +93,27 @@ const ClassBlog = () => {
         },
     }));
     const addnotes = async () => {
-        console.log("hiii");
-        console.log(values);
         dispatch({ 'type': "request_classblog" });
-        console.log({ ...values, posted_by: JSON.parse(localStorage.getItem("value")).rollno });
+        console.log({ ...values });
+        values["start_at"]=values["date"].split("T").join(" ");
+        values["type"] = "teacher";
+        values["username"] = user["username"]
+        values["attendance_status"] = 0
+        console.log(values);
+        const token = localStorage.getItem("token");
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl + 'classLinkBlog/',
-                headers: { 'Authorization': 'Token de5fca1fb449f586b63136af9a12ab5afc96602e' },
-                data: { ...values, posted_by: JSON.parse(localStorage.getItem("value")).rollno },
+                url: BaseUrl + 'addlink/',
+                headers: { 'Authorization': `Token ${Token}` },
+                data: { ...values,token },
                 responseType: 'json'
             })
             console.log("successs");
             console.log(data.data);
             dispatch({ 'type': "success_classblog" });
-            setvalues({ "subject": "", "link": "", "section": "", "date": "" });
             setonadd((pre) => !pre);
+            setvalues({ "subject": "", "link": "", "section": "", "date": "" });
             setvis("visible");
         }
         catch {
@@ -121,7 +126,7 @@ const ClassBlog = () => {
         setonadd((pre) => !pre);
     }
     const onlogout = () => {
-        localStorage.removeItem('value');
+        localStorage.removeItem('token');
         H.push('/')
     }
     const classes = useStyles();
@@ -220,7 +225,7 @@ const ClassBlog = () => {
                 </div>
                 <div className="container mt-5" style={{ visibility: (state1.loading) ? "hidden" : "visible" }}>
                     <div className="notesblog" >
-                        {notesdata.map((val, i) => <Notes id={val.id} attendance_taken={val.attendance_taken} subject={val.subject} fun={ondel} link={val.link} date={val.class_time} section={val.section} />)}
+                        {notesdata.map((val, i) => <Notes id={val.id} user={user.username} attendance_taken={val.attendance_status} subject={val.subject} fun={ondel} link={val.link} date={val.start_at} section={val.section} />)}
                     </div>
                 </div>
             </div>

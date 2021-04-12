@@ -26,12 +26,11 @@ function Dashboard(props) {
     let dispatch = useDispatch();
     const [values,setvalues] = useState({});
     useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        // console.log(info)
-        setvalues(info);
+        console.log("hellooo");
+        const token = (localStorage.getItem('token'));
+        let info = {token,type:props.type};
+        // let info = { ...value, 'date': d_s };
+        // setvalues(info);
         if(props.type==="student"){
             dispatch({ type: 'request_signin' });
         }
@@ -41,8 +40,8 @@ function Dashboard(props) {
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl + props.type+"exists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: `${BaseUrl}verifytoken/`,
+                headers: { 'Authorization': `Token ${process.env.token}` },
                 data: info,
                 responseType: 'json'
             })
@@ -52,7 +51,7 @@ function Dashboard(props) {
             else if(props.type==="teacher"){
                 dispatch({ type: "success_teachersignin", payload: data.data });
             }
-            // H.push(`/mainblog`);
+            setvalues(data.data);
         }
         catch {
             if(props.type==="student"){
@@ -74,7 +73,7 @@ function Dashboard(props) {
     return (
         <React.Fragment>
             <DashboardHeader click={()=>setshowSideBar(!showSideBar)}></DashboardHeader>
-            <DashboardMenu open={showSideBar} username={JSON.parse(localStorage.getItem('value')).rollno} type={props.type} whatToDisplay={diplayDashboardContent}></DashboardMenu>
+            <DashboardMenu open={showSideBar} username={values.username} type={props.type} whatToDisplay={diplayDashboardContent}></DashboardMenu>
             <div className="dashboard container">
                 <div className="" style={{
                     width: "100vw",

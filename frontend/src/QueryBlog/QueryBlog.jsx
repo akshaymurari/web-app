@@ -33,8 +33,15 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import './QueryBlog.scss'
 import './BlogCards.css';
+import Token from '../secret_key';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const QueryBlog = (props) => {
+    console.log(props)
     let state = useSelector(state => {
         if (props.type === "student") {
             return state.signin;
@@ -50,62 +57,24 @@ const QueryBlog = (props) => {
     let state3 = useSelector(state => state.addQuestion);
     let [currentPage, setCurrentPage] = useState(1);
     let [pageCount, setPageCount] = useState(1);
+    const [field,setfield] = useState("none");
     let [currentPageData, setCurrentPageData] = useState([]);
     let [records, setRecords] = useState(4);
     let [postvis, setpostvis] = useState(true);
-    let [details, setDetails] = useState({ "title": "", "description": "" });
+    let [details, setDetails] = useState({ "title": "", "description": "","option":"public" ,"password":""});
     let [titleDisplay, setTitleDisplay] = useState("hidden");
     let [addDisplay, setAddDisplay] = useState("hidden");
     let [onAdd, setOnAdd] = useState(false);
     let [onRefresh, setOnRefresh] = useState(false);
-    const [SearchDisplay,setSearchDisplay]  =useState("hidden");
-    const [userFilter, setUserFilter] = useState();
-    const [searchVal,setSearchVal] = useState();
-    const [onDel,setOnDel] = useState(false);
+    const [SearchDisplay, setSearchDisplay] = useState("");
+    const [userFilter, setUserFilter] = useState("all");
+    const [searchVal, setSearchVal] = useState();
+    const [onDel, setOnDel] = useState(false);
     const options = [1, 3, 5, 10, 15, 20, 25, 30];
     const ITEM_HEIGHT = 48;
     console.log(currentPageData);
     let dispatch = useDispatch();
     const H = useHistory();
-    useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        console.log(info)
-        if(props.type==="student"){
-            dispatch({ type: 'request_signin' });
-        }
-        else if(props.type==="teacher"){
-            dispatch({ type: 'request_teachersignin' });
-        }
-        try {
-            const data = await axios({
-                method: "post",
-                url: BaseUrl + props.type+"exists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: info,
-                responseType: 'json'
-            })
-            if(props.type==="student"){
-                dispatch({ type: "success_signin", payload: data.data });
-            }
-            else if(props.type==="teacher"){
-                dispatch({ type: "success_teachersignin", payload: data.data });
-            }
-            // H.push(`/mainblog`);
-            setUserFilter("all");
-        }
-        catch {
-            if(props.type==="student"){
-                dispatch({ type: "error_signin", payload: "" });
-            }
-            else if(props.type==="teacher"){
-                dispatch({ type: "error_teachersignin", payload: "" });
-            }
-            H.push('/error');
-        }
-    }, []);
     useEffect(async () => {
         console.log(userFilter, records, currentPage);
         if (userFilter === "all") {
@@ -115,9 +84,10 @@ const QueryBlog = (props) => {
                 const data = await axios({
                     method: "get",
                     url: BaseUrl + `PostQueryQ/?page=${currentPage}&pagerecords=${records}`,
-                    headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                    headers: { 'Authorization': `Token ${Token}` },
                     responseType: 'json'
                 })
+                console.log(data.data)
                 dispatch({ 'type': 'success_QueryBlog', payload: data.data });
                 setPageCount(data.data.count);
                 setCurrentPageData(data.data.results);
@@ -128,35 +98,33 @@ const QueryBlog = (props) => {
                 setCurrentPage(1);
             }
         }
-        else if (userFilter === "myposts") {
-            setSearchDisplay("hidden");
-            dispatch({ 'type': "request_QueryBlog" })
-            // setCurrentPage(1);
-            // console.log(BaseUrl + `GetQueryQ/${JSON.parse(localStorage.getItem('value')).rollno}/?page=${currentPage}&pagerecords=${records}/`);
-            try {
-                const data = await axios({
-                    method: "get",
-                    url: BaseUrl + `GetQueryQ/${JSON.parse(localStorage.getItem('value')).rollno}/?page=${currentPage}&pagerecords=${records}`,
-                    headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                    responseType: 'json'
-                })
-                dispatch({ 'type': 'success_QueryBlog', payload: data.data });
-                setPageCount(data.data.count);
-                setCurrentPageData(data.data.results);
-            }
-            catch {
-                dispatch({ 'type': 'error_QueryBlog', payload: "" });
-                // H.push('\error');
-                setCurrentPage(1);
-            }
-        }
-        else if(userFilter==="onsearch"){
-            dispatch({'type':"request_QueryBlog"});
+        // if(userFilter==="myposts"){
+        //     dispatch({ 'type': "request_QueryBlog" })
+        //     setCurrentPage(1);
+        //     try {
+        //         const data = await axios({
+        //             method: "post",
+        //             url: BaseUrl + `getmyposts/`,
+        //             headers: { 'Authorization': `Token ${Token}` },
+        //             responseType: 'json',
+        //             data:{"token":localStorage.getItem("token"),"records":records,"page":currentPage,"type":props.type}
+        //         })
+        //         dispatch({ 'type': 'success_QueryBlog', payload: data.data });
+        //         setPageCount(data.data.count);
+        //         setCurrentPageData(data.data.results);
+        //     }
+        //     catch {
+        //         dispatch({ 'type': 'error_QueryBlog', payload: "" });
+        //         // H.push('\error');
+        //     }
+        // }
+        else if (userFilter === "onsearch") {
+            dispatch({ 'type': "request_QueryBlog" });
             try {
                 const data = await axios({
                     method: "get",
                     url: BaseUrl + `PostQueryQ/?search=${searchVal}&page=${currentPage}&pagerecords=${records}`,
-                    headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                    headers: { 'Authorization': `Token ${Token}` },
                     responseType: 'json'
                 })
                 dispatch({ 'type': 'success_QueryBlog', payload: data.data });
@@ -170,7 +138,7 @@ const QueryBlog = (props) => {
                 setCurrentPage(1);
             }
         }
-    }, [currentPage, onAdd, onRefresh, records, userFilter,searchVal,onDel]);
+    }, [currentPage, onAdd, onRefresh, records, userFilter, searchVal, onDel]);
     const onPageChange = (event, page) => {
         setCurrentPage(page);
     }
@@ -228,27 +196,29 @@ const QueryBlog = (props) => {
             },
         },
     }));
-    // useEffect(async ()=>{
-    //     if(userFilter==="myposts"){
-    //         dispatch({ 'type': "request_QueryBlog" })
-    //         setCurrentPage(1);
-    //         try {
-    //             const data = await axios({
-    //                 method: "get",
-    //                 url: BaseUrl + `GetQueryQ/${JSON.parse(localStorage.getItem('value')).rollno}/?page=${currentPage}&pagerecords=${records}/`,
-    //                 headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-    //                 responseType: 'json'
-    //             })
-    //             dispatch({ 'type': 'success_QueryBlog', payload: data.data });
-    //             setPageCount(data.data.count);
-    //             setCurrentPageData(data.data.results);
-    //         }
-    //         catch {
-    //             dispatch({ 'type': 'error_QueryBlog', payload: "" });
-    //             // H.push('\error');
-    //         }
-    //     }
-    // },[currentPage, onAdd, onRefresh,records ,userFilter]);
+    useEffect(async ()=>{
+        if(userFilter==="myposts"){
+            dispatch({ 'type': "request_QueryBlog" })
+            // setCurrentPage(1);
+            try {
+                const data = await axios({
+                    method: "post",
+                    url: BaseUrl + `getmyposts/`,
+                    headers: { 'Authorization': `Token ${Token}` },
+                    responseType: 'json',
+                    data:{"token":localStorage.getItem("token"),"records":records,"page":currentPage,"type":props.type}
+                })
+                console.log(data.data)
+                dispatch({ 'type': 'success_QueryBlog', payload: data.data });
+                setCurrentPageData(data.data.result);
+                setPageCount(data.data.count);
+            }
+            catch {
+                dispatch({ 'type': 'error_QueryBlog', payload: "" });
+                // H.push('\error');
+            }
+        }
+    },[currentPage, onAdd, onRefresh,records ,userFilter]);
     const userPostedQuestions = () => {
         setUserFilter("myposts");
     }
@@ -257,14 +227,17 @@ const QueryBlog = (props) => {
     }
     const AddQuestion = async () => {
         console.log("hii");
-        const info = { "type": props.type, "posted_by": JSON.parse(localStorage.getItem('value')).rollno, ...details };
+        if(details.password==undefined){
+            details.password=""
+        }
+        const info = { "type": props.type, "token": (localStorage.getItem('token')), ...details,room_type:details.option };
         console.log(info);
         dispatch({ "type": "request_addQuestion" });
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl + "PostQueryQ/",
-                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl + "AddQuery/",
+                headers: { "Authorization": `Token ${Token}` },
                 responseType: "json",
                 data: info
             });
@@ -286,11 +259,11 @@ const QueryBlog = (props) => {
         try {
             const data = await axios({
                 method: "get",
-                url: BaseUrl + `PostQueryQ/${e.target.value}/`,
-                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl + `AddQuery/${e.target.value}/`,
+                headers: { "Authorization": `Token ${Token}` },
                 responseType: "json"
             })
-            console.log(data);
+            console.log(data.data);
             dispatch({ 'type': "success_titleExists", payload: data.data });
             setTitleDisplay("visible");
         }
@@ -304,19 +277,21 @@ const QueryBlog = (props) => {
         setUserFilter("onsearch");
     }
     const onDeletePost = async (val) => {
-        dispatch({ 'type':"request_QueryBlog"});
-        try{
+        dispatch({ 'type': "request_QueryBlog" });
+        console.log(val);
+        try {
             const data = await axios({
-                method:"delete",
-                url:BaseUrl+`PostQueryQ/${val}/`,
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                responseType:"json",
+                method: "post",
+                url: BaseUrl + `deletequery/`,
+                headers: { 'Authorization': `Token ${Token}` },
+                data:{token:localStorage.getItem("token"),title:val},
+                responseType: "json",
             });
-            dispatch({ 'type':"success_QueryBlog",payload: data.data });
-            setOnDel((pre)=>!pre);
+            dispatch({ 'type': "success_QueryBlog", payload: data.data });
+            setOnDel((pre) => !pre);
         }
-        catch{
-            dispatch({ 'type':"error_QueryBlog",payload: "" });
+        catch {
+            dispatch({ 'type': "error_QueryBlog", payload: "" });
             H.push('/error');
         }
     }
@@ -331,6 +306,17 @@ const QueryBlog = (props) => {
         setRecords(records);
         setAnchorEl(null);
     };
+    const setoption = (e) => {
+        if(e.target.value==="secret"){
+            setfield("block");
+        }
+        else{
+            if(field!=="none")
+            setfield("none");
+        }
+        setDetails((pre)=>({...pre,option:e.target.value}));
+    }
+
     const classes = useStyles();
     return (
         <>
@@ -343,7 +329,7 @@ const QueryBlog = (props) => {
                 style={{ visibility: titleDisplay }}
                 severity="error">Title already exists</Alert>
             <div
-                className="mx-auto boxx QueryPostEditor  px-5 pt-5 shadow fixed-bottom"
+                className="mx-auto boxx QueryPostEditor  px-5 pt-3 pb-0 shadow fixed-bottom"
                 style={{ background: "#d3e0f5", borderRadius: "2rem", bottom: "50%", visibility: (postvis) ? "hidden" : "visible" }}>
                 <TextField id="standard-basic"
                     onChange={TitleExists}
@@ -353,9 +339,45 @@ const QueryBlog = (props) => {
                     // value={values.link}
                     onChange={(e) => setDetails((pre) => ({ ...pre, description: e.target.value }))}
                     id="standard-multiline-static"
-                    label="LINK"
+                    label="DESCRIPTION"
                     multiline
                     rows={3}
+                // defaultValue=""
+                />  <br /> <br />
+                <div className="pb-0 mb-0">
+                    {/* // style={{display:"flex",justifyContent:"center"}} */}
+                    
+                    <FormControl component="fieldset" className="p-0 m-0">
+                    <RadioGroup row aria-label="position" name="position" defaultValue={details.option} onChange={setoption}>
+                        <FormControlLabel
+                            className="ml-0 p-0"
+                            value="public"
+                            control={<Radio color="primary" />}
+                            label="public"
+                            labelPlacement="start"
+                        />
+                        {/* <FormControlLabel
+                            value="private"
+                            control={<Radio color="primary" />}
+                            label="private"
+                            labelPlacement="start"
+                        /> */}
+                        {/* <FormControlLabel
+                            value="secret"
+                            control={<Radio color="primary" />}
+                            label="secret"
+                            labelPlacement="start"
+                        /> */}
+                    </RadioGroup>
+                    </FormControl>
+                </div>
+                <TextField
+                    className="pb-0 mb-0"
+                    // value={values.link}
+                    style={{display:field}}
+                    onChange={(e) => setDetails((pre) => ({ ...pre, password: e.target.value }))}
+                    id="standard-multiline-static"
+                    label="secret_room_pass"
                 // defaultValue=""
                 />  <br /> <br />
                 <Button id="circleicon"
@@ -394,7 +416,7 @@ const QueryBlog = (props) => {
                                     <SearchIcon />
                                 </div>
                                 <InputBase
-                                    onChange={(e)=>onSearch(e.target.value)}
+                                    onChange={(e) => onSearch(e.target.value)}
                                     placeholder="Search…"
                                     classes={{
                                         root: classes.inputRoot,
@@ -468,7 +490,7 @@ const QueryBlog = (props) => {
                 </div>
                 {/* <h1>in QueryBlog</h1> */}
                 <div >
-                    <Accordion style={{background:"#3f50b5",borderRadius:"none"}}>
+                    <Accordion style={{ background: "#3f50b5", borderRadius: "none" }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -485,10 +507,10 @@ const QueryBlog = (props) => {
                         </AccordionDetails>
                     </Accordion>
                 </div>
-                <Alert 
-                style={{ visibility: SearchDisplay,display:(SearchDisplay==="hidden")?"none":"" }}
-                className=""
-                severity="success">{pageCount} results founded</Alert>
+                <Alert
+                    style={{ visibility: SearchDisplay, display: (SearchDisplay === "hidden") ? "none" : "" }}
+                    className=""
+                    severity="success">{pageCount} results founded</Alert>
                 <div className="loader-spinner" style={{ visibility: (state1.loading) ? "visible" : "hidden" }}>
                     <div className="spinner-grow text-success mr-1" role="status">
                         <span className="sr-only">Loading...</span>
@@ -501,7 +523,7 @@ const QueryBlog = (props) => {
                     </div>
                 </div>
                 <div class="card-columns my-5  mx-5" onClick={() => setpostvis(true)} style={{ visibility: (state1.loading) ? "hidden" : "visible" }}>
-                    {currentPageData.map((v) => (<BlogCards posted_byy={v.posted_by} onDeletePost={onDeletePost} user_type={props.type} posted_on={v.posted_on} type={v.type} title={v.title} description={v.description} />))}
+                    {currentPageData.map((v) => (<BlogCards posted_byy={v.posted_by} onDeletePost={onDeletePost} user_type={props.type} posted_on={v.posted_on} type={v.type} title={v.title} description={v.description} password={v.password} room_type={v.room_type}/>))}
                 </div>
                 <div className="fixed-bottom BottomPagination">
                     <Pagination style={{ justifyContent: 'center !important' }} onChange={(event, page) => onPageChange(event, page)} count={Math.ceil(pageCount / records)} variant="outlined" color="primary" />

@@ -41,43 +41,7 @@ function QueryBlogChat(props) {
     const state2 = useSelector(state2 => state2.showQueryBlogMessages);
     const dispatch = useDispatch();
     const [messages, setmessages] = useState([]);
-    useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        if (type === "student") {
-            dispatch({ type: 'request_signin' });
-        }
-        else if (type === "teacher") {
-            dispatch({ type: 'request_teachersignin' });
-        }
-        try {
-            const data = await axios({
-                method: "post",
-                url: BaseUrl + type + "exists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: info,
-                responseType: 'json'
-            })
-            if (props.type === "student") {
-                dispatch({ type: "success_signin", payload: data.data });
-            }
-            else if (props.type === "teacher") {
-                dispatch({ type: "success_teachersignin", payload: data.data });
-            }
-            // H.push(`/mainblog`);
-        }
-        catch {
-            if (props.type === "student") {
-                dispatch({ type: "error_signin", payload: "" });
-            }
-            else if (props.type === "teacher") {
-                dispatch({ type: "error_teachersignin", payload: "" });
-            }
-            H.push('/error');
-        }
-    }, []);
+
     const [showEmoji, setshowEmoji] = useState(false);
     const [backDrop, setbackDrop] = useState(false);
     const state1 = useSelector(state => state.sendQueryBlogMessages);
@@ -89,31 +53,31 @@ function QueryBlogChat(props) {
     ]);
     const [updateMessage, setupdateMessage] = useState(true);
     console.log(messages);
-    useEffect(async () => {
-        dispatch({ "type": "request_showQueryBlogMessages" })
-        setDelay(null);
-        try {
-            const data = await axios({
-                method: 'get',
-                url: BaseUrl + `GetQueryA/${title}/`,
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: { "username": JSON.parse(localStorage.getItem('value')).rollno, seen: 0 },
-                responseType: 'json'
-            });
-            let msg = data.data;
-            // console.log(msg);
-            msg.reverse();
-            dispatch({ "type": "success_showQueryBlogMessages", payload: msg });
-            setmessages(msg);
-            // messages
-            // console.log((data.data).len);
-            setDelay(1000);
-        }
-        catch {
-            dispatch({ "type": "error_showQueryBlogMessages", payload: "" });
-            setDelay(null);
-        }
-    }, [updateMessage]);
+    // useEffect(async () => {
+    //     dispatch({ "type": "request_showQueryBlogMessages" })
+    //     setDelay(null);
+    //     try {
+    //         const data = await axios({
+    //             method: 'get',
+    //             url: BaseUrl + `GetQueryA/${title}/`,
+    //             headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+    //             data: { "username": JSON.parse(localStorage.getItem('value')).rollno, seen: 0 },
+    //             responseType: 'json'
+    //         });
+    //         let msg = data.data;
+    //         // console.log(msg);
+    //         msg.reverse();
+    //         dispatch({ "type": "success_showQueryBlogMessages", payload: msg });
+    //         setmessages(msg);
+    //         // messages
+    //         // console.log((data.data).len);
+    //         setDelay(1000);
+    //     }
+    //     catch {
+    //         dispatch({ "type": "error_showQueryBlogMessages", payload: "" });
+    //         setDelay(null);
+    //     }
+    // }, [updateMessage]);
     const showQueryBlogMessages = async (e) => {
         setDelay(null);
         setupdateMessage((pre) => !pre);
@@ -226,7 +190,7 @@ function QueryBlogChat(props) {
                         <div className="queryBlogChatTitle">
                             <img src={profile_pic} style={{ width: "9rem", height: "8rem" }}></img>
                             <h1>Hello!</h1>
-                            <p>{JSON.parse(localStorage.getItem('value')).rollno}</p>
+                            <p>{(localStorage.getItem('username'))}</p>
                         </div>
                         <h3 style={{
                             marginLeft: "20px"
@@ -259,8 +223,8 @@ function QueryBlogChat(props) {
                                 <div ref={messagesEndRef} />
                                 {messages.map((value, idx) => (
                                     <div className={((JSON.parse(localStorage.getItem('value')).rollno) === value.posted_by) ? "me" : "student"}
-                                        style={{ background: ((JSON.parse(localStorage.getItem('value')).rollno) === value.posted_by) ? "80ffdb" : (value.type === "student") ? "#cffffe" : "#fcf876" }} id={idx}>
-                                        <p className="queryBlogChatMessageName">{value.posted_by === (JSON.parse(localStorage.getItem('value')).rollno) ? "Me" : value.posted_by}</p>
+                                        style={{ background: ((localStorage.getItem('username'))=== value.posted_by) ? "80ffdb" : (value.type === "student") ? "#cffffe" : "#fcf876" }} id={idx}>
+                                        <p className="queryBlogChatMessageName">{value.posted_by === (JSON.parse(localStorage.getItem('username'))) ? "Me" : value.posted_by}</p>
                                         <p>{value.message}</p>
                                     </div>
                                 ))}

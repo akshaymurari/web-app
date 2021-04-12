@@ -35,9 +35,7 @@ const App = () => {
         <Route exact path="/resetpass" component={()=><Provider store={Store}><Resetpass type="student"/></Provider>}></Route>
         <Route exact path="/resetpassteacher" component={()=><Provider store={Store}><Resetpass type="teacher"/></Provider>}></Route>
         <Route exact path='/SignIn' component={()=><Provider store={Store}><SignIn/></Provider>}></Route>
-        <Route exact path='/SignUp' component={()=><Provider store={Store}><SignUp/></Provider>}></Route>
         <Route exact path='/TeacherSignIn' component={()=><Provider store={Store}><TeacherSignIn/></Provider>}></Route>
-        <Route exact path='/TeacherSignUp' component={()=><Provider store={Store}><TeacherSignUp/></Provider>}></Route>
         <Route exact path='/mainblog' component={()=><Provider store={Store}><Mainblog/></Provider>}></Route>
         <Route exact path='/Dashboard' component={()=><Provider store={Store}><Dashboard type="student"/></Provider>}></Route>
         <Route exact path='/teacherDashboard' component={()=><Provider store={Store}><Dashboard type="teacher"/></Provider>}></Route>
@@ -46,7 +44,7 @@ const App = () => {
         <Route exact path='/ClassLinks' component={()=><Provider store={Store}><ClassLinks/></Provider>}></Route>
         <Route exact path='/ClassBlog' component={()=><Provider store={Store}><ClassBlog/></Provider>}></Route>
         <Route exact path="/StudentClassBlog" component={()=><Provider store={Store}><StudentClassBlog/></Provider>}></Route>
-        <Route exact path='/takeattendance/:subject/:section/:time' component={()=><Provider store={Store}><Takeattendance/></Provider>}></Route>
+        <Route exact path='/takeattendance/:id/:username/:subject/:section/:time' component={()=><Provider store={Store}><Takeattendance/></Provider>}></Route>
         <Route exact path="/DashboardEvent" component={()=><Provider store={Store}><DashboardEvent type="student" /></Provider>}></Route>
         <Route exact path="/DashboardEventTeacher" component={()=><Provider store={Store}><DashboardEvent type="teacher"/></Provider>}></Route>
         <Route exact path="/teacherQueryBlog" component={()=><Provider store={Store}><QueryBlog type="teacher"/></Provider>}></Route>

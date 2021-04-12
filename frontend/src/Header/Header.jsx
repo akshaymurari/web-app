@@ -25,11 +25,11 @@ const Header = (e) => {
                             <li class="nav-item">
                                 <Link className="ml-auto mr-3" to="login-center" smooth={true} style={{ color: "#fff" }}><button className="signin">LOGIN</button></Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <a className="ml-auto mr-3" onClick={()=>H.push('/SignUp')}  style={{ color: "#fff" }}>
                                     <button type="button" className="btn btn-outline-warning ml-2"><span>SIGNUP</span></button>
                                 </a>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                     {/* <a className="navbar-brand" href="#">

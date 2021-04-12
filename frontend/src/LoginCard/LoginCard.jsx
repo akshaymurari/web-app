@@ -9,7 +9,7 @@ export default function MediaCard(props) {
     <Collapse in={props.checked} {...(props.checked ? { timeout: 1000 } : {})}>
       <div className="card logincard text-white bg-secondary shadow" style={{width: "18rem"}}>
         <div className="mag_img">
-          <img className="card-img-top" src={props.image} alt="Card image cap"></img>
+          <img className=" card-img-top" src={props.image} alt="Card image cap"></img>
         </div>
         <div className="card-body">
           <h1 role>{props.role}</h1>

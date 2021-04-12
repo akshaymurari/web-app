@@ -20,4 +20,4 @@ const Reducer = (name) => {
         }
     }
 }
-export default Reducer
+export default Reducer;

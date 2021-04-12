@@ -27,30 +27,8 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
+import Token from '../secret_key';
 const Takeattendance = () => {
-    useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        // e.preventDefault();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        dispatch({ type: 'request_teachersignin' });
-        try {
-            const data = await axios({
-                method: "post",
-                url: BaseUrl + "teacherexists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: info,
-                responseType: 'json'
-            })
-            dispatch({ type: "success_teachersignin", payload: data.data });
-            // H.push(`/takeattendance`);      
-        }
-        catch {
-            dispatch({ type: "error_teachersignin", payload: "error" })
-            H.push('/error');
-        }
-    }, []);
     const cols1 = [
         { field: 'id', headerName: 'USERNAME', width: 260 },
         { field: 'seen', headerName: 'SEEN BY USER', width: 350 },
@@ -58,7 +36,7 @@ const Takeattendance = () => {
     const [rows1, setrows1] = useState([]);
     let [rows, setrows] = useState([]);
     const H = useHistory();
-    const { subject, section, time } = useParams();
+    const { id,subject, section, time, username } = useParams();
     let state = useSelector(state => state.takeattendance);
     const dispatch = useDispatch();
     let state1 = useSelector(state => state.uploadattendance);
@@ -70,18 +48,21 @@ const Takeattendance = () => {
         setuploadDetails(p.rowIds);
     }
     const uploadAttendanceForm = async () => {
-        dispatch({ "type": "request_uploadattendance" });
+        // dispatch({ "type": "request_uploadattendance" });
         let dict = {};
         rows1.map((v)=>{
             if(v.seen){
                 dict[v.username]=true;
             }     
         });
+        console.log(uploadDetails);
         uploadDetails.map((val) => {
             dict[val] = true;
-        })
+        });
+        console.log(rows);
         rows.map((v) => {
-            if (dict[v['username']]) {
+            console.log(v)
+            if (dict[v['id']]) {
                 v["present"] = true;
             }
             else {
@@ -90,16 +71,16 @@ const Takeattendance = () => {
             v["section"] = section;
             v["subject"] = subject;
             v["class_time"] = time;
-            v["posted_by"] = JSON.parse(localStorage.getItem('value')).rollno;
         });
-        // console.log(rows);
+        const token = localStorage.getItem("token");
+        console.log(rows);
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl + "addAttendance/",
-                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl + "uploadattendance/",
+                headers: { "Authorization": `Token ${Token}`},
                 responseType: "application/json",
-                data: { "rows": rows, "teacheruser": JSON.parse(localStorage.getItem("value")).rollno }
+                data: { rows ,token,id,type:"teacher"}
             })
             dispatch({ "type": "success_uploadattendance", "payload": data.data });
             H.push('/ClassBlog');
@@ -112,7 +93,7 @@ const Takeattendance = () => {
     const [checked, setchecked] = useState(false);
     const columns = [
         // { field: 'id', headerName: 'ID', width: 130 },
-        { field: 'id', headerName: 'ROLLNO', width: 160 },
+        { field: 'id', headerName: 'USERNAME', width: 160 },
         { field: 'section', headerName: 'SECTION', width: 130, sortable: false, },
         {
             field: 'total_classes',
@@ -130,13 +111,6 @@ const Takeattendance = () => {
             type: 'number',
             width: 180,
         },
-        {
-            field: 'lastloginat',
-            headerName: 'LASTLOGINAT',
-            description: 'last login time of student',
-            sortable: false,
-            width: 180,
-        },
     ];
     useEffect(async () => {
         // console.log("hii");
@@ -147,18 +121,19 @@ const Takeattendance = () => {
                 method: "post",
                 url: BaseUrl + 'attendanceBlog/',
                 responseType: "json",
-                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: { "section": section, "subject": subject }
+                headers: { "Authorization": `Token ${Token}` },
+                data: { "section": section, "subject": subject, "username": username,"type":"teacher",token:localStorage.getItem("token")}
             });
             // console.log(data.data);
-            setrows(data.data);
             dispatch({ 'type': "success_takeattendance", payload: data.data });
+            setrows(data.data);
         }
         catch {
             dispatch({ 'type': "error_takeattendance", payload: "error" });
-            // console.log("error")
+            console.log("error")
         }
     }, []);
+    console.log(rows);
     const useStyles3 = makeStyles((theme) => ({
         button: {
             margin: theme.spacing(1),
@@ -253,7 +228,7 @@ const Takeattendance = () => {
             const data = await axios({
                 method: "post",
                 url: BaseUrl + 'getNotificationResponse/',
-                headers: { "Authorization": "token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                headers: { "Authorization": `token ${Token}` },
                 data: sendData,
                 responseType: "json"
             });
@@ -276,13 +251,13 @@ const Takeattendance = () => {
             d.setMinutes(d1.getMinutes()+2);
             const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes()  + ":" + d.getSeconds();
             dispatch({ 'type': 'request_sendAttendanceNotification' });
-            const info = { ...v, "seen": 0, "visibility_time": d_s, "title": subject, "description": "your attendance was added 😃 which was taken on " + time };
+            const info = { ...v,username:v.id, "seen": 0, "visibility_time": d_s, "title": subject, "description": "your attendance was added 😃 which was taken on " + time };
             console.log(info);
             sendData.push({...info,id:info.username});
             try {
                 const data = await axios({
                     url: BaseUrl + 'NotificationBlogG/',
-                    headers: { "Authorization": "token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                    headers: { "Authorization": `token ${Token}` },
                     data: info,
                     method: "post",
                     responseType: "json"

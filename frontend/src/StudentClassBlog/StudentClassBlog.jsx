@@ -19,6 +19,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import Token from '../secret_key';
 const StudentClassBlog = () => {
     const H = useHistory();
     let [onsearch, settable] = useState(false);
@@ -27,41 +28,19 @@ const StudentClassBlog = () => {
     const state2 = useSelector(state => state.onSearchLinks);
     let state = useSelector(state => state.signin);
     const dispatch = useDispatch();
-    useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        dispatch({ type: 'request_signin' });
-        try {
-            const data = await axios({
-                method: "post",
-                url: BaseUrl + "studentexists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: info,
-                responseType: 'json'
-            })
-            dispatch({ type: "success_signin", payload: data.data });
-            // H.push(`/mainblog`);
-        }
-        catch {
-            dispatch({ type: "error_signin", payload: "error" })
-            H.push('/error');
-        }
-    }, [])
     const [rows, setrows] = useState([]);
     useEffect(async () => {
         dispatch({ 'type': "request_StudentClassBlog" });
-        const info = { "username": JSON.parse(localStorage.getItem("value")).rollno }
+        const info = { "token": (localStorage.getItem("token")),"type":"student"}
         console.log(info);
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl + "getAttendanceStatus/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl + "getlinks/",
+                headers: { 'Authorization': `Token ${Token}` },
                 responseType: "json",
                 data: info
-            })
+            });
             dispatch({ 'type': "success_StudentClassBlog", "payload": data.data });
             setrows(data.data);
         }
@@ -74,12 +53,12 @@ const StudentClassBlog = () => {
         onsearchval(e.target.value);
         dispatch({ 'type': 'request_onSearchLinks' })
         try {
-            const info = { "username": JSON.parse(localStorage.getItem('value')).rollno, "subject": e.target.value }
+            const info = { "token": (localStorage.getItem("token")),"type":"student",subject: e.target.value}
             console.log(info);
             const data = await axios({
                 method: "post",
                 url: BaseUrl + "onSearchLinkBlog/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                headers: { 'Authorization': `Token ${Token}` },
                 responseType: "json",
                 data: info
             })
@@ -92,26 +71,20 @@ const StudentClassBlog = () => {
     }
     const columns = [
         {
-            field: 'posted_by',
+            field: 'username',
             headerName: 'TEACHER',
             width: 130,
             description: 'link was posted by',
         },
         { field: 'subject', headerName: 'SUBJECT', width: 130 },
         {
-            field: 'class_day',
-            headerName: 'CLASS DAY',
-            width: 130,
-            description: 'The day when class as been taken',
-        },
-        {
-            field: 'class_time',
+            field: 'start_at',
             headerName: 'CLASS TIME',
             description: 'The time when class starts',
             width: 160,
         },
         {
-            field: 'get_status',
+            field: 'attendance_status',
             headerName: 'ATTENDANCE STATUS',
             description: 'Attandence status of this class',
             width: 220,

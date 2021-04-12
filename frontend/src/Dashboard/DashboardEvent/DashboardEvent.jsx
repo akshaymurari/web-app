@@ -17,6 +17,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Token from '../../secret_key';
 const useStyles = makeStyles({
 
 })
@@ -55,35 +56,13 @@ function DashboardEvent(props) {
     // const state1 = useSelector(state => state.teachersignin);
     const dispatch = useDispatch();
     useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        // e.preventDefault();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        dispatch({ type: 'request_signin' });
-        try {
-            const data = await axios({
-                method: "post",
-                url: BaseUrl + props.type + "exists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: info,
-                responseType: 'json'
-            })
-            dispatch({ type: "success_signin", payload: data.data });
-            // H.push(`/mainblog`);
-        }
-        catch {
-            dispatch({ type: "error_signin", payload: "error" })
-            // H.push('/error');
-        }
-    }, []);
-    useEffect(async () => {
         dispatch({ 'type': "request_DashboardEvent" });
         try {
             const data = await axios({
-                method: 'get',
+                method: 'post',
                 url: BaseUrl + 'EventsBlog/',
-                headers: { "Authorization": "token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                headers: { "Authorization": `token ${Token}` },
+                data:{token:localStorage.getItem("token"),"type":props.type},
                 responseType: 'json',
             });
             dispatch({ 'type': "success_DashboardEvent", payload: data.data });
@@ -100,6 +79,7 @@ function DashboardEvent(props) {
             H.push('/error');
         }
     }, [onAddEvent]);
+
     useEffect(() => {
         const a = [];
         const day = startDay.clone().subtract(1, "day");
@@ -159,11 +139,11 @@ function DashboardEvent(props) {
     }));
     const onAddEventFunc = async (day, title, event) => {
         try {
-            const info = { "Event_on": day, "EventName": title, "EventDescription": event };
+            const info = { "Event_on": day, "EventName": title, "EventDescription": event ,token:localStorage.getItem("token")};
             const data = await axios({
                 method: "post",
-                url: BaseUrl + "EventsBlog/",
-                headers: { "Authorization": "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl + "AddEvents/",
+                headers: { "Authorization": `Token ${Token}` },
                 data: info,
                 responseType: "json"
             });

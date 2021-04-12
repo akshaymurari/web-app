@@ -8,16 +8,17 @@ import axios from 'axios';
 import {BaseUrl} from '../App.jsx';
 import {useHistory} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
+import Token from '../secret_key';
 const Notes = (props) => {
     const H= useHistory();
     const state = useSelector(state=>state.deletenotes);
     const dispatch=useDispatch();
     console.log(props);
     let options;
-    if(props.attendance_taken==0){
+    if(!props.attendance_taken){
         options = [
-            'delete',
-            'upload'
+            'upload',
+            'delete'
         ];
     }
     else{
@@ -33,15 +34,15 @@ const Notes = (props) => {
   
     const handleClose = async (op) => {
         if(op==="delete"){
-            const info={"id":props.id};
+            const info={"id":props.id,"type":"teacher","token":localStorage.getItem("token")};
             console.log(props);
             console.log(op);
             dispatch({'type':"request_deletenotes"})
             try{
                 const data = await axios({
-                    url: BaseUrl+'deleteClassLinks/',
+                    url: BaseUrl+'deletelink/'+info.id+"/",
                     method:'delete',
-                    headers:{"Authorization":"token de5fca1fb449f586b63136af9a12ab5afc96602e"},
+                    headers:{"Authorization":`token ${Token}`},
                     data:info,
                     requestType:"json"
                 });
@@ -54,7 +55,7 @@ const Notes = (props) => {
             }
         }
         else if(op==="upload"){
-            H.push(`takeattendance/${props.subject}/${props.section}/${props.date}`);
+            H.push(`takeattendance/${props.id}/${props.user}/${props.subject}/${props.section}/${props.date}`);
         }
         setAnchorEl(null);
     };
@@ -85,7 +86,7 @@ const Notes = (props) => {
                             },
                         }}>
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'delete'} onClick={()=>handleClose(option)}>
+                            <MenuItem key={option} selected={option === 'upload'} onClick={()=>handleClose(option)}>
                                 {option}
                             </MenuItem>
                         ))}

@@ -46,10 +46,10 @@
         box-sizing: border-box;
         z-index: 1;
         text-align: center;
-        border: rgb(83, 79, 79, 0.4) 1px solid;
+        border: rgba(83, 79, 79, 0.4) 1px solid;
         &:hover{
             background-color: #acee99;
-            border: rgb(83, 79, 79, 0.8) 1px solid;
+            border: rgba(83, 79, 79, 0.8) 1px solid;
             cursor: pointer;
             box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         }

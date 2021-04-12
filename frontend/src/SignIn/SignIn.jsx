@@ -50,18 +50,17 @@ const SignIn = () => {
         let d = new Date();
         const d_s=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
         e.preventDefault();
-        let info = { "gender": gender, "rollno": value, "password": valuePass,'date':d_s }
+        let info = { "username": value, "password": valuePass ,type:"student"}
         dispatch({type:'request_signin'});
         try {
             const data = await axios({
                 method: "post",
-                url: BaseUrl+"studentexists/",
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
+                url: BaseUrl+"login/",
                 data: info,
                 responseType: 'json'
-            })
+            });
             dispatch({type:"success_signin",payload:data.data});
-            localStorage.setItem('value',JSON.stringify({'rollno':value,'password':valuePass,'gender':gender}));
+            localStorage.setItem('token',data.data.token);
             H.push(`/Dashboard`);
         }
         catch {
@@ -116,18 +115,7 @@ const SignIn = () => {
                                         onChange={(e) => handleTextChangePass(e.target.value)} required></input>
                                 </div>
                             </div>
-                            <div className="btn-group">
-                                <button type="button" className="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {gender === 1 ? "Male" : "Female"}
-                                </button>
-                                <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" onClick={changeGender}>Male</a></li>
-                                    <li><a className="dropdown-item" onClick={changeGender}>Female</a></li>
-                                </ul>
-                            </div>
                             <br />
-                            <a href="/SignUp" className="have mr-3">New to Visual Meet?</a>
-                            <a href="/forgotpass">Forgot Password?</a>
                             <input type="submit" className="btn" onClick={onsubmitlogin} value="Login"></input>
                         </form>
                     </div>

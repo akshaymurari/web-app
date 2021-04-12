@@ -119,7 +119,7 @@ function DashboardMenu(props) {
                 </ToggleButton>
             </ToggleButtonGroup>
             <a className="ml-auto mr-3" href="/" style={{ color: "#fff", position:"relative",top: "5rem"}}>
-                <button type="button" className="btn btn-outline-danger ml-2" onClick={() => { localStorage.removeItem('value'); }}><span>LOGOUT</span></button>
+                <button type="button" className="btn btn-outline-danger ml-2" onClick={() => { localStorage.removeItem('token'); }}><span>LOGOUT</span></button>
             </a>
         </div>
     )

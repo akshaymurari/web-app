@@ -10,6 +10,7 @@ import {BaseUrl} from '../App.jsx';
 import {useSelector,useDispatch} from 'react-redux';
 import useInterval from 'react-useinterval';
 import {useHistory} from 'react-router-dom';
+import Token from '../secret_key';
 
 function ClassLinksHeader(props) {
     const mystyle = {
@@ -27,30 +28,20 @@ function ClassLinksHeader(props) {
     const [updateNotifications,setUpdateNotifications] = useState(true);
     useEffect(async () => {
         setDelay(null);
-        // dispatch({"type":"request_getNotifications"})
         try{
             const data = await axios({
                 method : 'post',
-                url:BaseUrl+`getNotifications/`,
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data:{"username":JSON.parse(localStorage.getItem('value')).rollno,seen:0},
+                url:BaseUrl+`getnotificationLen/`,
+                headers: { 'Authorization': `Token ${Token}`},
+                data:{"token":localStorage.getItem('token'),type:"student"},
                 responseType : 'json'
             });
-            // dispatch({"type":"success_getNotifications",payload:data.data});
             setNoBadges((data.data).length);
-            // console.log((data.data).length);
             setDelay(10000);
         }
         catch{
-            // dispatch({"type":"error_getNotifications",payload:""});
-            setDelay(null);
         }
     },[updateNotifications])
-    const getNotifications = async () => {
-        setDelay(null);
-        setUpdateNotifications((pre)=>!pre);
-    }
-    useInterval(getNotifications,delay);
     return (
         <div>
             <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">

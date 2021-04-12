@@ -35,14 +35,14 @@ function DashboardProfile(props) {
                 <br/>
                 <div className="dashboardProfileHeader">
                     <img src={ProfilePic} alt="User Profile pic"  className="dashboardProfileUserProfilePic"></img>
-                    <p className="dashboardProfileUserProfileName">{props.rollno}</p><br/>
+                    <p className="dashboardProfileUserProfileName">{props.username}</p><br/>
                 </div>
             </div>
             <div className="dashboardProfileDetailes" style={{textAlign:"center", fontFamily: "Balsamiq Sans, cursive", width: "628px", display: "flex", flexDirection: "column", margin: "auto", maxWidth: "95vw"}}>
                 <h1 className="dashboardProfileAttributes">Name: </h1><br/>
-                <p className="dashboardProfileValues">{props.rollno}</p><br/>
+                <p className="dashboardProfileValues">{props.username}</p><br/>
                 <h1 className="dashboardProfileAttributes">Roll Number: </h1><br/>
-                <p className="dashboardProfileValues">{props.rollno}</p><br/>
+                <p className="dashboardProfileValues">{props.username}</p><br/>
                 {/* <h1 className="dashboardProfileAttributes">Email: </h1><br/>
                 <p className="dashboardProfileValues">damonsalvatore@gmail.com</p><br/> */}
                 {/* <h1 className="dashboardProfileAttributes">Section: </h1><br/>

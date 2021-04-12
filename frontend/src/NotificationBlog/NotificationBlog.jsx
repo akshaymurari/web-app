@@ -7,6 +7,7 @@ import { BaseUrl } from '../App.jsx';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
+import Token from '../secret_key';
 
 const NotificationBlog = (props) => {
     let state = useSelector(state => {
@@ -21,52 +22,13 @@ const NotificationBlog = (props) => {
     const [noOfMessages, setNoOfMessages] = useState(0);
     const H = useHistory();
     useEffect(async () => {
-        let d = new Date();
-        const d_s = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        // e.preventDefault();
-        const value = JSON.parse(localStorage.getItem('value'));
-        let info = { ...value, 'date': d_s };
-        if (props.type === "student") {
-            dispatch({ type: 'request_signin' });
-        }
-        else {
-            dispatch({ type: 'request_teachersignin' });
-        }
-        try {
-            const data = await axios({
-                method: "post",
-                url: BaseUrl + `${props.type}exists/`,
-                headers: { 'Authorization': "Token de5fca1fb449f586b63136af9a12ab5afc96602e" },
-                data: info,
-                responseType: 'json'
-            });
-            if (props.type === "student") {
-                dispatch({ type: "success_signin", payload: data.data });
-            }
-            else {
-                dispatch({ type: "success_teachersignin", payload: data.data });
-            }
-            // H.push(`/mainblog`);
-        }
-        catch {
-            if (props.type === "student") {
-                dispatch({ type: "error_signin", payload: "" });
-            }
-            else {
-                dispatch({ type: "error_teachersignin", payload: "" });
-            }
-            H.push('/error');
-        }
-    }, []);
-    useEffect(async () => {
         dispatch({ 'type': 'request_showNotifications' });
-        console.log(BaseUrl + `NotificationBlogG/?search=${0}`);
         try {
             const data = await axios({
                 method: 'post',
                 url: BaseUrl + `getNotifications/`,
-                headers: { 'Authorization': 'Token de5fca1fb449f586b63136af9a12ab5afc96602e' },
-                data: { "username": JSON.parse(localStorage.getItem('value')).rollno, "seen": 1 },
+                headers: { 'Authorization': `Token ${Token}` },
+                data: { "token": (localStorage.getItem('token')),"type":"student" },
                 responseType: 'json'
             });
             dispatch({ 'type': 'success_showNotifications', payload: data.data });
